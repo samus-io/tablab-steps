@@ -3,52 +3,93 @@
 - `Syntax validation` checks whether input adheres to the expected syntax or structure.
 - It helps identify and reject data that doesn't conform to predefined patterns, preventing code injection or other syntax-related vulnerabilities.
 
-## File Upload Use Case: Filename length limit
+## File Upload use case: Filename length limit
 
-- Imagine you're running an online platform where users can upload files. To maintain order and prevent chaos in your file storage, you decide to implement syntax validation for filenames during uploads.
-- Let's explore how you can enforce a limit on filename length in a technical yet straightforward manner.
+**Scenario**
 
-### Importance
+- Consider the development of a file upload feature for a web application.
+- It's essential to ensure that filenames conform to specific syntax rules.
+- One crucial aspect is enforcing a maximum length limit for filenames.
+- This maintains compatibility across various file systems and mitigates security risks associated with excessively long filenames.
 
-- **Expectation Setting**: Similar to setting rules for a game, you establish a maximum filename length that uploaded files must adhere to.
+**Implementation**
 
-  - This serves as a guideline to keep filenames concise and manageable.
+- Syntax validation ensures that user input follows predefined rules and formats.
+- Here, the focus is on validating filenames during the file upload process and incorporate additional syntax validations.
 
-- **Receiving Data**: When a user uploads a file, your server receives not just the file itself but also metadata like the filename.
+**Filename Length Limit**
 
-  - It's like getting a package with a label indicating what's inside.
+- Define a maximum length limit for filenames to maintain compatibility and prevent security risks related to excessively long filenames.
+- Reject filenames exceeding the specified length limit and provide feedback to users.
 
-- **Pattern Matching**: Think of it as measuring the length of a piece of string. You check if the filename's length falls within the acceptable range you've defined.
+**Filename Extension Check**
 
-- **Validation**: If the filename length is within the specified limit, it's considered valid, just like fitting a puzzle piece into its designated spot.
+- Split the filename by dot `(".")` to ensure it has exactly one extension.
+- Prevent filenames with multiple extensions or filenames lacking an extension.
 
-  - Otherwise, it's rejected, ensuring that filenames don't go beyond what your system can handle.
+**Alphanumeric Check**
 
-- **Error Handling**: If a filename exceeds the maximum length, you inform the user about the restriction.
+- Utilize the isAlphanumeric function from the validator.js library to verify if the filename is alphanumeric.
+- This ensures filenames comprise only letters and numbers, enhancing security and compatibility.
 
-  - It's like politely reminding someone about the rules of a game if they try to break them.
-  - This helps users understand and comply with the requirements.
+**Validator.js Library**
 
-- **Security Protection**: While it may seem like a simple rule, enforcing a maximum filename length indirectly contributes to security.
-  - By preventing excessively long filenames, you mitigate the risk of potential vulnerabilities or system overload.
+- The validator.js library offers functions for validating various data types in JavaScript:
 
-### Code Implementation (Javascript)
+  - `isEmail`: Validates email addresses.
+  - `isURL`: Validates URLs.
+  - `isAlphanumeric`: Checks if a string consists only of letters and numbers.
+  - `isLength`: Validates string length.
+  - `isNumeric`: Checks if a value is numeric.
+
+**Example**
 
 ```bash
-const MAX_FILENAME_LENGTH = 50; // Maximum allowed filename length
 
+const validator = require('validator');
+
+// Define maximum filename length limit
+const maxFilenameLength = 50;
+
+// Validate filename
 function validateFilename(filename) {
-    return filename.length <= MAX_FILENAME_LENGTH;
+    // Check filename length
+    if (filename.length > maxFilenameLength) {
+        return false;
+    }
+
+    // Check filename extension
+    const filenameParts = filename.split('.');
+    if (filenameParts.length !== 2) {
+        return false;
+    }
+
+    // Check if filename is alphanumeric
+    if (!validator.isAlphanumeric(filenameParts[0])) {
+        return false;
+    }
+
+    return true;
 }
 
-// Example usage:
-const uploadedFilename = "example_file_with_a_very_long_name_that_exceeds_the_limit.txt";
-if (validateFilename(uploadedFilename)) {
-    console.log("Filename is valid.");
+// Usage example
+const filename = "example_file.txt";
+if (!validateFilename(filename)) {
+    console.log("Invalid filename. Please ensure the filename follows the specified syntax rules.");
 } else {
-    console.log("Invalid filename. Maximum filename length exceeded.");
+    // Proceed with file upload
 }
+
+
 ```
 
-- In this code snippet, the `validateFilename` function checks if the length of the uploaded filename (uploadedFilename) doesn't surpass the maximum allowed filename length (`MAX_FILENAME_LENGTH`).
-- This straightforward validation ensures that filenames stay within manageable bounds during file uploads, promoting order and ease of use on your platform.
+- In this example, the validateFilename function performs multiple syntax validations:
+  - Checks if the filename length exceeds the maximum limit.
+  - Ensures the filename has exactly one extension.
+  - Validates that the filename is alphanumeric using the isAlphanumeric function from the validator.js library.
+
+**Benefits**
+
+- Enhances security by preventing injection attacks or malicious filename manipulation.
+- Ensures consistency and integrity of filenames, reducing the risk of data corruption or system errors.
+- Improves user experience by providing clear guidelines for acceptable filename syntax and error feedback.
