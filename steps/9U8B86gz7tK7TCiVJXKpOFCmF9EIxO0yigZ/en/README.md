@@ -1,4 +1,4 @@
-# Input Normalization to UTF-8:
+# Input Normalization to UTF-8
 
 - `Input normalization` refers to the process of standardizing textual data to ensure consistency and compatibility across different systems and platforms.
 - In the context of Node.js, normalization becomes crucial when dealing with text encoded in various character sets, especially when transitioning to or from the UTF-8 encoding.
@@ -88,7 +88,8 @@
 
 ### Character Category Allow-listing
 
-- It involves allowing specific categories of characters while restricting others. By defining allow-lists based on character categories such as letters, digits, punctuation, etc., it ensures that only permissible characters are accepted.
+- It involves allowing specific categories of characters while restricting others.
+- By defining allow-lists based on character categories such as letters, digits, punctuation, etc., it ensures that only permissible characters are accepted.
 
 ```js
 const allowedCharactersRegex = /^[a-zA-Z0-9.,!?]+$/; // Define regex for allowed characters
@@ -121,7 +122,6 @@ if (![...userInput].every((char) => allowedChars.includes(char))) {
 ### Use Case
 
 - In a Node.js application where users enables to upload files.
-
 - To maintain system stability and security, strict rules regarding the characters allowed in filenames need enforcement.
 
 ### Implementation Steps
