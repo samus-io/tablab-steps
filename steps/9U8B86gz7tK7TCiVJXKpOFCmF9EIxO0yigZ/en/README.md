@@ -10,7 +10,7 @@
 
 ### How does Node.js handle Input Normalization to UTF-8?
 
-- Node.js provides several mechanisms to handle input normalization:
+- Node.js provides several mechanisms to handle input normalization
 
   - **Buffer Operations** in Node.js offers the Buffer class to manipulate binary data.
 
@@ -44,7 +44,7 @@
   // Further processing with UTF-8 encoded data...
   ```
 
-## Validate Free-Form Unicode Text:
+## Validate Free-Form Unicode Text
 
 - `Validating free-form Unicode text` involves verifying that the text conforms to certain criteria or constraints, such as permissible characters, length limitations, or specific patterns.
 - This validation ensures that the text is well-formed and does not contain any illegal or unexpected characters that could potentially cause issues during processing or storage.
