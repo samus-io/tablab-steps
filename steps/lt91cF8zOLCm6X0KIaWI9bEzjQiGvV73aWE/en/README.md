@@ -5,7 +5,7 @@
 - It acts as a barrier against injection attacks, such as SQL injection or cross-site scripting (XSS), by validating the format and content of user input.
 - By enforcing syntactic rules, it helps maintain consistency and reliability in data processing and storage.
 
-### Implementation in Node.js
+## Implementation in Node.js
 
 - Node.js offers various tools and libraries for implementing syntax validation, such as regular expressions, built-in functions, and third-party packages like `Validator.js`.
 - **Custom validation** functions can be created to check specific syntactic rules, such as verifying email addresses, URLs, or filenames.
@@ -55,6 +55,16 @@
 
   - This example illustrates how we can perform syntax validation on JSON data in a Node.js environment, ensuring that the data meets the expected format requirements before further processing.
   - Other popular packages for JSON validation are : **JOI** (https://www.npmjs.com/package/joi) , **JSON Validator** (https://www.npmjs.com/package/json-validator)
+
+## Validator.js library
+
+- The validator.js library (https://www.npmjs.com/package/validator) offers functions for validating various data types in JavaScript, some examples are:
+
+  - `isEmail`: Validates email addresses.
+  - `isURL`: Validates URLs.
+  - `isAlphanumeric`: Checks if a string consists only of letters and numbers.
+  - `isLength`: Validates string length.
+  - `isNumeric`: Checks if a value is numeric.
 
 ## File Upload use case: Filename length limit
 
@@ -125,16 +135,6 @@
   - Checks if the filename length exceeds the maximum limit.
   - Ensures the filename has exactly one extension.
   - Validates that the filename is alphanumeric using the isAlphanumeric function from the validator.js library.
-
-### Validator.js library
-
-- The validator.js library (https://www.npmjs.com/package/validator) offers functions for validating various data types in JavaScript, some examples are:
-
-  - `isEmail`: Validates email addresses.
-  - `isURL`: Validates URLs.
-  - `isAlphanumeric`: Checks if a string consists only of letters and numbers.
-  - `isLength`: Validates string length.
-  - `isNumeric`: Checks if a value is numeric.
 
 ## Benefits of Syntax Valdation
 
