@@ -8,18 +8,19 @@
 * Describe concepts using bulleted lists with short, specific sentences, like this one.
 * Every sentence should begin with a bullet point.
 * Avoid long sentences. If needed, split them by meaning, concept or context.
-* Avoid first-person sentences when explaining a concept, such as "Imagine you are running an online platform where...". Instead, the impersonal approach, like “It can be considered an online platform where..." should be used.
+* Avoid first-person sentences when explaining a concept, such as "Imagine you are running an online platform where...". Instead, the impersonal approach, like "It can be considered an online platform where..." should be used.
 
 ### Defining titles
 
-* It's not necessary to add `:` to the end of a title to introduce the bulleted list.
+* It's not necessary to add a colon (`:`) to the end of a title to introduce the bulleted list.
 * Do not use capital letters for words that do not represent a concept. For example, the title "Use Case" should simply be "Use case." However, when using "Input Validation" in a title, since it represents a concept by itself, we should opt for "Input Validation overview" in capital letters, for instance.
+* If you use bold text to referrer create as a semi-title, it's not necessary to use bold with colon (`:`).
 
 ### Using emojis
 
-* :writing_hand: (`writing_hand`): is used to indicate to the learner that a practical exercise follows.
-* :older_man: (`older_man`): is used to explain some concept that is related to the Step but is not specifically covered.
-* :warning: (`warning`): is used when the learner must pay attention to an important section.
+* :writing_hand: (`:writing_hand:`): is used to indicate to the learner that a practical exercise follows.
+* :older_man: (`:older_man:`): is used to explain some concept that is related to the Step but is not specifically covered.
+* :warning: (`:warning:`): is used when the learner must pay attention to an important section.
 
 ### Adding a table
 
@@ -48,7 +49,38 @@
   ```
   
   Note that the image path `/static/images/your-selected-image.png` refers to the absolute path where the image has supposedly been placed in this repository.
+* See that the image names must follow the next pattern: `your-image.png`.
 * **Important notice**: you can add any image you want, even if you didn't create it yourself. We will be in charge of creating a new image that represents exactly the same concept but in corporate format (styles and colors) and avoiding any copyright infringement.
+
+### Adding links
+
+* When you add some link you can use a similar format as the images.
+* First, add the link with its title (.e.g [tablab.io][1]) using this format: `[tablab.io][1]`. Then, at the end of the page, add the URL:
+
+  ```
+  [1]: https://tablab.io
+  ```
+
+### Adding code snippets
+
+* To insert code in Steps, you should enclose it with three backticks (```` ``` ````), and specify the programming language immediately after the opening backticks to enable syntax highlighting.
+* Ensure there is a blank line before and after the code block to separate it from the surrounding text.
+* If your text references the code directly, indent the code block to visually connect the text and the code, improving readability.
+
+  ```html
+  <h1>Hello World!</h1>
+  ```
+
+### Programming concepts
+
+* The following concepts must be wrapped with backticks(`` ` ``):
+  * HTTP headers: `Content-Type`, `Server`, `Host`.
+  * HTTP methods: `GET`, `PUT`, `DELETE`.
+  * Endpoints or paths: `/admin`, `/var/www/html`.
+  * Web parameters: `/users?id=123`, `id=123`.
+* Uses Camel case for endpoint or file names(e.g. `/deleteUser`, `userInvoice.pdf`).
+* If you need to mention a domain name as an example, you should use `example.org`. Also, the domains must be wrapped with backticks.
+  * In the case of an attacker's domain, `attacker.site` should be used and `victim.site` should be used for the victim's domain
 
 ### Using Visual Studio Code
 
