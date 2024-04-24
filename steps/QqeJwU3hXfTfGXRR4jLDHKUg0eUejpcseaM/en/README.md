@@ -65,7 +65,7 @@
 
 * To insert code in Steps, you should enclose it with three backticks (```` ``` ````), and specify the programming language immediately after the opening backticks to enable syntax highlighting.
 * Ensure there is a blank line before and after the code block to separate it from the surrounding text.
-* If your text references the code directly, indent the code block to visually connect the text and the code, improving readability.
+* If your text references the code directly, indent the code block to visually connect the text and the code, improving readability:
 
   ```html
   <h1>Hello World!</h1>
