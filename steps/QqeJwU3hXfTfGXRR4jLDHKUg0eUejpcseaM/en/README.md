@@ -57,7 +57,7 @@
 * When you add some link you can use a similar format as the images.
 * First, add the link with its title (.e.g [tablab.io][1]) using this format: `[tablab.io][1]`. Then, at the end of the page, add the URL:
 
-  ```
+  ```markdown
   [1]: https://tablab.io
   ```
 
