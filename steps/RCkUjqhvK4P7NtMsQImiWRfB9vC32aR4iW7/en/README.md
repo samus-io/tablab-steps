@@ -48,6 +48,28 @@
   * Use input length limits.
   * Implement early exit conditions.
 
+* Example
+
+    ```js
+
+  function isValidEmail(email) {
+      const basicStructureRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!basicStructureRegex.test(email)) {
+          return false;
+      }
+
+      if (email.length > 254) {
+          return false;
+      }
+
+      const complexRegex = /^((?![.!#$%&'*+/=?^_`{|}~()-])[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~()-]{1,64})@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      return complexRegex.test(email);
+  }
+
+    ```
+
+  * This function validates email addresses by checking their basic structure, length, and complexity while mitigating ReDoS risks.
+
 ## Common RegEx patterns
 
   | Pattern | Description |
