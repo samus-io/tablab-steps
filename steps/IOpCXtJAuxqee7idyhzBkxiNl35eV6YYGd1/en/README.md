@@ -16,9 +16,9 @@
 
 ### Example Deny by Default Access Control in Nodejs + Express
 
-* Let's implement **deny by default** access control in a Node.js application using a simple Express server and a client-side API call.
+* Let's implement **deny by default** access control in a Node.js application using a simple Express server and a Client-side API call.
 
-#### Server-side Implementation (Node.js)
+#### Server-side implementation (Node.js)
 
 ```js
   const express = require('express'); // install express
@@ -63,32 +63,32 @@
   });
 ```
 
-#### Client-side Implementation (API Call)
+#### Client-side implementation (API call)
 
-* Firstly, send a `GET` request to the path `/data`. It will deny with `403` Response code.
+* Firstly, send a `GET` request to the path `/data`. It will deny with `403` response code.
 * Secondly, make a request to `/login` and then to `/data`. It will grant access.
 * Finally, send a request to `/logout` and then `/data`. It will deny again.
 * This setup simulates the deny by default prevention technique.
 
-## Validate Permissions on Every Request Before Anything Else
+## Validate permissions on every request before anything else
 
 * Authorization checks should be performed as the first step in request processing to ensure that only authorized users can access resources or perform actions.
 * Ensure the access control technology used allows for global configuration across the entire application. Even a single missed access control check can compromise the confidentiality or integrity of a resource.
 * An example would be to implement middleware in nodejs app to verify user permissions before executing route handlers. If a user lacks the necessary permissions, return a `403 Forbidden` response without further processing.
 
-## Enforce Authorization Checks on Static Resources
+## Enforce Authorization checks on static resources
 
 * Static resources such as files, directories, or endpoints should also be protected by access controls to prevent unauthorized access or disclosure of sensitive information.
 * For cloud services like GCP or AWS or Azure, use configuration options and tools provided by cloud service vendors to secure static resources. Refer to documentation from providers for specific implementation details.
 * Ensure uniform protection across all aspects of the application to maintain security consistency.
 * For instance, one can configure web server settings (e.g., Apache, Nginx) to restrict access to directories containing sensitive files, such as configuration files or logs. Use server directives like **Deny from all** or **Require all denied** to enforce access controls.
 
-## Verify that Authorization Checks are Performed in the Right Location
+## Verify that Authorization checks are performed in the right location
 
 * Authorization logic should be implemented consistently across all layers of the application stack, including frontend (UI) and backend (API) components, to prevent bypassing of access controls.
 * An example is to perform authorization checks in a single-page application (SPA) on both the client-side and server-side. The client-side checks provide a better user experience by hiding or disabling unauthorized UI elements, while the server-side checks enforce security and prevent unauthorized API access.
 
-## Create Unit and Integration Test Cases for Authorization Logic
+## Create Unit and Integration Test cases for Authorization logic
 
 * Testing authorization logic ensures that access controls are correctly enforced and help identify vulnerabilities or misconfigurations early in the development lifecycle.
 * For instance one can write unit tests using testing frameworks like Jest or Mocha to validate authorization functions or middleware. Include test cases for different user roles and scenarios to verify proper enforcement of access controls. Additionally, create integration tests to simulate real-world interactions and validate end-to-end authorization workflows.
@@ -102,14 +102,14 @@
 * Maintain synchronized clocks and timezones across systems. Integrate application logs into a centralized server.
 * For example, if a user tries to access a premium feature without a subscription, the application should display a message explaining the need for a subscription instead of crashing or exposing sensitive data.
 
-## Ensuring Protected Access to Object Identifiers
+## Ensuring protected access to object identifiers
 
 * Keep object identifiers hidden from users whenever possible.
 * Use techniques to obfuscate or randomize identifiers to prevent easy guessing.
 * Implement access controls to verify permissions for each object or functionality accessed. Ensure that users cannot access unauthorized resources by manipulating object identifiers in URLs or other parameters.
 * For instance, in a banking application, instead of exposing account numbers in URLs like `https://example.org/account?acct_id=2024`, use session-specific references to retrieve account details securely.
 
-## Review the Access Control logic of chosen Tools and Technologies and implement necessary Custom Logic
+## Review the Access Control logic of chosen technologies and implement necessary custom logic
 
 * Pick libraries and frameworks carefully, considering their security track record. Understand the authorization logic provided by chosen components.
 * Regularly check for vulnerabilities in third-party components. Don't rely solely on one framework or library for access control.

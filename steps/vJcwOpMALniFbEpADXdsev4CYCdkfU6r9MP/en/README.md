@@ -9,10 +9,10 @@
 
 ### Working of RBAC
 
-* **Defining Roles:** Roles are predefined categories that represent a set of permissions.
-* **Assigning Roles:** Users are assigned one or more roles based on their job or position.
-* **Defining Permissions:** Permissions are associated with each role, specifying what actions users assigned to that role can perform.
-* **Access Decision:** When a user tries to access a resource, the system checks if the user's role has the necessary permissions for that resource. If so, access is granted; otherwise, access is denied.
+* **Defining roles:** Roles are predefined categories that represent a set of permissions.
+* **Assigning roles:** Users are assigned one or more roles based on their job or position.
+* **Defining permissions:** Permissions are associated with each role, specifying what actions users assigned to that role can perform.
+* **Access decision:** When a user tries to access a resource, the system checks if the user's role has the necessary permissions for that resource. If so, access is granted; otherwise, access is denied.
 
 #### Example of RBAC
 
@@ -24,7 +24,7 @@
   * The `Teller` role might have permissions to deposit and withdraw funds.
   * The `Manager` role might have permissions to approve large transactions and generate reports.
   * The `Administrator` role might have permissions to manage user accounts and system configurations.
-* Users are assigned one or more roles based on their job responsibilities. For example, a bank teller might be assigned the **Teller** role, while a bank manager might be assigned both the **Manage**" and **Telle** roles.
+* Users are assigned one or more roles based on their job responsibilities. For example, a bank teller might be assigned the **Teller** role, while a bank manager might be assigned both the **Manage** and **Teller** roles.
 
 ### Pros of RBAC
 
@@ -53,10 +53,10 @@
 
 ### Working of ABAC
 
-* **Defining Attributes:** Attributes are characteristics of users, resources, and the environment.
-* **Assigning Attributes:** Users, resources, and environmental factors are assigned attributes based on their properties.
-* **Defining Policies:** Access control policies are defined based on combinations of attributes. For example, a policy could specify that only users with the attribute **Role: Employee** and **Department: Finance** can access course materials.
-* **Access Decision:** When a user requests access to a resource, the system evaluates the access control policies based on the attributes of the user, resource, and environment. If the user's attributes match the policy criteria, access is granted; otherwise, access is denied.
+* **Defining attributes:** Attributes are characteristics of users, resources, and the environment.
+* **Assigning attributes:** Users, resources, and environmental factors are assigned attributes based on their properties.
+* **Defining policies:** Access control policies are defined based on combinations of attributes. For example, a policy could specify that only users with the attribute **Role: Employee** and **Department: Finance** can access course materials.
+* **Access decision:** When a user requests access to a resource, the system evaluates the access control policies based on the attributes of the user, resource, and environment. If the user's attributes match the policy criteria, access is granted; otherwise, access is denied.
 
 #### Example of ABAC
 
@@ -92,9 +92,9 @@
 
 ### Working of ReBAC
 
-* **Establishing Relationships:** Relationships are defined between users and resources, indicating associations such as ownership, creation, or specific interactions. For example, a user might have a relationship of **Owner** with a document they created.
-* **Defining Permissions:** Permissions are assigned based on these relationships, specifying what actions users can perform on resources they have a relationship with. For instance, a user with an **Owner** relationship with a document might have permission to edit or delete it.
-* **Access Decision:** When a user tries to perform an action on a resource, the system checks if there is a relationship between the user and the resource that grants the necessary permission. If so, access is granted; otherwise, access is denied.
+* **Establishing relationships:** Relationships are defined between users and resources, indicating associations such as ownership, creation, or specific interactions. For example, a user might have a relationship of **Owner** with a document they created.
+* **Defining permissions:** Permissions are assigned based on these relationships, specifying what actions users can perform on resources they have a relationship with. For instance, a user with an **Owner** relationship with a document might have permission to edit or delete it.
+* **Access decision:** When a user tries to perform an action on a resource, the system checks if there is a relationship between the user and the resource that grants the necessary permission. If so, access is granted; otherwise, access is denied.
 
 #### Example of ReBAC
 
@@ -103,7 +103,7 @@
     ![REBAC][3]
 
   * **Ownership:** Only the creator or owner of a document has permission to edit or delete it.
-  * **Group Membership:** Users belonging to a specific group have access to documents shared within that group.
+  * **Group membership:** Users belonging to a specific group have access to documents shared within that group.
   * **Inheritance:** Access permissions are inherited from higher-level entities such as organizational units or parent resources.
 * ReBAC allows for dynamic access control decisions based on real-time evaluation of relationships between entities. Access decisions may change dynamically as relationships evolve or as users interact with different resources.
 
@@ -130,7 +130,7 @@
 * RBAC typically relies on predefined roles that determine access permissions. While this approach works well for simple systems with clearly defined roles, it can be rigid and less adaptable to complex scenarios where users have diverse roles or require fine-grained access control.
 * ABAC and ReBAC offer greater flexibility by allowing access decisions to be based on dynamic attributes or relationships between users, resources, and environmental factors. This flexibility enables more granular access control policies that can adapt to changing conditions and accommodate a wider range of access scenarios.
 
-### Dynamic Authorization Policies
+### Dynamic Authorization policies
 
 * RBAC requires static assignment of roles to users, which may not be suitable for environments where access requirements vary dynamically based on factors such as time of day, location, or user attributes.
 * ABAC and ReBAC support dynamic authorization policies that evaluate attributes and relationships in real-time to make access decisions. This dynamic nature allows for more adaptive and context-aware access control, enhancing security and usability.
@@ -150,7 +150,7 @@
 * In RBAC, having too many roles can lead to **role explosion**, where there are more roles defined than can be efficiently managed. When users send their credentials and roles, such as through HTTP headers, there's a risk of exceeding size limits, causing performance issues. One workaround is to only send the user ID and retrieve roles separately, but this adds latency to each request.
 * In ABAC and ReBAC, there's no **role explosion** issue because access decisions are based on attributes and relationships rather than predefined roles. This means there's less data to send with each request, resulting in better performance overall.  
 
-### Multi-Tenancy and Cross-Organizational Requests
+### Multi-Tenancy and Cross-Organizational requests
 
 * In RBAC, handling multi-tenancy and cross-organizational requests can be challenging. Configuring rule sets for each customer or pre-provisioning identities for cross-organizational requests is cumbersome and can lead to security risks.
 * In contrast, ABAC implementations offer better support for multi-tenancy and cross-organizational requests. By consistently defining attributes, access control decisions can be executed and administered across different infrastructures while maintaining security. This makes ABAC more suitable for handling such scenarios efficiently and securely.
