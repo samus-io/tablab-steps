@@ -38,7 +38,6 @@
   * The `validateEmailDomain` function extracts the domain part from the email address and checks if it exists in the allow-list of domains.
   * This ensures that only emails with whitelisted domains are considered valid.
 
-
 * **Allow-list RegEx validation** involves defining a regular expression pattern that explicitly permits specific values or patterns while rejecting all others.
   * Let's consider an example of RegEx pattern that allows only specific US state abbreviations in in Node.js.
 
@@ -60,7 +59,7 @@
 
     ```
 
-  * In this example, the stateAbbreviationsPattern represents an allow-list RegEx pattern for US state abbreviations. 
+  * In this example, the stateAbbreviationsPattern represents an allow-list RegEx pattern for US state abbreviations.
   * The validateStateAbbreviation function checks whether a given abbreviation matches the allow-list pattern, returning true if it does and false otherwise.
 
 ## File Upload use case
@@ -80,22 +79,22 @@
 
     ```js
     // Define permitted file extensions
-  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf'];
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf'];
 
-  // Function to validate file extension
-  function validateFileExtension(filename) {
+    // Function to validate file extension
+    function validateFileExtension(filename) {
       const lastDotIndex = filename.lastIndexOf('.');
       if (lastDotIndex === -1) return false; // No extension found
       const extension = filename.slice(lastDotIndex);
-      return allowedExtensions.includes(extension.toLowerCase());
-  }
+      return allowedExtensions.includes(extension);
+    }
 
-  // Example usage
-  const validFilename = 'document.pdf';
-  const invalidFilename = 'script.js';
+    // Example usage
+    const validFilename = 'document.pdf';
+    const invalidFilename = 'script.js';
 
-  console.log('File extension validation (valid):', validateFileExtension(validFilename)); // Output: true
-  console.log('File extension validation (invalid):', validateFileExtension(invalidFilename)); // Output: false
+    console.log('File extension validation (valid):', validateFileExtension(validFilename)); // Output: true
+    console.log('File extension validation (invalid):', validateFileExtension(invalidFilename)); // Output: false
 
     ```
 
