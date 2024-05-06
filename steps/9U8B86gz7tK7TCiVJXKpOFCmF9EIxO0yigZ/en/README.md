@@ -36,7 +36,7 @@
 
 * Implementation in Node.js:
 
-```js
+```javascript
 function handleFileUpload(filename) {
   normalizedFilename = filename.normalize("NFC");
 

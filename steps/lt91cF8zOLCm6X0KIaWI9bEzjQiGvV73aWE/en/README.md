@@ -4,7 +4,7 @@
 
 * Lets's take an example of JSON validation in Node.js by using [Ajv][1] npm library.
 
-  ```js
+  ```javascript
   const Ajv = require("ajv");
   const addFormats = require("ajv-formats");
 
@@ -90,7 +90,7 @@
 
 * **Example**
 
-  ```js
+  ```javascript
   const validator = require("validator");
 
   // Validate Filename Syntax
