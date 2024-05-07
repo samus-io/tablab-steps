@@ -258,7 +258,6 @@ View the public access directory (/public). Public groups can have public, inter
 8. After configuring the desired permissions, click on "Protect" to enforce the protection rules on the selected branch.
 
 * By following these steps, you'll successfully add protection rules to a specific branch in your GitLab project. Here are some additional important points to note about branch protection:
-
   * The default branch of your repository is protected by default.
   * Protected branches control various actions such as merging, pushing, and force pushing.
   * GitLab allows for granular control over branch protection, including permissions for merge requests, force pushes, and code owner approvals.
@@ -508,6 +507,7 @@ View the public access directory (/public). Public groups can have public, inter
 
      ```bash
      git config --global tag.gpgsign true
+     ```
 
 ## Using Pre-commit hook to scans repositories on GitHub
 

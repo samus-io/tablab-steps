@@ -49,8 +49,6 @@
 2. After signing in, you can use your device for 2FA without relying on TOTP.
 3. If you lose access to GitHub Mobile in the future, you can still use other 2FA methods.
 
-* Choose the method that best suits your preferences and follow the simple steps to enable two-factor authentication on GitHub, enhancing the security of your account.
-
 ## Limit access to repositories
 
 * To limit access to repositories in GitHub, follow these steps:
@@ -66,7 +64,8 @@
 
 ### Create User Groups to limit Access
 
-* GitHub does not have a built-in feature for creating user groups directly within the platform. However, you can leverage teams within GitHub organizations to achieve similar functionality. Here's how to create user groups using teams within GitHub organizations:
+* GitHub does not have a built-in feature for creating user groups directly within the platform. However, you can leverage teams within GitHub organizations to achieve similar functionality.
+* Here's how to create user groups using teams within GitHub organizations:
 
 1. If you haven't already, create an organization on GitHub by navigating to your profile, clicking on the **Your Organizations** tab, and then selecting **New organization**. Follow the prompts to create the organization.
 2. Once the organization is created, navigate to its settings by clicking on the organization's name and then selecting **Settings**. Go to **Authentication Security** tab and eanble 2FA for everyone. In **Member Privilege** tab, set the **Base permissions** to **read** only by default.
@@ -92,7 +91,7 @@
 
 * Here's an example of how to automate the rotation of personal access tokens in GitHub using GitHub Actions:
 
-```bash
+```yaml
 name: Rotate Personal Access Token
 
 on:
@@ -119,7 +118,6 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 ```
 
 * To run the above GitHub Actions workflow for rotating personal access tokens:
