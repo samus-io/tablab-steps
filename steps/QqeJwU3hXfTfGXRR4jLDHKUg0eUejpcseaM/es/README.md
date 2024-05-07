@@ -14,7 +14,6 @@
 
 * No es necesario añadir dos puntos (`:`) al final de un título para introducir la enumeración.
 * No se deben utilizar letras mayúsculas para palabras que no representan un concepto. Por ejemplo, el título "Casos de Uso" debería ser simplemente "Casos de uso". Sin embargo, al utilizar "Validación de Entrada" en un título, dado que representa un concepto, se debe optar por "Introducción a la Validación de Entrada" con mayúsculas, por ejemplo.
-* Si se utiliza texto en negrita para crear referencias como títulos, no es necesario utilizar negrita en los dos puntos (`:`).
 
 ### Uso de emojis
 
@@ -52,12 +51,13 @@
 * Observe que los nombres de las imágenes deben seguir el siguiente patrón: `su-imagen.png`.
 * **Aviso importante**: puedes añadir cualquier imagen que desees, aunque no la hayas creado tú mismo. Nosotros nos encargaremos de crear una nueva imagen que represente exactamente el mismo concepto pero en formato corporativo (estilos y colores) y evitando cualquier infracción de derechos de autor.
 
-## Uso de enlaces
+## Añadir un enlace
 
-* Cuando añadas algún enlace puedes utilizar un formato similar al de las imágenes.
-* Primero, añade el enlace con su título (.e.g [tablab.io][1]) usando este formato: `[tablab.io][1]`. Después, al final de la página, añade la URL:
+* Cuando añadas un enlace debes utilizar la misma convención que las imágenes.
+* Primero, añade el enlace con su título usando este formato: `[tablab.io][1]`.
+* Después, al final del código *markdown*, añade la URL:
 
-  ```
+  ```markdown
   [1]: https://tablab.io
   ```
 
