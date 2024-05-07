@@ -14,8 +14,8 @@
 
 ### Array-Based Whitelists
 
-* By using arrays to define lists of permitted values or characters is a straightforward approach. Inputs are validated by checking if they exist in the predefined array.
-  * Let's consider a common example of Allow-list Validation:
+* By using arrays to define lists of permitted values or characters is a straightforward approach. Inputs are validated by checking if they exist in the predefined array. Let's consider a common example of Allow-list Validation:
+  * Implementation in Node.js:
 
     ```javascript
     // Example: Allow-list validation for email domains
@@ -30,11 +30,33 @@
     const validEmail = 'user@gmail.com';
     const invalidEmail = 'user@example.com';
 
-    console.log('Email domain validation (valid):', validateEmailDomain(validEmail)); // Output: true
-    console.log('Email domain validation (invalid):', validateEmailDomain(invalidEmail)); // Output: false
+    console.log('Email domain validation (valid):', validateEmailDomain(validEmail));
+    console.log('Email domain validation (invalid):', validateEmailDomain(invalidEmail));
     ```
 
+    * Implementation in Java:
+
     ```java
+    public class EmailValidator {
+      
+      // Set of allowed email domains
+      private static final Set<String> allowedDomains = new HashSet<>(Set.of("gmail.com", "yahoo.com", "hotmail.com"));
+
+      // Method to validate the domain of an email
+      public static boolean validateEmailDomain(String email) {
+          String domain = email.substring(email.indexOf('@') + 1);
+          return allowedDomains.contains(domain);
+      }
+
+      // Main method to test the validation function
+      public static void main(String[] args) {
+          String validEmail = "user@gmail.com";
+          String invalidEmail = "user@example.com";
+
+          System.out.println("Email domain validation (valid): " + validateEmailDomain(validEmail));
+          System.out.println("Email domain validation (invalid): " + validateEmailDomain(invalidEmail));
+      }
+    }
     ```
 
   * In this example, we define an array `allowedDomains` containing permissible email domains.
@@ -61,17 +83,37 @@ function validateStateAbbreviation(abbreviation) {
 const validAbbreviation = 'NY';
 const invalidAbbreviation = 'XYZ';
 
-console.log('State abbreviation validation (valid):', validateStateAbbreviation(validAbbreviation)); // Output: true
-console.log('State abbreviation validation (invalid):', validateStateAbbreviation(invalidAbbreviation)); // Output: false
+console.log('State abbreviation validation (valid):', validateStateAbbreviation(validAbbreviation));
+console.log('State abbreviation validation (invalid):', validateStateAbbreviation(invalidAbbreviation));
 ```
 
 #### Implementation in Java
 
 ```java
+public class StateAbbreviationValidator {
+
+    // Regular expression pattern for US state abbreviations
+    private static final Pattern stateAbbreviationsPattern = Pattern.compile("^(AA|AE|AP|AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY)$");
+
+    // Method to validate a US state abbreviation
+    public static boolean validateStateAbbreviation(String abbreviation) {
+        Matcher matcher = stateAbbreviationsPattern.matcher(abbreviation);
+        return matcher.matches();
+    }
+
+    // Main method to test the validation function
+    public static void main(String[] args) {
+        String validAbbreviation = "NY";
+        String invalidAbbreviation = "XYZ";
+
+        System.out.println("State abbreviation validation (valid): " + validateStateAbbreviation(validAbbreviation));
+        System.out.println("State abbreviation validation (invalid): " + validateStateAbbreviation(invalidAbbreviation));
+    }
+}
 ```
 
 * In this example, the `stateAbbreviationsPattern` represents an Allow-list created with RegEx for US state abbreviations.
-* The `validateStateAbbreviation` function checks whether a given abbreviation matches the allow-list pattern, returning `true` if it does and `false` otherwise.
+* The `validateStateAbbreviation` function checks whether a given abbreviation matches the Allow-list pattern, returning `true` if it does and `false` otherwise.
 
 ## File Upload use case
 
@@ -110,12 +152,34 @@ function validateFileExtension(filename) {
 const validFilename = 'document.pdf';
 const invalidFilename = 'script.js';
 
-console.log('File extension validation (valid):', validateFileExtension(validFilename)); // Output: true
-console.log('File extension validation (invalid):', validateFileExtension(invalidFilename)); // Output: false
-
+console.log('File extension validation (valid):', validateFileExtension(validFilename));
+console.log('File extension validation (invalid):', validateFileExtension(invalidFilename));
 ```
 
 #### Implementation in Java
 
 ```java
+public class FileExtensionValidator {
+
+    // Define permitted file extensions
+    private static final Set<String> allowedExtensions = new HashSet<>(Set.of(".jpg", ".jpeg", ".png", ".pdf"));
+
+    // Method to validate the file extension of a filename
+    public static boolean validateFileExtension(String filename) {
+        int lastDotIndex = filename.lastIndexOf('.');
+        if (lastDotIndex == -1) return false; // No extension found
+
+        String extension = filename.substring(lastDotIndex);
+        return allowedExtensions.contains(extension);
+    }
+
+    // Main method to test the validation function
+    public static void main(String[] args) {
+        String validFilename = "document.pdf";
+        String invalidFilename = "script.js";
+
+        System.out.println("File extension validation (valid): " + validateFileExtension(validFilename));
+        System.out.println("File extension validation (invalid): " + validateFileExtension(invalidFilename));
+    }
+}
 ```
