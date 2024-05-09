@@ -29,7 +29,7 @@
 ### Create User Groups to limit access
 
 * Instead of assigning permissions to individual users, groups can be created and permissions assigned to these groups. This approach simplifies management, particularly in large organizations with numerous users.
-  * Groups are typically formed based on roles, teams, or projects.
+* Groups are typically formed based on roles, teams, or projects.
 * Once groups are created, specific permissions can be assigned to them for repositories.
 * For instance, a *Developers* group might be given write access to the code repositories, while a *Managers* group could be assigned read-only access for code review purposes.
 
@@ -42,11 +42,11 @@
 
 * Manual rotation of SSH tokens and personal keys can be prone to human error and delays, potentially leaving repositories vulnerable to attacks. Automating this process simplifies and strengthens security by regularly generating new tokens or keys according to a predefined schedule or trigger events.
 * Automated token and key rotation typically involves the following steps:
-  * **Scheduled rotation:** define a schedule for token and key rotation based on security best practices and organizational policies. This schedule could be monthly, quarterly, or as per industry standards.
-  * **Token/Key generation:** implement a script or tool that generates new SSH tokens or personal keys automatically. These tokens/keys should be cryptographically secure and compliant with the required standards.
-  * **Revocation of old tokens/keys:** ensure that old tokens or keys are properly revoked and no longer usable for authentication. This step is crucial to prevent unauthorized access using outdated credentials.
-  * **Update configuration:** update the relevant configuration files or settings in the Git hosting platform to use the new tokens or keys for authentication. This ensures seamless transition without disruption to users' access.
-  * **Notification and monitoring:** implement notifications to alert administrators and users about upcoming token/key rotations, as well as successful completion of rotation tasks. Additionally, monitor access logs and security events to detect any unauthorized access attempts.
+  1. **Scheduled rotation:** define a schedule for token and key rotation based on security best practices and organizational policies. This schedule could be monthly, quarterly, or as per industry standards.
+  1. **Token/Key generation:** implement a script or tool that generates new SSH tokens or personal keys automatically. These tokens/keys should be cryptographically secure and compliant with the required standards.
+  1. **Revocation of old tokens/keys:** ensure that old tokens or keys are properly revoked and no longer usable for authentication. This step is crucial to prevent unauthorized access using outdated credentials.
+  1. **Update configuration:** update the relevant configuration files or settings in the Git hosting platform to use the new tokens or keys for authentication. This ensures seamless transition without disruption to users' access.
+  1. **Notification and monitoring:** implement notifications to alert administrators and users about upcoming token/key rotations, as well as successful completion of rotation tasks. Additionally, monitor access logs and security events to detect any unauthorized access attempts.
 
 ## Be cautious about including third-party apps to Git
 
@@ -57,26 +57,25 @@
 
 ## Track activities via audit logs
 
-* Tracking activities via audit logs in Git allows you to monitor and record various actions performed within a repository or Git hosting platform. These audit logs provide valuable insights into user activities, changes made to code, and other important events, helping to maintain security, compliance, and accountability.
+* Tracking activities via audit logs in Git allows us to monitor and record various actions performed within a repository or Git hosting platform. These audit logs provide valuable insights into user activities, changes made to code, and other important events, helping to maintain security, compliance, and accountability.
 * Audit logs in Git provides the following:
   * Audit logs capture user actions such as commits, pushes, pulls, merges, and branch creations or deletions.
   * Audit logs include timestamps for each recorded action, indicating when the action occurred.
   * Audit logs detail changes made to files and directories within a repository, including additions, modifications, and deletions.
-    * This visibility enables you to track the evolution of code and identify who made specific changes.
+  * This visibility enables to track the evolution of code and identify who made specific changes.
   * Audit logs also track user access to repositories, including cloning, forking, and viewing code.
   * Audit logs record security-related events such as authentication failures, access attempts from suspicious IP addresses, and changes to user permissions.
   * Audit logs facilitate compliance reporting by providing a detailed record of user activities and changes made to code.
 
 ### Sync an audit log service to a notification channel
 
-* By following these generic steps, you can effectively sync an audit log service to a notification channel, ensuring that your team remains aware of security alerts and user activities in your repositories in real-time.
-  * **Choose an Audit Log Service:** Select an audit log service that integrates with your Git hosting platform and provides the necessary features for monitoring user activities and security events.
-  * **Configure Audit Log Settings:** Configure the audit log settings in your Git hosting platform to capture relevant security events and user activities. Enable logging for actions such as authentication failures, access attempts, changes to permissions, and repository activities.
-  * **Set Up Notification Channel:** Choose a notification channel that your team regularly monitors, such as a Slack channel, email distribution list, or collaboration platform. Ensure that all team members have access to the channel and can receive notifications in real-time.
-  * **Integrate Audit Log Service with Notification Channel:** If the audit log service offers built-in integrations with your notification channel, follow the provided instructions to set up the integration. This may involve configuring webhook endpoints, API integrations, or installing third-party connectors.
-* If no built-in integration is available, explore alternative methods such as using custom scripts or middleware to bridge the communication between the audit log service and the notification channel.
-  * **Test Integration:** Perform thorough testing to ensure that the integration between the audit log service and the notification channel is functioning correctly. Trigger test events in the Git hosting platform and verify that notifications are delivered promptly to the designated channel.
-  * **Monitor and Respond to Alerts:** Once the integration is set up, monitor the notification channel regularly for security alerts and user activity notifications from the audit log service. Promptly investigate any suspicious or unauthorized activities and take appropriate action to mitigate security risks.
+* By following these generic steps, one can effectively sync an audit log service to a notification channel, ensuring that your team remains aware of security alerts and user activities in your repositories in real-time.
+  1. **Choose an Audit Log Service:** select an audit log service that integrates with your Git hosting platform and provides the necessary features for monitoring user activities and security events.
+  1. **Configure Audit Log Settings:** configure the audit log settings in your Git hosting platform to capture relevant security events and user activities. Enable logging for actions such as authentication failures, access attempts, changes to permissions, and repository activities.
+  1. **Set Up Notification Channel:** choose a notification channel that your team regularly monitors, such as a Slack channel, email distribution list, or collaboration platform. Ensure that all team members have access to the channel and can receive notifications in real-time.
+  1. **Integrate Audit Log Service with Notification Channel:** if the audit log service offers built-in integrations with your notification channel, follow the provided instructions to set up the integration. This may involve configuring webhooks, API integrations, or installing third-party connectors. If no built-in integration is available, explore methods such as using custom scripts or middleware to bridge the gap  between the audit log service and the notification channel.
+  1. **Test Integration:** perform thorough testing to ensure that the integration between the audit log service and the notification channel is functioning correctly. Trigger test events in the Git hosting platform and verify that notifications are delivered promptly to the designated channel.
+  1. **Monitor and Respond to Alerts:** once the integration is set up, monitor the notification channel regularly for security alerts and user activity notifications from the audit log service. Promptly investigate any suspicious or unauthorized activities and take appropriate action to mitigate security risks.
 
 ## Backup the version control hosting environment
 
@@ -90,14 +89,14 @@
 ## Use private repositories for sensitive data
 
 * Git provides two types of repos with respect to accessibility:
-  * **Public Repo:** Public repositories are accessible to anyone, allowing for open collaboration and contribution from the community. They are ideal for open-source projects, fostering transparency and knowledge sharing.
-  * **Private Repo:** Private repositories restrict access to authorized users, ensuring confidentiality and control over sensitive code and data. They are suitable for proprietary projects, internal development efforts, or collaboration within restricted teams.
-* If you don't need to use public repositories in your organization, then disable the creation of it.
+  * **Public Repo:** public repositories are accessible to anyone, allowing for open collaboration and contribution from the community. They are ideal for open-source projects, fostering transparency and knowledge sharing.
+  * **Private Repo:** private repositories restrict access to authorized users, ensuring confidentiality and control over sensitive code and data. They are suitable for proprietary projects, internal development efforts, or collaboration within restricted teams.
+* Disable the creation of it if there is no need to use public repositories in the organization.
 
 ## Disable forking
 
 * Disabling forking may be necessary for various reasons, such as protecting sensitive code, maintaining control over project versions, or enforcing compliance requirements.
-* Here's why and how to disable forking in simple points:
+* Here's why to disable forking in simple points:
   * Prevent unauthorized access to proprietary or confidential code by restricting the ability to create copies (forks) of repositories.
   * Maintain control over the official version of a project by preventing divergent branches or unauthorized modifications introduced through forks.
   * Ensure adherence to regulatory requirements or organizational policies by limiting access and distribution of code to authorized users only.
@@ -108,28 +107,28 @@
 * Code branch protection is a security feature in version control systems like Git that allows repository administrators to enforce rules and restrictions on specific branches. These rules help maintain code quality, prevent accidental changes, and ensure that only authorized users can make modifications to protected branches.
 * Git hosting platforms such as GitHub allows users to create branch protection rules in repositories for individual branches or for all branches.
 * Here's how to ensure code branch protection:
-  * Access the settings page of your repository in your version control platform (e.g., GitHub, GitLab).
-  * Look for the branch protection or branch settings section within the repository settings menu.
-  * Choose the branches you want to protect, typically main branches like "main" as well as any other critical branches used for production releases or long-term development.
-  * Enable branch protection for the selected branches by toggling the appropriate settings or checkboxes.
-  * Define the specific rules and restrictions you want to enforce for protected branches. Common protection rules include:
-    * Require pull request reviews before merging.
-    * Require status checks to pass before merging (e.g., automated tests, code analysis).
-    * Require a minimum number of approving reviews before merging.
-    * Restrict who can push to the branch (e.g., specific users, teams, or administrators).
-    * Require signed commits or commit message templates.
-  * Once you've configured the branch protection rules, save your changes to apply them to the repository.
-  * Test the branch protection settings by attempting to push changes directly to a protected branch or merge a pull request that doesn't meet the specified criteria. Monitor the repository's activity and review any notifications or alerts related to branch protection violations.
+  1. Access the settings page of your repository in your version control platform (e.g., GitHub, GitLab).
+  1. Look for the branch protection or branch settings section within the repository settings menu.
+  1. Choose the branches that are protect, typically main branches like **main** as well as any other critical branches used for production releases or long-term development.
+  1. Enable branch protection for the selected branches by toggling the appropriate settings or checkboxes.
+  1. Define the specific rules and restrictions to enforce for protected branches. Common protection rules include:
+      * Require pull request reviews before merging.
+      * Require status checks to pass before merging (e.g., automated tests, code analysis).
+      * Require a minimum number of approving reviews before merging.
+      * Restrict who can push to the branch (e.g., specific users, teams, or administrators).
+      * Require signed commits or commit message templates.
+  1. Once branch protection rules are configured , save the changes to apply them to the repository.
+  1. Test the branch protection settings by attempting to push changes directly to a protected branch or merge a pull request that doesn't meet the specified criteria. Monitor the repository's activity and review any notifications or alerts related to branch protection violations.
 
 ## Ensure commit signing
 
 * Commit signing in Git is a process of digitally signing commits to ensure their authenticity and integrity.
-* When you sign a commit, you attach a cryptographic signature to it using your GPG (GNU Privacy Guard) key. This signature verifies that the commit was made by you and has not been altered since it was signed.
+* When author signs a commit, a cryptographic signature is attached to it using your GPG (GNU Privacy Guard) key. This signature verifies that the commit was made by author and has not been altered since it was signed.
 * Ensuring commit signing in Git platforms offers several benefits in terms of:
-  * **Data Integrity:** Commit signing provides cryptographic verification that commits have not been tampered with, ensuring the integrity of the codebase.
-  * **Authentication:** Commit signing verifies the identity of the author, helping to prevent unauthorized or spoofed commits.
-  * **Non-Repudiation:** Signed commits cannot be denied by their author, providing a clear audit trail and accountability for code changes.
-  * **Trustworthiness:** Signed commits build trust among collaborators and contributors, especially in open-source projects or distributed teams.
+  * **Data Integrity:** commit signing provides cryptographic verification that commits have not been tampered with, ensuring the integrity of the codebase.
+  * **Authentication:** commit signing verifies the identity of the author, helping to prevent unauthorized or spoofed commits.
+  * **Non-Repudiation:** signed commits cannot be denied by their author, providing a clear audit trail and accountability for code changes.
+  * **Trustworthiness:** signed commits build trust among collaborators and contributors, especially in open-source projects or distributed teams.
 
 ## Regularly scan your repos
 
@@ -139,7 +138,7 @@
 
 * Pre-commit hooks are scripts that run automatically before each commit is made to the repository.
 * These hooks can be configured to execute various checks and scans on the code changes being committed.
-* For example, you can set up pre-commit hooks to run static code analysis tools, security scanners, or linters to check for issues like syntax errors, code style violations, security vulnerabilities, and more.
+* For example, pre-commit hooks can be set up to run static code analysis tools, security scanners, or linters to check for issues like syntax errors, code style violations, security vulnerabilities, and more.
 * If any issues are detected during the pre-commit scan, the commit process is halted, and the developer is prompted to address the issues before proceeding with the commit.
 * Pre-commit hook scans help catch issues early in the development process, preventing them from being introduced into the codebase.
 
@@ -169,10 +168,10 @@
 ## Prevent storing sensitive information
 
 * Preventing the storage of sensitive information in Git repositories is crucial for maintaining security and compliance. Here are some best practices to achieve this:
-  * **Avoid Hardcoding Sensitive Info:** Don't put passwords or keys directly into the code. Use environment variables or config files instead.
-  * **Watch Commit Comments:** Don't write sensitive details in commit messages. Keep comments generic to avoid revealing specifics.
-  * **Use .gitignore:** Create a `.gitignore` file to exclude sensitive files. This prevents Git from tracking them.
-  * **Encrypt Files if Needed:** Encrypt sensitive files before committing. Adds extra security in case files are accessed.
+  * **Avoid Hardcoding Sensitive Info:** don't put passwords or keys directly into the code. Use environment variables or config files instead.
+  * **Watch Commit Comments:** don't write sensitive details in commit messages. Keep comments generic to avoid revealing specifics.
+  * **Use .gitignore:** create a `.gitignore` file to exclude sensitive files. This prevents Git from tracking them.
+  * **Encrypt Files if Needed:** encrypt sensitive files before committing. Adds extra security in case files are accessed.
 
 ## Add a SECURITY.md file
 
@@ -182,29 +181,29 @@
 
 ### Overview
 
-* Add a brief introduction explaining the purpose of the SECURITY.md file and its importance in promoting responsible security practices within the project.
+* Add a brief introduction explaining the purpose of the `SECURITY.md` file and its importance in promoting responsible security practices within the project.
 
 ### Disclosure Policy
 
 * Add clear instructions on how individuals should report security vulnerabilities, including contact information (e.g., email address) for responsible disclosure.
-* Here you should clearly outline what types of security issues are within the scope of the disclosure policy.
-* You need to provide instructions for how individuals should report security vulnerabilities. Designate a contact point for responsible disclosure. Encourage reporters to refrain from publicly disclosing vulnerabilities until they have been adequately addressed.
+* Here, clearly outline what types of security issues are within the scope of the disclosure policy.
+* Instructions are required to be provided for how individuals should report security vulnerabilities. Designate a contact point for responsible disclosure. Encourage reporters to refrain from publicly disclosing vulnerabilities until they have been adequately addressed.
 * This encourages collaboration in managing vulnerabilities.
 
 ### Security Update Policy
 
 * Add details on how the project plans to disseminate information about newly identified security vulnerabilities, including notification channels and steps for users to address issues promptly.
-* Here you should define how the project will inform users about new security vulnerabilities.
+* Define how the project will inform users about new security vulnerabilities.
 * Also, specify notification channels and steps for users to address issues promptly.
 
 ### Security-related configuration
 
 * Add guidance on configuring security settings for project deployments, including recommended best practices and considerations for enhancing deployment security.
-* You should provide guidance on configuring security settings for project deployments.
+* Provide guidance on configuring security settings for project deployments.
 * And, help users make informed choices to enhance deployment security.
 
 ### Known Gaps and Future Enhancements
 
 * Add transparent communication about existing security gaps that are recognized but not yet addressed, as well as insights into future security enhancements under consideration.
-* You need to transparently communicate existing security gaps yet to be addressed.
+* Existing security gaps, yet to be addressed, needs to be transparently communicated.
 * Also, Share plans for future security improvements and encourage collaboration from contributors to enhance projects.
