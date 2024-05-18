@@ -9,6 +9,8 @@
 * The collection of practices that constitute the DevOps methodology is known as the DevOps pipeline.
 * It encompasses the tools, workflows, and automated processes that empower teams to efficiently utilize different technologies in developing and deploying software.
 
+![DevOps Lifecycle][1]
+
 ## What problems does DevOps solve?
 
 * Here are some key problems that DevOps helps solve:
@@ -171,3 +173,5 @@
 
 * Treat incidents as learning opportunities. Document and analyze incidents to improve future responses and prevent recurrence.
 * Conduct post-incident reviews to discuss what went wrong, how it was handled, and what can be improved.
+
+[1]: /static/images/devops-lifecycle.png

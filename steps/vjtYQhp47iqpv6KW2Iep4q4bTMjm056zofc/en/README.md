@@ -4,6 +4,8 @@
 * In addition to DevOps, DevSecOps also emphasizes integrating security testing at every phase of the software development lifecycle.
 * There isn't a singular correct way to implement DevSecOps; it varies based on several factors such as the organization's size, budget, available toolsets, and the expected business goals from the implementation, among others.
 
+![DevSecOps Lifecycle][1]
+
 ## How DevSecOps works in practice
 
 * Developers take on a crucial role in ensuring security.
@@ -127,3 +129,5 @@ To keep pace with the fast-paced nature of DevOps environments, DevSecOps teams 
 ### Promotion of Security Awareness
 
 DevSecOps fosters a culture of security awareness across all levels of the organization. From developers to operations to management, everyone is encouraged to prioritize security and take responsibility for safeguarding software users from potential threats. Security awareness training, regular communication, and collaborative efforts are key components of this practice.
+
+[1]: /static/images/devsecops-lifecycle.png
