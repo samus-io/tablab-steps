@@ -1,11 +1,8 @@
 # Prepared Statements in Node.js with SQLite
 
-* Prepared statements in Node.js with SQLite are crucial for enhancing security and performance when executing SQL queries.
-* They help prevent SQL injection attacks by separating SQL logic from data.
-
 ## Setting Up the Environment
 
-* **Install SQLite3 Module**
+* **Install SQLite3 module**
   * First, ensure that the SQLite3 module is installed in the Node.js environment.
   * Use the following command to install it:
 
@@ -13,14 +10,14 @@
     npm install sqlite3
     ```
 
-* **Import SQLite3 Module**
+* **Import SQLite3 module**
   * Import the SQLite3 module in the Node.js application.
 
     ```js
     const sqlite3 = require('sqlite3').verbose();
     ```
 
-* **Import SQLite3 Module**
+* **Import SQLite3 module**
   * Establish a connection to the SQLite database.
   * If the database file does not exist, it will be created
 
@@ -34,14 +31,13 @@
 
 ```js
 db.serialize(() => {
-    db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)");
+db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)");
 });
-
 ```
 
 ## Using Prepared Statements
 
-### Inserting Data with Prepared Statements
+### Inserting data with Prepared Statements
 
 * To insert data securely into the `users` table using prepared statements:
 
@@ -50,13 +46,13 @@ db.serialize(() => {
   * **Finalize the Statement**: Always finalize the statement after execution to free resources.
 
     ```js
-        const insertUser = db.prepare("INSERT INTO users (name, email) VALUES (?, ?)");
-        insertUser.run("John Doe", "john.doe@example.com");
-        insertUser.run("Jane Smith", "jane.smith@example.com");
-        insertUser.finalize();
+    const insertUser = db.prepare("INSERT INTO users (name, email) VALUES (?, ?)");
+    insertUser.run("John Doe", "john.doe@example.com");
+    insertUser.run("Jane Smith", "jane.smith@example.com");
+    insertUser.finalize();
     ```
 
-### Querying Data with Prepared Statements
+### Querying data with Prepared Statements
 
 * To query data from the users table using prepared statements:
 
@@ -65,17 +61,40 @@ db.serialize(() => {
   * **Finalize the Statement**: Process the result within the callback function.
 
     ```js
-        const selectUser = db.prepare("SELECT * FROM users WHERE email = ?");
-        selectUser.all("john.doe@example.com", (err, rows) => {
-            if (err) {
-                console.error(err.message);
-            } else {
-                console.log(rows);
+    const selectUser = db.prepare("SELECT * FROM users WHERE email = ?");
+    selectUser.all("john.doe@example.com", (err, rows) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            console.log(rows);
             }
         });
-        selectUser.finalize();
-
+    selectUser.finalize();
     ```
+
+  * **Dynamic table scenario**: To handle scenarios that require dynamic table or column selection in SQL queries, it is essential to use an allow-list (whitelist).
+  * This ensures that only permitted values are included in the query.
+  * Let us take an example:
+
+    ```js
+    const allowedTables = ['users', 'orders', 'products'];
+
+    function validateTableName(tableName) {
+        return allowedTables.includes(tableName);
+    }
+
+    // Example usage
+    const tableName = 'users';
+    if (validateTableName(tableName)) {
+        const query = `SELECT * FROM ${tableName}`;
+        // Execute query
+    } else {
+        throw new Error('Invalid table name');
+    }
+    ```
+
+    * When dynamic table selection is required for SQL queries, an allow-list should be employed.
+    * This list explicitly defines acceptable table names, ensuring that only permitted values are included in the query.
 
 ### Updating Data with Prepared Statements
 
@@ -86,12 +105,12 @@ db.serialize(() => {
   * **Finalize the Statement**: Finalize the statement to release resources.
 
     ```js
-        const updateUser = db.prepare("UPDATE users SET name = ? WHERE email = ?");
-        updateUser.run("Johnathan Doe", "john.doe@example.com");
-        updateUser.finalize();
+    const updateUser = db.prepare("UPDATE users SET name = ? WHERE email = ?");
+    updateUser.run("Johnathan Doe", "john.doe@example.com");
+    updateUser.finalize();
     ```
 
-### Deleting Data with Prepared Statements
+### Deleting data with Prepared Statements
 
 * To delete data from the `users` table using prepared statements:
 
@@ -100,10 +119,22 @@ db.serialize(() => {
   * **Finalize the Statement**: Finalize the statement to ensure proper resource management.
 
     ```js
-        const deleteUser = db.prepare("DELETE FROM users WHERE email = ?");
-        deleteUser.run("john.doe@example.com");
-        deleteUser.finalize();
+    const deleteUser = db.prepare("DELETE FROM users WHERE email = ?");
+    deleteUser.run("john.doe@example.com");
+    deleteUser.finalize();
+    ```
 
+### Finalize method
+
+* The `finalize method` in SQLite's prepared statements serves an essential purpose in managing resources efficiently.
+* When you use prepared statements in SQLite with Node.js, each prepared statement consumes some system resources.
+* These resources include memory and handles to SQLite's internal structures.
+* The finalize method releases these resources associated with the prepared statement.
+* It is crucial to call finalize after you've finished executing the statement to prevent resource leaks and ensure optimal performance.
+* Failing to finalize a prepared statement can lead to memory leaks and potential performance degradation, especially in long-running applications.
+
+    ```js
+    statement.finalize();
     ```
 
 ## Error Handling and Closing the Database
@@ -120,12 +151,11 @@ db.close((err) => {
         console.log('Database connection closed.');
     }
 });
-
 ```
 
 ## Best Practices
 
 * **Always finalize prepared statements**: This ensures that resources are freed properly.
-* Avoid dynamic table or column names in prepared statements: Use allow-lists for dynamic table or column selection.
+* **Avoid dynamic table or column names in prepared statements**: Use allow-lists for dynamic table or column selection.
 * **Handle errors gracefully**: Implement error handling to manage database operation failures.
 * **Close the database connection**: Ensure that the database connection is closed when it is no longer needed.
