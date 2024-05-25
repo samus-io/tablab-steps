@@ -1,12 +1,11 @@
 # Introduction of LDAP
 
-* LDAP (`Lightweight Directory Access Protocol`) is an open, vendor-neutral application protocol used for accessing and maintaining distributed directory information services over an IP network.
+* LDAP `(Lightweight Directory Access Protocol)` is an open, vendor-neutral application protocol used for accessing and maintaining distributed directory information services over an IP network.
 * It provides a way to manage and query directory information, often used for storing details about users, groups, and resources within an organization.
 
 ## LDAP Use Cases
 
 * **Authentication and Authorization**
-
   * **Authentication**: Verifies the identity of a user or system attempting to access a resource.
   * **Authorization**: Determines what resources the authenticated user or system is allowed to access based on defined permissions.
 
@@ -40,9 +39,10 @@
   * Each attribute has a type and one or more values.
 
 * **Object Classes**
-
   * Object classes define the schema for entries, specifying the required and optional attributes for each type of entry.
   * Common object classes include `inetOrgPerson` for user entries, `organizationalUnit` for organizational units, and `groupOfNames` for groups.
+
+  ![ldap](https://github.com/samus-io/tablab-steps/assets/44079067/b36e8186-28a8-49d0-952c-f4961b766bab)
 
 ## LDAP Directory Structure
 
