@@ -2,19 +2,21 @@
 
 * No single method can ensure the complete validation of user content. Adopting a defense-in-depth strategy is crucial to making the upload process more secure and tailored to the specific needs and requirements of the service. It is essential to implement multiple techniques, as relying on just one is insufficient to secure the service.
 
-* The below are the possible security meassures (best practices) to be taken in securing file uploads:
-  * **File Name sanitization**: ensure filenames are stripped of any special characters or patterns that could be exploited.
-  * **File Content validation**: verify the actual content of the file matches the expected format and does not contain malicious code.
+* The below are the mandatory security meassures (best practices) to be taken in securing file uploads:
   * **File Extension validation**: only allow file extensions that are necessary for your application and block all others.
+  * **File Name sanitization**: ensure filenames are stripped of any special characters or patterns that could be exploited.
   * **File Storage Location**: store uploaded files in a directory outside the web root to prevent direct access via URL.
-  * **Upload and Download Limits**: set strict limits on file sizes and download rates to prevent resource exhaustion attacks.
   * **User and File System Permissions**: restrict file system permissions to limit the actions that can be performed on uploaded files.
+  * **Upload and Download Limits**: set strict limits on file sizes and download rates to prevent resource exhaustion attacks.
+  * **File Content validation**: verify the actual content of the file matches the expected format and does not contain malicious code.
 
 * Before doing any action with the file, it must pass all security measures. If one security measure is violated, discard the request or send an error message.
 
 ## Use established frameworks for file upload preprocessing
 
-* When it comes to handling file uploads, security is paramount. Implementing robust validation mechanisms is essential to protect against various attacks such as malware injection, file traversal, and denial-of-service attacks. While it might be tempting to write your own validation mechanisms, relying on established frameworks is generally a better approach. Here’s why:
+* Implementing a secure file upload mechanism is a complex task that requires careful attention to numerous details and potential vulnerabilities. By using an established framework, you leverage the expertise of security professionals, benefit from comprehensive and up-to-date security features, and ensure that your application adheres to best practices.
+* While it might be tempting to write your own validation mechanisms, relying on established frameworks is generally a better approach.
+ The below section covers the point in details for using an established framework.
 
 ### Expertise and Security
 
@@ -41,15 +43,3 @@
 ### Compliance and Best practices
 
 * Established frameworks are often designed to comply with industry standards and best practices. This helps ensure that your application meets necessary compliance requirements and follows recognized security protocols.
-
-#### Example Frameworks
-
-* **Django (Python)**: includes robust file handling mechanisms with security best practices.
-* **Spring (Java)**: provides comprehensive file upload handling with various security features.
-* **ASP.NET Core (C#)**: offers secure file upload processing with inbuilt validation features.
-* **Multer (Express.js)**: Middleware for handling multipart/form-data in Node.js, ensuring secure file uploads with extensive validation options.
-* **formidable**: a Node.js module for parsing form data, especially file uploads, with built-in file validation and security features.
-* **Dropzone.js**: a JavaScript library for drag-and-drop file uploads with automatic handling of file validation and security.
-* **Uppy**: a modular JavaScript file uploader with a strong emphasis on security, file validation, and ease of use.
-
-* Implementing a secure file upload mechanism is a complex task that requires careful attention to numerous details and potential vulnerabilities. By using an established framework, you leverage the expertise of security professionals, benefit from comprehensive and up-to-date security features, and ensure that your application adheres to best practices.

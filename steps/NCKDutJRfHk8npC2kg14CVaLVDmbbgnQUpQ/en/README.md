@@ -44,7 +44,6 @@ CON, PRN, AUX, NUL, COM0 through COM9, LPT0 through LPT9
 * When filenames are required to be user-defined, validate input rigorously:
   * Implement a maximum length for filenames.
   * Restrict characters to a safe subset (e.g., alphanumeric characters, hyphens, spaces, and periods).
-  * If a restrictive whitelist is impractical, use a blacklist to block dangerous characters and patterns.
 
 ## Path and Namespace considerations
 
@@ -56,16 +55,22 @@ CON, PRN, AUX, NUL, COM0 through COM9, LPT0 through LPT9
 
 * In environments with multi-user support or virtual machines, consider namespace isolation to prevent conflicts and unauthorized access. Use symlinks appropriately to ensure paths resolve correctly in virtualized contexts.
 
-## Bad implementation (Unsanitized filenames)
+## Vulnerable implementation (Unsanitized filenames)
 
-* Below, we will explore how to properly sanitize filenames in Node.js, and illustrate a bad implementation for contrast.
+* Below, we will explore how to properly sanitize filenames in Node.js, and illustrate a vulnerable implementation for contrast.
+
+* Add the below dependencies.
 
 ```js
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const app = express();
+```
 
+* Create logic to store the file and listen to the upload request from client.
+
+```js
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/');
@@ -86,97 +91,142 @@ app.listen(3000, () => {
 });
 ```
 
-### Issues with the bad implementation
+### Issues with this implementation
 
 * **No input validation**: the filename is taken directly from the user input without any checks.
 * **Directory Traversal**: malicious users can manipulate the filename to traverse directories (e.g., `../etc/passwd`).
 * **Reserved Filenames**: users can upload files with reserved names (e.g., `CON`, `PRN`), which can cause issues in Windows.
 * **Collision Risks**: users can upload files with the same name, leading to potential overwrites.
 
-## Good implementation (Sanitized filenames)
+## Secure implementation (Sanitized filenames)
 
-* To address these issues, we will:
-  * Generate a UUID for each file to avoid collisions and sanitize the filename.
-  * Restrict the allowed characters if we must keep the original filename.
-  * Implement maximum length checks.
-  * Avoid reserved filenames in Windows.
+* When dealing with file uploads, there are two main situations:
+  * **Random File Names**: If you don't need to keep the original file name, save the file with a randomly generated name (like "UUID").
+  * **Keeping Original File Names**: If you need to save the file with its original name, follow these steps:
+    * **Allowed Characters**: Only allow letters and numbers in the file name. Do not allow “.” or “/” to prevent issues like “../”.
+    * **Maximum Length**: Set a limit on how long the file name can be.
+    * **Windows Reserved Names**: Avoid using names reserved by Windows (like "CON" or "PRN").
+    * **Filename Collisions**: Make sure no two files end up with the same name to prevent overwriting.
+
+### Implementing the sanitized filename by generating random file name
+
+* Initialize the below dependencies.
+
+```js
+const express = require('express');
+const multer = require('multer');
+const uuid = require('uuid');
+const path = require('path');
+const app = express();
+```
+
+* Configure **multer storage** to save files with random **UUID** names.
+
+```js
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Ensure this directory exists and is outside web root
+  },
+  filename: (req, file, cb) => {
+    cb(null, uuid.v4() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage });
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.send('File uploaded with random name');
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+```
+
+* The above examples is using **expressjs** along with **multer**. **Multer** is used to build files out of the incoming `POST` request with file in `multipart/form-data` format. It is configured to store files with random **UUID** names.
+
+### Implementing the sanitized filename by keeping original file name
+
+* Initialize the dependencies and build the allowed extension list and also reserved names list.
 
 ```js
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const sanitize = require('sanitize-filename');
 const app = express();
 
-const MAX_FILENAME_LENGTH = 255;
-const allowedExtensions = ['.jpg', '.jpeg', '.png'];
-const reservedFilenames = ['CON', 'PRN', 'AUX', 'NUL', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9'];
+const MAX_FILENAME_LENGTH = 255; // Set your max length here
+const ALLOWED_EXTENSIONS = ['.jpg', '.png', '.pdf']; // Example allowed extensions
+const RESERVED_NAMES = ['CON', 'PRN', 'AUX', 'NUL', 'COM1', 'LPT1']; // Example reserved names
+```
 
-const sanitizeFilename = (filename) => {
-    const ext = path.extname(filename).toLowerCase();
-    // get rid of restricted characters
-    const baseName = path.basename(filename, ext).replace(/[^a-z0-9\-. ]/gi, '_').slice(0, MAX_FILENAME_LENGTH - ext.length);
-    
-    // Check for reserved filenames
-    if (reservedFilenames.includes(baseName.toUpperCase())) {
-        throw new Error('Invalid file name');
-    }
-    
-    return `${baseName}${ext}`;
+* Create function to check if the file name is reserved.
+
+```js
+const isReservedName = (name) => {
+  const baseName = path.basename(name, path.extname(name)).toUpperCase();
+  return RESERVED_NAMES.includes(baseName);
 };
+```
 
+* Configure **multer storage** to keep original names with security measures.
+
+```js
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        const ext = path.extname(file.originalname).toLowerCase();
-        const sanitizedFilename = sanitizeFilename(file.originalname);
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Ensure this directory exists and is outside web root
+  },
+  filename: (req, file, cb) => {
+    let originalName = file.originalname;
+    const ext = path.extname(originalName);
 
-        // Generate a unique filename using UUID
-        const uniqueFilename = `${uuidv4()}${ext}`;
-        
-        cb(null, uniqueFilename);
-    }
-});
-
-const fileFilter = (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    
-    // Check for null bytes and disallowed extensions
-    if (file.originalname.indexOf('\0') !== -1 || !allowedExtensions.includes(ext)) {
-        return cb(new Error('Invalid file type or null bytes detected'));
+    // Check extension
+    if (!ALLOWED_EXTENSIONS.includes(ext.toLowerCase())) {
+      return cb(new Error('Invalid file extension'));
     }
 
-    cb(null, true);
-};
+    // Sanitize filename
+    let baseName = sanitize(path.basename(originalName, ext)).replace(/[^a-zA-Z0-9]/g, '');
 
-const upload = multer({
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 1024 * 1024 * 5 } // Limit to 5MB
+    // Ensure length limit
+    if (baseName.length > MAX_FILENAME_LENGTH) {
+      baseName = baseName.substring(0, MAX_FILENAME_LENGTH);
+    }
+
+    // Check reserved names
+    if (isReservedName(baseName)) {
+      return cb(new Error('Reserved file name'));
+    }
+
+    // Ensure no filename collisions
+    let finalName = baseName + ext;
+    const uploadDir = 'uploads/';
+    let counter = 1;
+    while (fs.existsSync(path.join(uploadDir, finalName))) {
+      finalName = `${baseName}_${counter}${ext}`;
+      counter++;
+    }
+
+    cb(null, finalName);
+  }
 });
+
+const upload = multer({ storage });
 
 app.post('/upload', upload.single('file'), (req, res) => {
-    res.send('File uploaded successfully');
-});
-
-app.use((err, req, res, next) => {
-    if (err) {
-        res.status(400).send(err.message);
-    }
+  res.send('File uploaded with original name and security measures');
 });
 
 app.listen(3000, () => {
-    console.log('Server started on http://localhost:3000');
+  console.log('Server is running on port 3000');
 });
 ```
 
-* In above example, we are performing all the recommended checks on filename before uploding the file after the user makes a `POST` request to `/upload` route. Additionally, we are also validating the extension name using **fileFilter** function. The above examples are using **expressjs** along with **multer**. Multer is used to build files out of the incoming `POST` request with file in `multipart/form-data` format.
-
-### Explanation of good implementation
-
-* **UUID for filenames**: we use **uuidv4()** to generate a unique filename, avoiding filename collisions.
-* **Sanitizing filenames**: **sanitizeFilename** function restricts the allowed characters to alphanumeric, hyphens, dots, and spaces. It also checks for reserved filenames.
-* **File Filter**: checks for null bytes and validates allowed extensions.
-* **Error handling**: proper error messages are sent back to the client if the upload fails.
+* In this example, we are taking care of the following:
+  * The filename is sanitized to remove any special characters.
+  * A check is performed to ensure the file extension is allowed.
+  * The filename length is restricted to the maximum length defined.
+  * Reserved names are avoided.
+  * Filename collisions are prevented by appending a counter if a file with the same name already exists.
