@@ -84,7 +84,7 @@ const SECRET_KEY = 'your_secret_key';
 app.use(express.json());
 ```
 
-* Middleware for checking authentication and authorization
+* Middleware for checking authentication and authorization. Here we verify the token with `SECRET_KEY` that was planned previously.
 
 ```js
 function authenticateToken(req, res, next) {
@@ -99,7 +99,7 @@ function authenticateToken(req, res, next) {
 }
 ```
 
-* Function to check internal IP
+* Function to check internal IP. Allowing access to specific IPs only
 
 ```js
 function checkInternalIP(req, res, next) {
