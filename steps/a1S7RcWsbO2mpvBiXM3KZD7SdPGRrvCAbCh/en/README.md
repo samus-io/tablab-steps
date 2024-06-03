@@ -41,6 +41,8 @@ brad)(&))
 ## Example of LDAP Injection
 
 * Below is a conceptual diagram illustrating how LDAP injection can alter the expected flow of an application.
+ 
+![ldap injection](https://github.com/samus-io/tablab-steps/assets/44079067/bdc4f4b7-4ad9-4672-afd3-59080c54b254)
 
 * **Expected Flow**:
 
