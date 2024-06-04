@@ -2,49 +2,46 @@
 
 * When handling file uploads, it's important to validate the content of the files to ensure they do not contain malicious, inappropriate, or illegal data. This validation is crucial because even seemingly harmless files can be vectors for attacks.
 * Automation can make the file review process more efficient and less error-prone. But, automated methods must be thoroughly studied and tested before use to ensure they are effective and reliable.
-* Services like **VirusTotal** offer APIs that can scan files against databases of known malicious file hashes. Some frameworks, such as the **ASP.NET Drawing Library**, can validate raw content types against predefined file types.
-* Be cautious of potential data leakage and information gathering when using public scanning services.
-* Below points talk about common strategies to validate in different files.
+* Services like **VirusTotal** offer APIs that can scan files against databases of known malicious file hashes. Some frameworks, such as the **ASP.NET Drawing Library**, can validate raw content types against predefined file types. But, be cautious of potential data leakage and information gathering when using public scanning services.
+* Below points talk about common strategies to validate in different types of files.
 
 ## Images
 
 * Malicious content can be embedded in images, such as scripts in metadata.
 * To mitigate this, image rewriting techniques can be used to strip out any potentially harmful content. This often involves re-encoding the image, which removes any embedded malicious data.
 
-### Randomization by Adding Noise to Images
+### Randomization by adding noise to images
 
 * To enhance security, you can introduce random noise into images. This can make some attacks less predictable and harder to execute. Below is a breakdown of how this can be achieved.
 
-#### Introduce Random Noise
+#### Introduce random noise
 
 * Loop over all the pixels in the image.
 * For each pixel, consider the three RGB intensity values.
 * Randomly choose to either:
-* Add 1 to the intensity value.
-* Subtract 1 from the intensity value.
-* Leave the intensity value unchanged.
+  * Add 1 to the intensity value.
+  * Subtract 1 from the intensity value.
+  * Leave the intensity value unchanged.
 
-#### Minimal Visual Impact
+#### Minimal visual impact
 
 * The introduced noise is minor and should not be noticeable to viewers.
 * The slight alteration helps in maintaining the image quality while adding a layer of unpredictability.
 
-#### Potential Security Benefits
+#### Potential security benefits
 
 * This heuristic approach can make it harder for attackers to predict the exact outcome of the transformation.
 * It can complement other security measures, adding an extra layer of defense.
 
-#### Heuristic Nature
+#### Heuristic nature
 
 * This method is not guaranteed to be effective on its own.
 * It should be used in conjunction with other security strategies as part of a defense-in-depth approach.
 
 ## Microsoft Documents
 
-* For Microsoft documents, libraries like "Apache POI" can be used to validate the content. Apache POI provides APIs to manipulate various file formats based on Office Open XML standards.
-* "Apache POI" is a robust Java library that supports reading and writing Microsoft Office file formats, including Word (`DOC`, `DOCX`), Excel (`XLS`, `XLSX`), PowerPoint (`PPT`, `PPTX`), and more. It is widely used in applications that require manipulation of Office documents, providing the ability to create, modify, and extract data from these files programmatically.
-* Apache POI can be used to validate the content of Office documents, ensuring they meet specific criteria and are free from malicious code. By processing documents through Apache POI, you can sanitize and strip out potentially harmful elements, such as macros or embedded objects, thus reducing the risk of malicious content.
-* Apache POI provides a rich set of APIs for detailed manipulation of Office files, such as modifying cell values in Excel, adding or removing slides in PowerPoint, or extracting text from Word documents.
+* For Microsoft documents, libraries like **mammoth**, **docx**, **officegen** can be used to validate the content. They provide APIs to manipulate various file formats based on Office Open XML standards.
+* These libraries help us to read and parse the content of microscoft documents.
 
 ## ZIP Files
 
@@ -58,17 +55,22 @@
 
 ## Library for validating images in Nodejs
 
-* **sharp** is a high-performance image processing library in Node.js. Here's how you can use it to remove metadata from an image:
+* Here, we will use **sharp** library. **sharp** is a high-performance image processing library in Node.js. Here's how you can use it to remove metadata from an image:
+
+* Start by installing the other required libraries along with **sharp**.
 
 ```js
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
+```
 
+* Read the image in **inputPath**, filter it and add it to **outputPath**. Here, we are removing the metadata of the file
+
+```js
 const inputPath = path.join(__dirname, 'input.jpg');
 const outputPath = path.join(__dirname, 'output.jpg');
 
-// Read the image
 fs.readFile(inputPath, (err, data) => {
   if (err) throw err;
 
@@ -83,14 +85,9 @@ fs.readFile(inputPath, (err, data) => {
 
 ```
 
-* It can also be used to perform randomization:
+* It can also be used to perform randomization. Create a function to add random noise to the image.
 
 ```js
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
-
-// Function to add random noise to the image
 async function addRandomNoise(inputPath, outputPath) {
   const { data, info } = await sharp(inputPath).raw().toBuffer({ resolveWithObject: true });
   const noisyData = data.map((value, index) => {
@@ -101,7 +98,11 @@ async function addRandomNoise(inputPath, outputPath) {
   await sharp(noisyData, { raw: { width: info.width, height: info.height, channels: info.channels } })
     .toFile(outputPath);
 }
+```
 
+* Add the random noise to the file in the **inputPath**. If it fails then the file is vulnerable.
+
+```js
 const inputPath = path.join(__dirname, 'input.jpg');
 const outputPath = path.join(__dirname, 'output.jpg');
 
@@ -114,71 +115,86 @@ addRandomNoise(inputPath, outputPath)
 
 ## Library for validating Microscoft document in Nodejs
 
-* To use Apache POI for Microsoft document validation in Node.js, you would typically need to run a Java process from Node.js, as Apache POI is a Java library. Below is a basic example of how you might achieve this using the `child_process` module in Node.js:
+* Install the below initialized libraries and specially the **mammoth** library.
 
 ```js
-const { spawn } = require('child_process');
+const express = require('express');
+const multer = require('multer');
+const mammoth = require('mammoth');
 const fs = require('fs');
+const path = require('path');
+const uuid = require('uuid');
 
-function validateMicrosoftDocument(filePath) {
-    return new Promise((resolve, reject) => {
-        // Spawn a Java process to run the Apache POI validation
-        const javaProcess = spawn('java', ['-jar', 'path/to/apache-poi-validator.jar', filePath]);
+const app = express();
+const port = 3000;
 
-        let validationOutput = '';
+// Set up Multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, '<desired location>'); 
+  },
+  filename: (req, file, cb) => {
+    const fileName = `${uuid.v4()}`; // Naming the file using UUID V4 only
+    cb(null, fileName);
+  }
+});
 
-        // Capture stdout
-        javaProcess.stdout.on('data', (data) => {
-            validationOutput += data.toString();
-        });
-
-        // Capture stderr
-        javaProcess.stderr.on('data', (data) => {
-            console.error(`Error: ${data}`);
-            reject(new Error(`Error: ${data}`));
-        });
-
-        // Handle process exit
-        javaProcess.on('close', (code) => {
-            if (code === 0) {
-                // Validation successful
-                resolve(validationOutput);
-            } else {
-                // Validation failed
-                reject(new Error(`Validation failed with exit code ${code}`));
-            }
-        });
-    });
-}
-
-// Example usage
-const filePath = 'path/to/your/document.docx';
-
-validateMicrosoftDocument(filePath)
-    .then((output) => {
-        console.log('Validation successful:', output);
-    })
-    .catch((error) => {
-        console.error('Validation failed:', error);
-    });
+const upload = multer({ storage: storage });
 ```
 
-* In this example:
-  * `java` is invoked as a child process with the `-jar` flag to execute a Java archive file (JAR).
-  * The Apache POI validation JAR file (e.g., `apache-poi-validator.jar`) should be obtained separately and its path should be provided in the command.
-  * The file path of the Microsoft document to be validated is passed as an argument to the Java process.
-  * The output of the validation process is captured and handled accordingly.
+* Create a function to validate the content of a `.docx` file.
 
-* Please note that this is a simplified example and assumes that you have access to a suitable Apache POI validation tool packaged as a JAR file. Additionally, you'll need a **Java Runtime Environment (JRE)** installed on your system to execute the Java process.
+```js
+async function validateDocxContent(filePath) {
+  try {
+    const result = await mammoth.extractRawText({ path: filePath });
+    const text = result.value; // Extracted plain text from the .docx file
+
+    // Perform your validation logic here
+    // Example: Check if the document contains the word "example"
+    if (text.includes('example')) {
+      return { isValid: true };
+    } else {
+      return { isValid: false, message: 'The document does not contain the required word: example' };
+    }
+  } catch (error) {
+    throw new Error(`Failed to extract text from the document: ${error.message}`);
+  }
+}
+```
+
+* Call the **validateDocxContent** function. If it is valid then store it.
+
+```js
+  validateDocxContent(filePath)
+    .then((validationResult) => {
+      if (validationResult.isValid) {
+        // Store the file
+        upload.single('file')
+      } else {
+        // Reject the request
+      }
+    })
+    .catch((error) => {
+      // Reject the request
+    });
+
+```
 
 ## Library for validating ZIP files in nodejs
 
 * For ZIP file validation in Node.js, you can use the `adm-zip` library to extract the contents of the ZIP file and perform validation based on the extracted files.
 
+* Initialize the dependences.
+
 ```js
 const AdmZip = require("adm-zip");
 const fs = require("fs");
+```
 
+* Create a function to validate the ZIP file.
+
+```js
 function validateZipFile(filePath) {
     return new Promise((resolve, reject) => {
         const zip = new AdmZip(filePath);
@@ -210,13 +226,18 @@ function isValidFileType(fileName) {
     // For example, check file extensions or MIME types
     return fileName.endsWith(".txt") || fileName.endsWith(".jpg");
 }
+```
 
+* Test the logic you implemented for ZIP file validation. If it valid then you handle the storing of this file.
+
+```js
 // Example usage
 const filePath = "path/to/your/archive.zip";
 
 validateZipFile(filePath)
     .then((output) => {
         console.log(output);
+        //Store the file
     })
     .catch((error) => {
         console.error("Validation failed:", error);
@@ -228,10 +249,16 @@ validateZipFile(filePath)
 
 * For PDF file validation, you can use the `pdf-parse` library to extract text and other information from the PDF file and perform validation based on the extracted content.
 
+* Initialize the dependences.
+
 ```js
 const pdfParse = require("pdf-parse");
 const fs = require("fs");
+```
 
+* Create a function to validate the PDF file.
+
+```js
 function validatePdfFile(filePath) {
     return new Promise((resolve, reject) => {
         fs.readFile(filePath, (err, data) => {
@@ -253,13 +280,18 @@ function validatePdfFile(filePath) {
         });
     });
 }
+```
 
+* Test the logic you implemented for PDF file validation. If it valid then you handle the storing of this file.
+
+```js
 // Example usage
 const filePath = "path/to/your/document.pdf";
 
 validatePdfFile(filePath)
     .then((output) => {
         console.log(output);
+        //store the file
     })
     .catch((error) => {
         console.error("Validation failed:", error);

@@ -24,10 +24,10 @@ const app = express();
 * Use **multer** to store file. Initialize **multer** and add the destination where your file will be stored.
 
 ```js
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: '<path to destination folder>' });
 ```
 
-* Create a listener using **express.js** and listen on `/uploads` route. Inside this handler the code is testing for the match of `.jpg` or `.jpeg` extensions in the uploaded file name.
+* Create a listener using **express.js** and listen on `/upload` route. Inside this handler the code is testing for the match of `.jpg` or `.jpeg` extensions in the uploaded file name.
 
 ```js
 app.post('/upload', upload.single('file'), (req, res) => {
@@ -68,7 +68,7 @@ const app = express();
 * Create a list of allowed extensions
 
 ```js
-const allowedExtensions = ['.jpg', '.jpeg'];
+const allowedExtensions = ['jpg', 'jpeg'];
 ```
 
 * Create a logic to store the uploaded file like using **multer**.
@@ -76,11 +76,11 @@ const allowedExtensions = ['.jpg', '.jpeg'];
 ```js
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // specifying the destination for file store
+        cb(null, '<path to destination folder>'); // specifying the destination for file store
     },
     filename: function (req, file, cb) {
         const ext = path.extname(file.originalname).toLowerCase();
-        cb(null, `${file.fieldname}-${Date.now()}${ext}`); // changing the filename before storing
+        cb(null, `${file.fieldname}-${Date.now()}`); // changing the filename before storing
     }
 });
 
@@ -104,7 +104,7 @@ const fileFilter = (req, file, cb) => {
 
     // Ensure there is exactly one extension
     const baseName = path.basename(file.originalname, ext);
-    if (!allowedExtensions.includes(ext) || baseName.includes('.')) {
+    if (!allowedExtensions.includes(ext) || baseName.split('.').length !== 2) {
         return cb(new Error('Invalid file type or multiple extensions detected'));
     }
 

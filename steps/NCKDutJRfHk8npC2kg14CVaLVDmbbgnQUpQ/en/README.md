@@ -73,7 +73,7 @@ const app = express();
 ```js
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/');
+        cb(null, '<path to destinaton folder>');
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname); // BAD: Directly using the original filename
@@ -95,18 +95,18 @@ app.listen(3000, () => {
 
 * **No input validation**: the filename is taken directly from the user input without any checks.
 * **Directory Traversal**: malicious users can manipulate the filename to traverse directories (e.g., `../etc/passwd`).
-* **Reserved Filenames**: users can upload files with reserved names (e.g., `CON`, `PRN`), which can cause issues in Windows.
-* **Collision Risks**: users can upload files with the same name, leading to potential overwrites.
+* **Reserved filenames**: users can upload files with reserved names (e.g., `CON`, `PRN`), which can cause issues in Windows.
+* **Collision risks**: users can upload files with the same name, leading to potential overwrites.
 
 ## Secure implementation (Sanitized filenames)
 
 * When dealing with file uploads, there are two main situations:
-  * **Random File Names**: If you don't need to keep the original file name, save the file with a randomly generated name (like "UUID").
-  * **Keeping Original File Names**: If you need to save the file with its original name, follow these steps:
+  * **Random file names**: If you don't need to keep the original file name, save the file with a randomly generated name (like "UUID").
+  * **Keeping original file names**: If you need to save the file with its original name, follow these steps:
     * **Allowed Characters**: Only allow letters and numbers in the file name. Do not allow “.” or “/” to prevent issues like “../”.
-    * **Maximum Length**: Set a limit on how long the file name can be.
-    * **Windows Reserved Names**: Avoid using names reserved by Windows (like "CON" or "PRN").
-    * **Filename Collisions**: Make sure no two files end up with the same name to prevent overwriting.
+    * **Maximum length**: Set a limit on how long the file name can be.
+    * **Windows reserved names**: Avoid using names reserved by Windows (like "CON" or "PRN").
+    * **Filename collisions**: Make sure no two files end up with the same name to prevent overwriting.
 
 ### Implementing the sanitized filename by generating random file name
 
@@ -125,10 +125,10 @@ const app = express();
 ```js
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Ensure this directory exists and is outside web root
+    cb(null, '<path to dest. folder>'); // Ensure this directory exists and is outside web root
   },
   filename: (req, file, cb) => {
-    cb(null, uuid.v4() + path.extname(file.originalname));
+    cb(null, uuid.v4());
   }
 });
 
@@ -158,7 +158,7 @@ const sanitize = require('sanitize-filename');
 const app = express();
 
 const MAX_FILENAME_LENGTH = 255; // Set your max length here
-const ALLOWED_EXTENSIONS = ['.jpg', '.png', '.pdf']; // Example allowed extensions
+const ALLOWED_EXTENSIONS = ['jpg', 'png', 'pdf']; // Example allowed extensions
 const RESERVED_NAMES = ['CON', 'PRN', 'AUX', 'NUL', 'COM1', 'LPT1']; // Example reserved names
 ```
 
@@ -167,7 +167,7 @@ const RESERVED_NAMES = ['CON', 'PRN', 'AUX', 'NUL', 'COM1', 'LPT1']; // Example 
 ```js
 const isReservedName = (name) => {
   const baseName = path.basename(name, path.extname(name)).toUpperCase();
-  return RESERVED_NAMES.includes(baseName);
+  return RESERVED_NAMES.includes(baseName.substr(0,baseName.length-1));
 };
 ```
 
@@ -202,7 +202,7 @@ const storage = multer.diskStorage({
 
     // Ensure no filename collisions
     let finalName = baseName + ext;
-    const uploadDir = 'uploads/';
+    const uploadDir = '<path to destination folder>';
     let counter = 1;
     while (fs.existsSync(path.join(uploadDir, finalName))) {
       finalName = `${baseName}_${counter}${ext}`;
