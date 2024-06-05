@@ -11,17 +11,17 @@
   * Creating a whitelist of allowed users can prevent unauthorized access.
   * For instance, only allowing users with specific usernames like "`admin`", "`user1`", "`user2`" ensures that unexpected or malicious usernames are not processed by the LDAP server.
 
-## Escape Special Characters
+## Escape Special characters
 
 * Special characters in LDAP queries must be escaped to prevent them from being interpreted as LDAP commands.
   * **Escape Characters**: Convert special characters to their hexadecimal equivalents.
-  * For example, the backslash () should be escaped as \5c.
+  * For example, the backslash `\` should be escaped as `\5c`.
   * **First Character to Escape**: Always start escaping with the backslash ().
     * Escaping Distinguished Names (DN)
     * In distinguished names, the following characters must be escaped: `\ # + < > , ; " =` and any leading or trailing spaces.
 
 * **Escaping Search Filters**
-* In search filters, the following characters must be escaped: `\ * ( ) NUL` (where NUL is the null byte \x00).
+* In search filters, the following characters must be escaped: `\ * ( ) NUL` (where NUL is the null byte `\x00`).
 
 ## Where to Use Each Escape Model
 
