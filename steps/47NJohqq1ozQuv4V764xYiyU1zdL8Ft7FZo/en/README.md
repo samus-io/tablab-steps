@@ -3,7 +3,7 @@
 * LDAP injection is a serious security threat that can compromise the integrity and confidentiality of an application.
 * Several strategies can be implemented in Node.js to prevent LDAP injection, ensuring secure and reliable operations.
 
-## Escape Special Characters
+## Escape Special characters
 
 * Escaping special characters is crucial to prevent them from being interpreted as LDAP commands.
 * This involves converting special characters to their hexadecimal equivalents.
@@ -24,7 +24,7 @@
     console.log(escapedInput); // Output: John\2aDoe
     ```
 
-## Use a Library to Create Filters
+## Use a Library to Create filters
 
 * Using a library to create LDAP filters ensures that inputs are properly sanitized and encoded, reducing the risk of injection attacks.
 * Libraries like ldap-filters provide methods to safely construct LDAP filters.
@@ -51,7 +51,7 @@
     console.log(filter.toString()); // Output: (&(uid=johndoe)(userPassword=password123))
     ```
 
-## Use Frameworks that Prevent LDAP Injection
+## Use frameworks that Prevent LDAP Injection
 
 * Frameworks and libraries that abstract LDAP operations often include built-in protections against LDAP injection.
 * Using these tools can automate many security best practices, reducing the risk of manual errors.
