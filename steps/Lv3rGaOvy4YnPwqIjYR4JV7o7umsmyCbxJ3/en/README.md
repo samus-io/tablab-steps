@@ -44,8 +44,6 @@ const upload = multer({
 
 // File upload endpoint without authentication or authorization
 app.post('/upload', upload.single('file'), (req, res) => {
-    const filePath = path.join(__dirname, 'uploads', req.file.filename); // ./uploads is the destination
-
     res.status(200).send('File uploaded successfully');
 });
 

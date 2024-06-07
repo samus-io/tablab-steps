@@ -33,9 +33,6 @@ const upload = multer({
 
 //endpoint to upload the file
 app.post('/upload', upload.single('file'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
-  }
   res.send('File uploaded successfully.');
 });
 
@@ -128,9 +125,6 @@ const downloadRateLimit = rateLimit({
 
 ```js
 app.post('/upload', uploadRateLimit, upload.single('file'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
-  }
   res.send('File uploaded successfully.');
 });
 ```
