@@ -237,7 +237,7 @@ const filePath = "path/to/your/archive.zip";
 validateZipFile(filePath)
     .then((output) => {
         console.log(output);
-        //Store the file
+        //Store the file (e.g. using multer here)
     })
     .catch((error) => {
         console.error("Validation failed:", error);
@@ -291,7 +291,7 @@ const filePath = "path/to/your/document.pdf";
 validatePdfFile(filePath)
     .then((output) => {
         console.log(output);
-        //store the file
+        //store the file (e.g. using multer here)
     })
     .catch((error) => {
         console.error("Validation failed:", error);

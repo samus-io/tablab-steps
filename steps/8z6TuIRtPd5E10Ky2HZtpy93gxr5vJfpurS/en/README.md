@@ -40,14 +40,19 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 //endpoint to read the file
-app.get('/download/:fileName', (req, res) => {
-  const fileName = req.params.fileName;
+app.get('/download/:fileId', (req, res) => {
+  // Validate fileId to match UUID v4 format
+  const uuidv4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  if (!uuidv4Regex.test(fileId)) {
+    return res.status(400).send('Invalid file ID format');
+  }
+  const filePath = req.params.fileId;
   const options = {
     root: __dirname + '/uploads/',
     dotfiles: 'deny',
   };
 
-  res.sendFile(fileName, options, (err) => {
+  res.sendFile(filePath, options, (err) => {
     if (err) {
       res.status(404).send('File not found.');
     }
@@ -133,14 +138,20 @@ app.post('/upload', uploadRateLimit, upload.single('file'), (req, res) => {
 * Listen to the `GET` download request and apply download limit before sending the file.
 
 ```js
-app.get('/download/:fileName', downloadRateLimit, (req, res) => {
-  const fileName = req.params.fileName;
+app.get('/download/:fileId', downloadRateLimit, (req, res) => {
+
+  // Validate fileId to match UUID v4 format
+  const uuidv4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  if (!uuidv4Regex.test(fileId)) {
+    return res.status(400).send('Invalid file ID format');
+  }
+  const filePath = req.params.fileId;
   const options = {
     root: __dirname + '/uploads/',
     dotfiles: 'deny',
   };
 
-  res.sendFile(fileName, options, (err) => {
+  res.sendFile(filePath, options, (err) => {
     if (err) {
       res.status(404).send('File not found.');
     }

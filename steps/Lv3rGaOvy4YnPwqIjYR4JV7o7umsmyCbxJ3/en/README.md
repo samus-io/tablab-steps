@@ -27,7 +27,20 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const upload = multer({ dest: '<absolute path to uploads folder>' }); // path to desired location
+// No limits on file size or number of uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, '<absolute path to uploads folder>'); // add path to the folder where you would like to store the files
+  },
+  filename: (req, file, cb) => {
+    const filename = `${uuid.v4()}`; // Naming the file using UUID V4 only
+    cb(null, filename);
+  }
+});
+
+const upload = multer({
+  storage: storage
+});
 
 // File upload endpoint without authentication or authorization
 app.post('/upload', upload.single('file'), (req, res) => {
@@ -37,7 +50,12 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 // Endpoint to read the file without authorization or internal IP check
-app.get('/file/:filename', (req, res) => {
+app.get('/file/:fileId', (req, res) => {
+    // Validate fileId to match UUID v4 format
+    const uuidv4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+    if (!uuidv4Regex.test(fileId)) {
+      return res.status(400).send('Invalid file ID format');
+    }
     const filePath = path.join(__dirname, 'uploads', req.params.filename); // ./uploads is the destination
     
     res.sendFile(filePath);
@@ -177,15 +195,21 @@ function checkInternalIP(req, res, next) {
 
 ```js
 app.post('/upload', authenticateToken, checkInternalIP, upload.single('file'), (req, res) => {
-            res.send(`File uploaded successfully!`);
+    res.send(`File uploaded successfully!`);
 });
 ```
 
 * Endpoint to read the file, with authorization and internal IP check.
 
 ```js
-app.get('/file/:filename', authenticateToken, checkInternalIP, (req, res) => {
-    const filePath = path.join(__dirname, 'uploads', req.params.filename);
+app.get('/file/:fileId', authenticateToken, checkInternalIP, (req, res) => {
+
+    // Validate fileId to match UUID v4 format
+    const uuidv4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+    if (!uuidv4Regex.test(fileId)) {
+      return res.status(400).send('Invalid file ID format');
+    }
+    const filePath = path.join(__dirname, 'uploads', req.params.fileId);
     // This will allow to send the file if there is correct permission set during the upload
     res.sendFile(filePath);
 });
