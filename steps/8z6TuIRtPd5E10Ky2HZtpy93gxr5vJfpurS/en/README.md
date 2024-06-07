@@ -43,7 +43,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 app.get('/download/:fileId', (req, res) => {
   // Validate fileId to match UUID v4 format
   const uuidv4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-  if (!uuidv4Regex.test(fileId)) {
+  if (!uuidv4Regex.test(req.params.fileId)) {
     return res.status(400).send('Invalid file ID format');
   }
   const filePath = req.params.fileId;
@@ -142,7 +142,7 @@ app.get('/download/:fileId', downloadRateLimit, (req, res) => {
 
   // Validate fileId to match UUID v4 format
   const uuidv4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-  if (!uuidv4Regex.test(fileId)) {
+  if (!uuidv4Regex.test(req.params.fileId)) {
     return res.status(400).send('Invalid file ID format');
   }
   const filePath = req.params.fileId;

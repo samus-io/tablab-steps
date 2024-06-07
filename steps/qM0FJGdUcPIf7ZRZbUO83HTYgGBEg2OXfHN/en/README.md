@@ -158,7 +158,7 @@ const downloadLimiter = rateLimit({
 app.get('/download/:fileId', downloadLimiter, (req, res) => {
     // Validate fileId to match UUID v4 format
     const uuidv4Regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-    if (!uuidv4Regex.test(fileId)) {
+    if (!uuidv4Regex.test(req.params.fileId)) {
       return res.status(400).send('Invalid file ID format');
     }
     const filePath = path.join(__dirname, 'uploads', req.params.fileId);
