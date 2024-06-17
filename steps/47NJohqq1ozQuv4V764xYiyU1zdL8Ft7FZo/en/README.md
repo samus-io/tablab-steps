@@ -33,16 +33,19 @@
 
     ```js
     function escapeDN(input) {
-        return input.replace(/\\/g, '\\5c')
-                    .replace(/#/g, '\\23')
-                    .replace(/\+/g, '\\2b')
-                    .replace(/</g, '\\3c')
-                    .replace(/>/g, '\\3e')
-                    .replace(/,/g, '\\2c')
-                    .replace(/;/g, '\\3b')
-                    .replace(/"/g, '\\22')
-                    .replace(/=/g, '\\3d')
-                    .replace(/^\s+|\s+$/g, match => match.replace(/ /g, '\\20'));
+        // Escape leading and trailing spaces
+        let escaped = input.replace(/^ /, '\\20').replace(/ $/, '\\20');
+        // Escape other special characters
+        escaped = escaped.replace(/\\/g, '\\5c')
+                        .replace(/#/g, '\\23')
+                        .replace(/\+/g, '\\2b')
+                        .replace(/</g, '\\3c')
+                        .replace(/>/g, '\\3e')
+                        .replace(/,/g, '\\2c')
+                        .replace(/;/g, '\\3b')
+                        .replace(/"/g, '\\22')
+                        .replace(/=/g, '\\3d');
+        return escaped;
     }
 
     // Usage
@@ -51,7 +54,7 @@
     console.log(escapedDN); // Output: \20John\20Doe\20
     ```
 
-## Use a Library to Create filters
+## Use a library to create filters
 
 * Using a library to create LDAP filters ensures that inputs are properly sanitized and encoded, reducing the risk of injection attacks.
 * Libraries like ldap-filters provide methods to safely construct LDAP filters.
@@ -78,7 +81,7 @@
     console.log(filter.toString()); // Output: (&(uid=johndoe)(userPassword=password123))
     ```
 
-## Use frameworks that Prevent LDAP Injection
+## Use frameworks that prevent LDAP Injection
 
 * Frameworks and libraries that abstract LDAP operations often include built-in protections against LDAP injection.
 * Using these tools can automate many security best practices, reducing the risk of manual errors.
