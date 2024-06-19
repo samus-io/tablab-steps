@@ -1,24 +1,25 @@
 # Preventing Open Redirect in NodeJS
 
-* let's build a Node.js application that is hosted on `localhost` with `/redirect?url=` as the redirection path and query string parameter. It only allows for valid and whitelisted absolute URLs and also allows for the relative URLs that belong to allowed domain. Below sections will explain the preventive measures to avoid Open Redirection.
+* let's build a Node.js application that is hosted on `localhost` with `/redirect?url=` as the redirection path and query string parameter. It only allows for valid and whitelisted absolute URLs and also allows for the relative URLs that belong to allowed domains. Below sections will explain to implement the preventive measures to avoid Open Redirection.
 
 ## Maintaining Server-side URL whitelist with URL validation
 
-* First, set up our whitelist and validate the input URL against common bypasses:
-  * **URL whitelist**: We define a whitelist of allowed URLs using a dictionary.
+* First, set up a whitelist and validate the input URL against common bypasses:
+  * **URL whitelist**: define a whitelist of allowed URLs using a dictionary.
   * **Redirect handling**: In the `/redirect` route:
     * Retrieve the target URL from the query parameters.
     * If the URL is valid, perform the redirect; otherwise, return an error.
 * This setup ensures that any user-controllable input is validated against known bypass techniques, enhancing the security of the redirection function.
 
-```js
+```javascript
 const express = require('express');
 const url = require('url');
 const app = express();
 
 // Whitelist of allowed URLs
-const urlWhitelist = ['https://www.google.com/', 'https://www.example.com/'];
+const urlWhitelist = ['https://domain.tbl/', 'https://example.tbl/'];
 
+// Checking for valid URLs
 function isValidUrl(fullUrl){
   return urlWhitelist.includes(fullUrl);
 }
@@ -33,21 +34,17 @@ app.get('/redirect', (req, res) => {
   }
 });
 
-// Start the server
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
-
 ```
 
 ## Canonicalize URLs
 
 * To canonicalize URLs in Node.js, you can use **url** and **path** modules, which provides methods to parse, format, and normalize URLs. Below is an example code snippet demonstrating how to canonicalize a URL using the **url** and **path** modules.
 
-```js
+```javascript
 const url = require('url');
 const path = require('path');
 
+// This function normalizes the URL path and converts all the back slashes to forward slash
 function getCanonicalUrl(inputUrl) {
   const parsedUrl = url.parse(inputUrl);
   const normalizedPathname = path.normalize(parsedUrl.pathname).replaceAll(/[\\]+/gi,'/');
@@ -65,17 +62,18 @@ function getCanonicalUrl(inputUrl) {
 
 ## Using URLs Relative to the Web Root
 
-* Validate that the URL starts with a slash character plus has valid Ascii characters and prepend the domain:
+* Validate that the URL starts with a slash character, has valid ASCII characters and prepend the domain:
 
-```js
+```javascript
 app.get('/redirect', (req, res) => {
   const target = req.query.url;
 
+   // Ceck if it starts with '/' and has valid ASCII character
   if (!target.startsWith('/') && !(/[^\x00-\x7F]+/).test(target)) {
     return res.status(400).send('Invalid redirect URL');
   }
 
-  const fullUrl = `http://yourdomainname.com${target}`;
+  const fullUrl = `http://domain.tbl${target}`;
   res.redirect(fullUrl);
 });
 
@@ -85,17 +83,18 @@ app.get('/redirect', (req, res) => {
 
 * If it is an absolute URL then verify that the user-supplied URL begins with the domain name and allowed whitelisted domains.
 
-```js
-const allowedDomains = ['http://yourdomainname.com', 'https://anotherdomain.com'];
+```javascript
+const allowedDomains = ['domain.tbl', 'example.tbl'];
 
+// This return TRUE for allowed domains only
 function isAllowedDomain(url) {
   return allowedDomains.some(domain => url.startsWith(domain));
 }
 
 app.get('/redirect', (req, res) => {
   const target = req.query.url;
-
-  if (!isAllowedDomain(target)) {
+  const url = new URL(target);
+  if (!isAllowedDomain(url.hostname)) {
     return res.status(400).send('Invalid redirect URL');
   }
 
@@ -108,7 +107,7 @@ app.get('/redirect', (req, res) => {
 
 * To implement an intermediary page for confirmation, you can create a separate route where users are redirected first before proceeding to the final destination. This page will display a message informing users that they are leaving the site and provide a link to confirm redirection.
 
-```js
+```javascript
 app.get('/redirect', (req, res) => {
   const target = req.query.url;
 
@@ -132,24 +131,28 @@ app.get('/redirect', (req, res) => {
 
 ## Putting it all together
 
-```js
+* The below code can listen at `http://localhost:3000/redirect?url=example.tbl`, where one can pass any relative or absolute URL to `url` parameter. It will allow for the listed redirection URLs only. For relative URL, it is prepending the `domain.tbl` domain as an example.
+
+```javascript
 const express = require('express');
 const url = require('url');
 const path = require('path');
 const app = express();
 
-const urlWhitelist = ['https://www.google.com/', 'https://www.example.com/'];
+const urlWhitelist = ['https://domain.tbl/', 'https://example.tbl/'];
 
 function isValidUrl(relativeUrl){
-  // Regular expression to match Ascii characters
+  // Regular expression to match ASCII characters
   const pattern = /[^\x00-\x7F]+/;
   return pattern.test(relativeUrl);
 }
 
+// Checking for allowed URLs or domains
 function isAllowedUrl(fullUrl){
   return urlWhitelist.includes(fullUrl)
 }
 
+// Building the canonical URL from the user given URL
 function getCanonicalUrl(inputUrl) {
   const parsedUrl = url.parse(inputUrl);
   const normalizedPathname = path.normalize(parsedUrl.pathname).replaceAll(/[\\]/gi,'/');
@@ -164,6 +167,7 @@ function getCanonicalUrl(inputUrl) {
   return canonicalUrl;
 }
 
+// Listening for redirection request
 app.get('/redirect', (req, res) => {
   const target = req.query.url;
   const fullUrl = getCanonicalUrl(target);
@@ -178,13 +182,14 @@ app.get('/redirect', (req, res) => {
         </html>
       `);
   } else if (fullUrl && fullUrl.startsWith('/') && isValidUrl(fullUrl)) {
-    const appendedfullUrl = `http://yourdomainname.com${fullUrl}`;
+    const appendedfullUrl = `http://domain.tbl${fullUrl}`;
     res.redirect(appendedfullUrl);
   } else {
     res.status(400).send('Invalid redirect URL');
   }
 });
 
+// Start the server
 app.listen(3000, () => {
   console.log('Server running on port 3000');
 });
