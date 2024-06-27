@@ -76,12 +76,12 @@
   * `javascript:alert(1)`:
     * This payload uses the javascript: scheme, which allows the insertion of JavaScript code directly in the URL.
     * If a vulnerable URL looks like `https://domain.tbl/redirect?url=`, an attacker could craft a malicious URL such as `https://domain.tbl/redirect?url=javascript:alert(1)`.
-    * When the user is redirected, the browser interprets the javascript: scheme and executes the code alert(1), which displays an alert box with the number 1.
+    * When the user is redirected, the browser interprets the `javascript:` scheme and executes the code `alert(1)`, which displays an alert box with the number 1.
     * While this example uses a harmless alert, attackers can execute more harmful scripts to steal cookies, capture user input, or redirect to other malicious sites.
   * `javascript://%20alert(1)`:
     * This payload is a variation that uses URL encoding to evade basic input validation or filtering.
     * With the same vulnerable URL structure, the attacker could use `https://domain.tbl/redirect?url=javascript://%20Aalert(1)`.
-    * Here, `%20` is the encoded representation of empty space. When the browser processes this URL, it decodes the space and executes alert(1).
+    * Here, `%20` is the encoded representation of empty space. When the browser processes this URL, it decodes the space and executes `alert(1)`.
     * Similar to the previous payload, this one can bypass some filters or defenses that do not correctly handle encoded characters, allowing the execution of potentially malicious scripts.
 
 ## Bypassing XSS Auditors

@@ -13,32 +13,36 @@
 
 ```javascript
 const express = require('express');
-const url = require('url');
 const app = express();
 
 // Whitelist of allowed URLs
 const urlWhitelist = ['https://domain.tbl/', 'https://example.tbl/'];
 
 // Checking for valid URLs
-function isValidUrl(fullUrl){
+function isValidUrl(fullUrl) {
   return urlWhitelist.includes(fullUrl);
 }
 
 app.get('/redirect', (req, res) => {
-  const target = req.query.url;
-
-  if (target && isValidUrl(target)) {
-    res.redirect(fullUrl);
-  } else {
-    res.status(400).send('Invalid redirect URL');
+  const target = req.query.url; 
+  try {
+     const url = new URL(target);
+     if (url && isValidUrl(`${url.protocol}//${url.hostname}/`)) {
+       res.redirect(`${url.protocol}//${url.hostname}/`);
+     } else {
+       res.status(400).send('Invalid redirect URL');
+     }
+  } catch(err) {
+     res.status(400).send('Invalid redirect URL');
   }
+  
 });
 
 ```
 
 ## Canonicalize URLs
 
-* To canonicalize URLs in Node.js, you can use **url** and **path** modules, which provides methods to parse, format, and normalize URLs. Below is an example code snippet demonstrating how to canonicalize a URL using the **url** and **path** modules.
+* To canonicalize URLs in Node.js, you can use **url** and **path** modules, which provide methods to parse, format, and normalize URLs. Below is an example code snippet demonstrating how to canonicalize a URL using the **url** and **path** modules.
 
 ```javascript
 const url = require('url');
@@ -68,8 +72,8 @@ function getCanonicalUrl(inputUrl) {
 app.get('/redirect', (req, res) => {
   const target = req.query.url;
 
-   // Ceck if it starts with '/' and has valid ASCII character
-  if (!target.startsWith('/') && !(/[^\x00-\x7F]+/).test(target)) {
+   // Check if it starts with forward slash and has valid ASCII character
+  if (!(/^\/(?!\/)[^\s]*$/).test(target)) {
     return res.status(400).send('Invalid redirect URL');
   }
 
@@ -86,16 +90,20 @@ app.get('/redirect', (req, res) => {
 ```javascript
 const allowedDomains = ['domain.tbl', 'example.tbl'];
 
-// This return TRUE for allowed domains only
+// This returns TRUE for allowed domains only
 function isAllowedDomain(url) {
   return allowedDomains.some(domain => url.startsWith(domain));
 }
 
 app.get('/redirect', (req, res) => {
   const target = req.query.url;
-  const url = new URL(target);
-  if (!isAllowedDomain(url.hostname)) {
-    return res.status(400).send('Invalid redirect URL');
+  try{
+    const url = new URL(target);
+    if (!isAllowedDomain(url.hostname)) {
+      return res.status(400).send('Invalid redirect URL');
+    }
+  } catch(err) {
+      return res.status(400).send('Invalid redirect URL');
   }
 
   res.redirect(target);
@@ -110,9 +118,13 @@ app.get('/redirect', (req, res) => {
 ```javascript
 app.get('/redirect', (req, res) => {
   const target = req.query.url;
-
-  if (!isAllowedDomain(target)) {
-    return res.status(400).send('Invalid redirect URL');
+  try{
+    const url = new URL(target);
+    if (!isAllowedDomain(url.hostname)) {
+      return res.status(400).send('Invalid redirect URL');
+    }
+  } catch(err) {
+      return res.status(400).send('Invalid redirect URL');
   }
 
   res.send(`
@@ -141,14 +153,19 @@ const app = express();
 
 const urlWhitelist = ['https://domain.tbl/', 'https://example.tbl/'];
 
-function isValidUrl(relativeUrl){
-  // Regular expression to match ASCII characters
-  const pattern = /[^\x00-\x7F]+/;
-  return pattern.test(relativeUrl);
+function isValidUrl(relativeUrl) {
+
+  // Regular expression to match valid relative URLs starting with a slash
+  const relativeUrlPattern = /^\/(?!\/)[^\s]*$/;
+  if (!relativeUrlPattern.test(relativeUrl)) {
+    return false;
+  }
+
+  return true;
 }
 
 // Checking for allowed URLs or domains
-function isAllowedUrl(fullUrl){
+function isAllowedUrl(fullUrl) {
   return urlWhitelist.includes(fullUrl)
 }
 
@@ -170,9 +187,8 @@ function getCanonicalUrl(inputUrl) {
 // Listening for redirection request
 app.get('/redirect', (req, res) => {
   const target = req.query.url;
-  const fullUrl = getCanonicalUrl(target);
-
-  if (fullUrl  && isAllowedUrl(fullUrl)) {
+  const inputUrl = getCanonicalUrl(target);
+  if (inputUrl  && isAllowedUrl(inputUrl)) {
       res.send(`
         <html>
           <body>
@@ -181,9 +197,16 @@ app.get('/redirect', (req, res) => {
           </body>
         </html>
       `);
-  } else if (fullUrl && fullUrl.startsWith('/') && isValidUrl(fullUrl)) {
-    const appendedfullUrl = `http://domain.tbl${fullUrl}`;
-    res.redirect(appendedfullUrl);
+  } else if (inputUrl && isValidUrl(inputUrl)) {
+    const appendedFullUrl = `http://domain.tbl${inputUrl}`;
+    res.send(`
+        <html>
+          <body>
+            <p>You are about to leave our site and be redirected to: ${appendedFullUrl}</p>
+            <a href="${appendedFullUrl}">Click here to proceed</a>
+          </body>
+        </html>
+      `);
   } else {
     res.status(400).send('Invalid redirect URL');
   }

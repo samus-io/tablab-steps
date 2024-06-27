@@ -77,17 +77,17 @@
 ### Using Unicode characters
 
 * An example for this is `//domain%E3%80%82tbl` or `https://domain.tbl/redirect?url=\uFF04\uFF04attacker.tbl`.
-* This uses URL encoding. `%E3%80%82`or `\uFF04` is the UTF-8 encoding for a Unicode character similar to a period(`.`), tricking some parsers into treating it as `domain.tbl`.
+* This uses URL encoding. `%E3%80%82` or `\uFF04` is the UTF-8 encoding for a Unicode character similar to a period(`.`), tricking some parsers into treating it as `domain.tbl`.
 
 ### Using Null Byte
 
 * An example for this is `//domain%00.tbl`.
-* The `%00` is a URL-encoded null byte. Some parsers might terminate the string early and interpret the URL as` domain.tbl`.
+* The `%00` is a URL-encoded null byte. Some parsers might terminate the string early and interpret the URL as `domain.tbl`.
 
 ### Using Userinfo in URL
 
-* An example for this is ` http://attacker.tbl@domain.tbl/`.
-* The `@` symbol in URLs can be used for userinfo. Here, `http://attacker.tbl@domain.tbl/` appears to be a URL for `domain.tbl` with `attacker.tbl` as userinfo, redirecting to `domain.tbl`.
+* An example for this is ` http://domain.tbl@attacker.tbl/`.
+* The `@` symbol in URLs can be used for userinfo. Here, `http://domain.tbl@attacker.tbl/` appears to be a URL for `attacker.tbl` with `domain.tbl` as userinfo. The validation logic checks the URL and finds it starts with `http://domain.tbl`, so it assumes it’s safe and redirects to `attcker.tbl`.
 
 ### Using Data URIs
 
