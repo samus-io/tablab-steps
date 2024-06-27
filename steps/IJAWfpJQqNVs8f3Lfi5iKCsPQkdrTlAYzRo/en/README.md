@@ -87,7 +87,7 @@
 ### Using Userinfo in URL
 
 * An example for this is ` http://domain.tbl@attacker.tbl/`.
-* The `@` symbol in URLs can be used for userinfo. Here, `http://domain.tbl@attacker.tbl/` appears to be a URL for `attacker.tbl` with `domain.tbl` as userinfo. The validation logic checks the URL and finds it starts with `http://domain.tbl`, so it assumes it’s safe and redirects to `attcker.tbl`.
+* The `@` symbol in URLs can be used for userinfo. Here, `http://domain.tbl@attacker.tbl/` appears to be a URL for `attacker.tbl` with `domain.tbl` as userinfo. The validation logic checks the URL and finds it starts with `http://domain.tbl`, so it assumes it’s safe and redirects to `attacker.tbl`.
 
 ### Using Data URIs
 
