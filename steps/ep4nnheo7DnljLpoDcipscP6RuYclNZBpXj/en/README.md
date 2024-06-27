@@ -1,7 +1,7 @@
 # What do we understand by “Step”?
 
 * What you are reading is a real example of a Step.
-* A learning unit designed to deliver a piece of information and specific knowledge in a easily digestible format.
+* A learning unit designed to deliver a piece of information and specific knowledge in an easily digestible format.
 * It is composed of text in Markdown format that follows a convention of using bulleted lists with short, precise sentences, like this one.
 * It can include practical exercises, which are deployed as fresh and isolated docker instances to provide an optimal user experience.
 

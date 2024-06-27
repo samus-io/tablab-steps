@@ -21,7 +21,7 @@
   git checkout -b lab/sqli-in-nodejs
   ```
 
-* Cuando el contenido esté completo, dirígete a tu *fork* en GitHub y haz clic en `New pull request` cerca de tu rama. Revisa los cambios efectuados y, una vez listo, crea tu *pull request* con un título y una descripción detallados explicando qué Steps has añadido. A partir de aquí, nosotros nos encargamos del resto :slightly_smiling_face:
+* Cuando el contenido esté completo, dirígete a tu *fork* en GitHub y haz clic en `New pull request` cerca de tu rama. Puedes enviar tus cambios a nuestra rama `main`. Revisa los cambios efectuados y, una vez listo, crea tu *pull request* con un título y una descripción detallados explicando qué Steps has añadido. A partir de aquí, nosotros nos encargamos del resto :slightly_smiling_face:
 * Recuerda poner tu nombre y tu identificador de perfil de GitHub como atributos del archivo `properties.json` de cada Step para poder referenciar tu aporte en la plataforma.
 
 [1]: https://github.com/samus-io/tablab-steps
