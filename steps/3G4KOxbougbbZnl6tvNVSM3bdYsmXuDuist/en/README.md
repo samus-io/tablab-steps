@@ -28,7 +28,7 @@
 
 #### Use cases
 
-* Data types: ensuring that numeric fields contain numbers, text fields contain alphabets, and email addresses adhere to the standard format (e.g., `user@example.org`).
+* Data types: ensuring that numeric fields contain numbers, text fields contain alphabets, and email addresses adhere to the standard format (e.g., `user@example.tbl`).
 * Length limits: checking if input lengths fall within acceptable boundaries to prevent buffer overflows or truncation issues.
 * Format constraints: validating data against predetermined patterns, such as credit card numbers, phone numbers, or postal codes.
 
@@ -46,15 +46,17 @@
 
 ## Input Validation challenges
 
-### Validating rich user content
+* The following are some of the more challenging scenarios when applying input validation techniques.
 
-* Rich user content encompasses a plethora of data types and formats, including text, images, videos, documents, and more. However, as users increasingly contribute diverse and dynamic content, from lengthy text inputs to multimedia uploads, ensuring the integrity and security of this rich user-generated content becomes paramount.
+### Validating rich user-generated content
+
+* Rich user content spans a wide range of data types and formats, including text, images, videos, documents, and more. Ensuring the integrity and security of this rich user-generated content becomes essential, but complicated.
 * Traditional validation techniques designed for simpler data structures may struggle to adequately handle the intricacies of rich content validation.
-* Developers must grapple with parsing, sanitizing, and validating diverse content formats to prevent vulnerabilities such as XSS (Cross-Site Scripting), injection attacks, and data corruption.
+* Developers must deal with parsing, sanitizing, and validating diverse content formats to prevent vulnerabilities such as Cross-Site Scripting (XSS), injection attacks, and data corruption.
 
 ### Client-side vs server-side validation
 
-* The perennial debate between client-side and server-side validation revolves around the trade-offs between user experience and security.
+* The eternal debate between client-side and server-side validation revolves around the trade-offs between user experience and security.
 
 #### Client-side validation
 
@@ -67,4 +69,4 @@
 * It acts as the final arbiter, rigorously scrutinizing incoming data to enforce business rules, sanitize inputs, and mitigate security risks.
 * Unlike client-side validation, which can be circumvented or disabled, server-side validation operates beyond the user's control, ensuring the integrity and trustworthiness of the application's data.
 
-  > 👴 By synergizing client-side validation for usability enhancements with server-side validation for security enforcement, developers need to find a delicate balance between user experience and application integrity and security, delivering a seamless yet fortified user interaction paradigm.
+  > 👴 By combining client-side validation for usability enhancements with server-side validation for security enforcement, developers need to find a delicate balance between user experience and application integrity and security, delivering a seamless yet fortified user interaction paradigm.

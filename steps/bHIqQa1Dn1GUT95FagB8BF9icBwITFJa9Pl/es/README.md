@@ -80,7 +80,7 @@
   ```javascript
   const filename = "photo.webp";
 
-  if (!isAllowedFileExtension(email)) {
+  if (!isAllowedFileExtension(filename)) {
     console.log("File type not allowed.");
   }
   ```

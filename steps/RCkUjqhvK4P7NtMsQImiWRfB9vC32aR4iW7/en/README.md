@@ -5,62 +5,72 @@
 
 ## Examples of common RegEx validations
 
-* **Email validation** is crucial for ensuring that users provide a valid email address. However, validating email addresses with RegEx can be complex due to the various formats allowed.
-  * Here's a detailed RegEx pattern for validating email addresses:
+### Email validation
 
-    ```regex
-    ^[^\s@]+@[^\s@]+\.[^\s@]+$
-    ```
+* Validating the email is crucial for ensuring that users provide a valid email address. However, validating email addresses with RegEx can be complex due to the various formats allowed.
+* Here's a detailed RegEx pattern for validating email addresses:
 
-  * This RegEx pattern breaks down as follows:
-    * `^[^\s@]+`: Matches one or more characters at the start of the string that are not whitespace or `@`.
-    * `@`: Matches the `@` symbol.
-    * `[^\s@]+`: Matches one or more characters after `@` that are not whitespace or `@`.
-    * `\.`: Matches the dot `.` symbol.
-    * `[^\s@]+`: Matches one or more characters after `.` that are not whitespace or `@`.
-* **IPV4 Address Validation** is essential for network-related applications.
-  * IPv4 addresses are commonly validated using the following RegEx pattern
+  ```regex
+  ^[^\s@]+@[^\s@]+\.[^\s@]+$
+  ```
 
-    ```regex
-    ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
-    ```
+* This RegEx pattern breaks down as follows:
+  * `^[^\s@]+`: Matches one or more characters at the start of the string that are not whitespace or `@`.
+  * `@`: Matches the `@` symbol.
+  * `[^\s@]+`: Matches one or more characters after `@` that are not whitespace or `@`.
+  * `\.`: Matches the dot `.` symbol.
+  * `[^\s@]+`: Matches one or more characters after `.` that are not whitespace or `@`.
 
-  * This RegEx pattern verifies that an IP address consists of four sets of numbers (0-255) separated by periods.
-* **Port validation** ensures that the provided port number is within the valid range (1-65535).
-  * Here's a RegEx pattern for port validation
+### IPv4 Address Validation
 
-    ```regex
-    ^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$
-    ```
+* IPv4 addresses are commonly validated using the following RegEx pattern:
 
-  * This RegEx pattern allows port numbers from 1 to 65535, covering the entire valid port range.
+  ```regex
+  ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
+  ```
+
+* This RegEx pattern verifies that an IP address consists of four sets of numbers (0-255) separated by periods.
+
+#### Port validation
+
+* Ensures that the provided port number is within the valid range (1-65535).
+* Here's a RegEx pattern for port validation:
+
+  ```regex
+  ^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+  ```
+
+* This RegEx pattern allows port numbers from 1 to 65535, covering the entire valid port range.
 
 ## Implementing RegEx
 
-* Using RegEx in Node.js:
+### Using RegEx in Java
 
-  ```javascript
-  function isValidEmail(email){
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-  ```
+```java
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
-* Using RegEx in Java:
-
-  ```java
-  public static Boolean isValidEmail(String email){
-    Pattern pattern = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
-    Matcher matcher = pattern.matcher(email);
-    return matcher.matches();
-  }
-  ```
+public static Boolean isValidEmail(String email){
+  Pattern pattern = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
+  Matcher matcher = pattern.matcher(email);
+  return matcher.matches();
+}
+```
 
 > :warning: Remember that in Java you must escape the backslashes `\` in RegEx.
 
+### Using RegEx in Node.js
+
+```javascript
+function isValidEmail(email){
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+```
+
 ## ReDoS vulnerability
 
-* When using complex RegEx be aware that it can rise a `Regular Expression Denial of Service (ReDoS)` vulnerability, which occur when malicious input causes the RegEx engine to execute inefficiently, leading to Denial of Service.
+* When using **complex RegEx** be aware that it can rise a `Regular Expression Denial of Service (ReDoS)` vulnerability, which occur when malicious input causes the RegEx engine to execute inefficiently, leading to Denial of Service.
 
 ## Common RegEx patterns
 
