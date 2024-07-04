@@ -1,10 +1,10 @@
-# Input Validation overview
+# Input validation overview
 
-* `Input Validation` is the practice of verifying that user-provided data aligns with predefined criteria before it's processed or stored.
+* `Input validation` is the practice of verifying that user-provided data aligns with predefined criteria before it's processed or stored.
 * It involves examining and validating user-supplied data to ensure adherence to specified requirements and constraints.
 * Essentially, input validation acts as a gatekeeper, screening out invalid or malicious data to safeguard the application's integrity and prevent potential harm.
 
-## What can be achieved with Input Validation
+## What can be achieved with input validation
 
 * **Data sanitization and standardization** by enforcing specific rules and formats, such as trimming whitespace, converting data to a consistent case, or removing forbidden characters, making sure the data entering the system is clean and uniform.
   * This promotes data integrity and simplifies downstream processing and analysis.
@@ -16,11 +16,11 @@
 * **Protection against business logic flaws** by enforcing validation rules aligned with the application's business logic, preventing users from submitting invalid, incorrect or unexpected data inputs that could disrupt critical processes or lead to errors.
   * This ensures the application operates as intended, delivering consistent results aligned with business objectives.
 
-## Input Validation strategies
+## Input validation strategies
 
 * Input validation strategies are categorized into syntactic and semantic validation.
 
-### Syntactic Validation
+### Syntactic validation
 
 * Focuses on the superficial characteristics of data, ensuring it meets the predefined structure and format expectations.
   * It's like a grammar check for your data, verifying if it aligns with the syntax rules.
@@ -32,7 +32,7 @@
 * Length limits: checking if input lengths fall within acceptable boundaries to prevent buffer overflows or truncation issues.
 * Format constraints: validating data against predetermined patterns, such as credit card numbers, phone numbers, or postal codes.
 
-### Semantic Validation
+### Semantic validation
 
 * Dives deeper than syntactic validation examining the meaning and context of the data beyond its surface appearance.
   * It's about ensuring that the data makes sense and aligns with the application's expectations.
@@ -44,7 +44,7 @@
 * Business rules: enforcing specific business logic constraints, like validating product quantities against available stock, checking if a booking falls within operating hours or verifying that an email domain is among those expected.
 * Cross-field validation: examining relationships between multiple fields, such as verifying that a start date precedes an end date or ensuring consistency between related fields.
 
-## Input Validation challenges
+## Input validation challenges
 
 * The following are some of the more challenging scenarios when applying input validation techniques.
 

@@ -1,15 +1,38 @@
-# Input Normalization
+# Unicode normalization
+
+## What is input normalization?
 
 * `Input normalization` is the procedure used to transform incoming data into a uniform or standardized format. This transformation is crucial for maintaining data integrity and ensuring consistent data handling across various components of a software system.
 * In web applications, it helps in mitigating security risks by standardizing user input to prevent unexpected behavior or exploitation, such as injection attacks.
-* Strings in a normalized form, they can be assured that equivalent strings have a unique binary representation.
+  * Within this context, the input normalization process typically consists of converting data to any normal form (alphabetizing, or reverse alphabetizing, or stripping non-ASCII characters).
 
-  > :warning: The `Input Normalization` must be done the first measure to be taken, otherwise it can arise other vulnerabilities or security measures can be bypassed.
+  > :warning: `Input normalization` must be the initial security measure implemented, as neglecting this step could lead to other vulnerabilities or allow other security measures to be bypassed.
 
-## Unicode normalization forms
+## What vulnerabilities could arise when input normalization is not applied?
 
-* Unicode provides several forms of normalization, such as `NFC`, `NFD`, `NFKC`, and `NFKD`, to meet different data processing needs. These forms help in ensuring that Unicode characters are represented consistently in the database, during processing, and even when interfacing with other systems.
-* This consistency is vital not just for security purposes but also for functionality.
+* Below are mentioned two actual implications of vulnerabilities derived from input data normalization.
+
+### Account takeover
+
+* In those web applications where users can sign up using usernames that appear identical but have different representations, they might lead to account takeover scenarios.
+* For instance, the username `Amélie` can be represented in two different ways using the Unicode encoding standard:
+  * The `é` character can be represented by the `U+00E9` code, providing a complete representation for `Amélie` as `\u0041\u006d\u00e9\u006c\u0069\u0065`.
+  * The `é` can also be represented by breaking it down into an equivalent base letter `e`, with code `U+0065`, and combining acute accent ` ́`, with code `U+0301`, providing a complete representation for `Amélie` as `\u0041\u006d\u0065\u0301\u006c\u0069\u0065`.
+* In this scenario, input normalization helps to avoid such discrepancies by ensuring that visually identical strings are treated as equivalent.
+
+### Cross-Site Scripting (XSS)
+
+* Another simple case where Unicode can be used to bypass security filters is changing the HTML brackets for Unicode brackets.
+* For example, the HTML tag `<script>`, which used to inject javascript code by malicious users, can be replaced by `＜script＞` that uses the characters `＜`, with code `U+FF1C`, and `＞`, with code `U+FF1E`. Without proper input normalization they can be considered equivalent at some point in the application, which can circumvent the security measures specified only against the HTML tag `<script>`.
+
+## Understanding Unicode normalization
+
+* Unicode normalization is a process that ensures different binary representations of texts that are equivalent will be reduced to the same sequence of code points, thus resulting in the same binary value.
+* This process is essential in dealing with strings in programming and data processing. It is not only useful for security reasons, but also for functionality.
+* The Unicode standard distinguishes between two types of character equivalence:
+  * Canonical Equivalence: characters that look and mean the same when displayed are considered equivalent.
+  * Compatibility Equivalence: a less strict form of equivalence, where characters may look different but represent the same concept.
+* To address these equivalences, four normalization algorithms are used, each one implementing canonical and compatibility techniques differently.
 
 ### Normalization Form Canonical Composition (NFC)
 
@@ -22,10 +45,16 @@
 ### Normalization Form Compatibility Composition (NFKC)
 
 * The `NFKC` is particularly useful in instances where a form of the text is required that is compatible across different systems, while still retaining the maximum amount of information possible. It's used in systems where compatibility is more important than textual accuracy, such as in keyword generation for search engines.
+* Using the `NFKC` form, the tag `＜script＞` will be converted to `<script>` and the security filters will block this input.
 
 ### Normalization Form Compatibility Decomposition (NFKD)
 
 * `NFKD` is crucial for text analysis where compatibility and the most detailed decomposition are required, such as in cryptographic operations, indexing, and any application needing the most atomic form of characters.
+
+## Unicode normalization forms
+
+* Unicode provides several forms of normalization, such as `NFC`, `NFD`, `NFKC`, and `NFKD`, in order to meet different data processing needs. These forms help in ensuring that Unicode characters are represented consistently in the database, during processing, and even when interfacing with other systems.
+* Strings in a unicode normalized form, they can be assured that equivalent strings have a unique binary representation.
 
 ### Differences between normalization forms
 
@@ -41,25 +70,6 @@
 * If one is not sure which Unicode normalization form to use, `NFC` is often recommended as the default choice because it is widely used and compatible with many systems and protocols.
   * It is often considered the "normal" form of Unicode text on the web and in other computing environments, making it a safe default for general use.
 * On the other hand, if you want to avoid strange characters such as `﹤` or `ⓩ`, you can use the `NFKC` form, which will replace this character for its equivalent (`<` and `z`).
-
-## What vulnerabilities can arise from not applying input normalization?
-
-* It depends on the systems in between and how they interact with Unicode.
-* There may be situations where it is not a problem, but there may be other contexts where the Unicode is interpreted or manipulated by the backend and can be used to exploit vulnerabilities or bypass security filters.
-
-### Account takeover
-
-* In some cases, when a user registers on a web application, usernames that look identical can be registered but are represented different, can be used to account takeover.
-* For instance, the username `Amélie` can be write in two different forms:
-  * In this case, the `é` is the `U+00E9` character: `\u0041\u006d\u00e9\u006c\u0069\u0065`.
-  * Here, the `é` is `U+0065` and `U+0301`: `\u0041\u006d\u0065\u0301\u006c\u0069\u0065`.
-* Normalization prevents such discrepancies, ensuring that visually identical strings are treated equivalently.
-
-### Cross-Site Scripting
-
-* Another case where Unicode can be used to bypass security filters is changing the HTML brackets for Unicode brackets.
-* For example, the HTML tag `<script>` can be converted to `＜script＞`.
-* Using the `NFKC` form, the tag `＜script＞` will be converted to `<script>` and the security filters will block this input.
 
 ## File Upload use case
 
@@ -90,10 +100,13 @@ public void handleFileUpload(String filename){
 }
 ```
 
-## Canonicalization vs normalization
+## What is the difference between normalization and canonicalization?
 
-* Canonicalization converts any representation of an object into one unique form, making it easy to compare objects by ensuring they all look the same.
-* On the other hand, normalization, transforms an object into a set of acceptable forms rather than one single form. This allows for comparison through a flexible process, accommodating variations that are still considered equal.
-* Canonicalization is straightforward but can be hard to implement consistently, while normalization is more adaptable for complex objects. Both methods aim to simplify the comparison of different representations of the same object.
-* Having as an example the file `Image.Png`, to convert it to the canonical form, it could become `image.png`.
-* On the other hand, to convert it to the normalized form, it could keep the extension in lowercase and allow uppercase letters in the name, transforming the filename to `Image.png`.
+* Both methods aim to simplify the comparison of different representations of the same object, but one method takes a more in-depth approach.
+* Normalization refers to the process of converting any representation of an object into a set of acceptable forms, known as normal forms. A normal form simply specifies the structure of the object, without the requirement of uniqueness.
+  * This allows for comparison through a flexible process, accommodating variations that are considered equal within a context.
+  * As an example, a certain normalization process might simply involve removing any non-ASCII characters and substituting spaces with hyphens for all filenames that are provided by a user when uploading a file. Considering the potential filenames `my profile picture.png` and `MY PROFILE PICTURE.png`, this would make both `my-profile-picture.png` and `MY-PROFILE-PICTURE.png` as resulting valid filenames, or even `My-Profile-Picture.PNG` if the user provides `My Profile Picture.PNG`.
+* Canonicalization is the process of turning any representation of an object into a sole, definitive version known as the canonical form, which is unique to each object.
+  * Taking the same filenames `my profile picture.png` and `MY PROFILE PICTURE.png`, a canonicalization process could involve creating a unique version by not only removing any non-ASCII characters and substituting spaces with hyphens, but also converting the entire filenames to lowercase, resulting `my-profile-picture.png` as the only acceptable filename, even when the user provides `My Profile Picture.PNG`.
+  * In this case, to determine if two representations are of the same object, it's sufficient to compare their canonical forms for equality.
+* Canonicalization provides a direct way to compare objects but can be challenging to apply uniformly, whereas normalization is more flexible for complex objects. For this reason, normalization might be preferable when it's difficult to consistently implement canonical forms.
