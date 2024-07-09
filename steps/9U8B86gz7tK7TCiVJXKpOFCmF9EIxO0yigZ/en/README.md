@@ -97,7 +97,7 @@
 #### Code snippet in Node.js
 
 * Since ES2015 JavaScript includes the built-in `String.prototype.normalize([form])` method which is supported in Node.js and all modern web browsers.
-* The optional `form` argument of `normalize` specifies the string identifier of the normalization form to be used, defaulting to `NFC` if not passed.
+* The optional `form` argument specifies the string identifier of the normalization form to be used, defaulting to `NFC` if not passed.
 
   ```javascript
   function changeUsername(username) {
