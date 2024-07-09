@@ -17,7 +17,7 @@
 * In those web applications where users can sign up using usernames that appear identical but have different representations, they might lead to account takeover scenarios.
 * For instance, the username `Amélie` can be represented in two different ways using the Unicode encoding standard:
   * The `é` character can be represented by the `U+00E9` code, providing a complete representation for `Amélie` as `\u0041\u006D\u00E9\u006C\u0069\u0065`.
-  * The `é` can also be represented by breaking it down into an equivalent base letter `e`, with code `U+0065`, and combining acute accent ` ́`, with code `U+0301`, providing a complete representation for `Amélie` as `\u0041\u006D\u0065\u0301\u006C\u0069\u0065`.
+  * The `é` can also be represented by breaking it down into an equivalent base letter `e`, with code `U+0065`, and combining acute accent `´`, with code `U+0301`, providing a complete representation for `Amélie` as `\u0041\u006D\u0065\u0301\u006C\u0069\u0065`.
   * These two characters look the same, but do not compare as equal, and the strings have different lengths as can be seen in JavaScript:
 
     ```javascript
@@ -49,7 +49,7 @@
   |NFC|Normalization Form Canonical Composition|Often used when a predictable and human-readable form of text is necessary, such as when displaying text in user interfaces or when storing text that must appear consistent to end-users|Remains the same|Stored as `é` (code `U+00E9`)|
   |NFD|Normalization Form Canonical Decomposition|Valuable in scenarios where text needs to be analyzed or processed at a character level, such as in search algorithms and text comparison operations, where diacritics and other modifiers need to be considered separately from their base characters|Remains the same|Stored as `e´` (codes `U+0065` and `U+0301`)|
   |NFKC|Normalization Form Compatibility Composition|Particularly useful in instances where a form of the text is required that is compatible across different systems, while still retaining the maximum amount of information possible. It's used in systems where compatibility is more important than textual accuracy, such as in keyword generation for search engines|Transformed into `K` to ensure compatibility across different systems|Stored as `é` (code `U+00E9`)|
-  |NFKD|Normalization Form Compatibility Decomposition (NFKD)|Crucial for text analysis where compatibility and the most detailed decomposition are required, such as in cryptographic operations, indexing, and any application needing the most atomic form of characters|Transformed into `K` to ensure compatibility across different systems|Stored as `e´` (codes `U+0065` and `U+0301`)|
+  |NFKD|Normalization Form Compatibility Decomposition|Crucial for text analysis where compatibility and the most detailed decomposition are required, such as in cryptographic operations, indexing, and any application needing the most atomic form of characters|Transformed into `K` to ensure compatibility across different systems|Stored as `e´` (codes `U+0065` and `U+0301`)|
 
 * These forms help in ensuring that Unicode characters are represented consistently in the database, during processing, and even when interfacing with other systems.
   * Strings in a unicode normalized form, they can be assured that equivalent strings have a unique binary representation.
@@ -97,7 +97,7 @@
 #### Code snippet in Node.js
 
 * Since ES2015 JavaScript includes the built-in `String.prototype.normalize([form])` method which is supported in Node.js and all modern web browsers.
-* The optional `form` argument specifies the string identifier of the normalization form to be used, defaulting to `NFC` if not passed.
+* The optional `form` argument of `normalize` specifies the string identifier of the normalization form to be used, defaulting to `NFC` if not passed.
 
   ```javascript
   function changeUsername(username) {
