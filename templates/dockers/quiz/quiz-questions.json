@@ -1,0 +1,111 @@
+{
+  "questions": [
+    {
+      "type": "radio",
+      "prompts": {
+        "en": "In what sequence should the implementation of these security measures be prioritized in terms of preventing SQL injection vulnerabilities?",
+        "es": "¿En qué secuencia se debe priorizar la aplicación de las siguientes medidas de seguridad para prevenir las vulnerabilidades de inyección SQL?"
+      },
+      "answers": [
+        {
+          "id": 1,
+          "texts": {
+            "en": "Allow-list input validation, Prepared Statements, Stored Procedures, Escaping user-supplied input.",
+            "es": "Validación de entrada mediante lista de permitidos, Sentencia preparada, Procedimientos almacenados, Escapar todas las entradas proporcionadas por el usuario."
+          }
+        },
+        {
+          "id": 2,
+          "texts": {
+            "en": "Allow-list input validation, Escaping user-supplied input, Stored Procedures, Prepared Statements.",
+            "es": "Validación de entrada mediante lista de permitidos, Escapar todas las entradas proporcionadas por el usuario, Procedimientos almacenados, Sentencia preparada."
+          }
+        },
+        {
+          "id": 3,
+          "texts": {
+            "en": "Prepared Statements, Allow-list input validation, Stored Procedures, Escaping user-supplied input.",
+            "es": "Sentencia preparada, Validación de entrada mediante lista de permitidos, Procedimientos almacenados, Escapar todas las entradas proporcionadas por el usuario."
+          }
+        },
+        {
+          "id": 4,
+          "texts": {
+            "en": "Prepared Statements, Stored Procedures, Allow-list input validation, Escaping user-supplied input.",
+            "es": "Sentencia preparada, Procedimientos almacenados, Validación de entrada mediante lista de permitidos, Escapar todas las entradas proporcionadas por el usuario."
+          }
+        },
+        {
+          "id": 5,
+          "texts": {
+            "en": "Stored Procedures, Prepared Statements, Allow-list input validation, Escaping user-supplied input.",
+            "es": "Procedimientos almacenados, Sentencia preparada, Validación de entrada mediante lista de permitidos, Escapar todas las entradas proporcionadas por el usuario."
+          }
+        }
+      ],
+      "correctAnswerIds": [4]
+    },
+    {
+      "type": "radio",
+      "prompts": {
+        "en": "Sometimes, the complexity of certain form fields, such as password fields, requires that a WAF exclude them from specific malicious pattern checks, delegating SQL injection protection to the web application.",
+        "es": "A veces, la complejidad de ciertos campos de formulario, como son los de contraseña, requiere que un WAF los excluya de comprobaciones específicas de patrones maliciosos, delegando la protección contra inyecciones SQL a la aplicación web."
+      },
+      "answers": [
+        {
+          "id": 1,
+          "texts": {
+            "en": "True",
+            "es": "Cierto"
+          }
+        },
+        {
+          "id": 2,
+          "texts": {
+            "en": "False",
+            "es": "Falso"
+          }
+        }
+      ],
+      "correctAnswerIds": [1]
+    },
+    {
+      "type": "checkbox",
+      "prompts": {
+        "en": "Which of the following statements are correct?",
+        "es": "¿Cuáles de las siguientes afirmaciones son correctas?"
+      },
+      "answers": [
+        {
+          "id": 1,
+          "texts": {
+            "en": "Employing ORMs isn't a foolproof solution for preventing SQL injections, given that they can include methods that introduce this threat.",
+            "es": "Hacer uso de un ORM no es sinónimo de una solución infalible para evitar las inyecciones SQL, dado que pueden incluir métodos que introduzcan esta amenaza."
+          }
+        },
+        {
+          "id": 2,
+          "texts": {
+            "en": "A Web Application Firewall (WAF) solves the existence of a SQL injection vulnerability in a web application, protecting it from a wide range of attacks.",
+            "es": "Un Web Application Firewall (WAF) resuelve la existencia de una vulnerabilidad de inyección SQL en una aplicación web, protegiéndola de una amplia gama de ataques."
+          }
+        },
+        {
+          "id": 3,
+          "texts": {
+            "en": "Input data validation techniques, when applied, should usually serve as the first layer of defense.",
+            "es": "Las técnicas de validación de datos de entrada, cuando se aplican, deben servir normalmente como primera capa de defensa."
+          }
+        },
+        {
+          "id": 4,
+          "texts": {
+            "en": "When security is compromised, prepared statements often present a higher risk than stored procedures.",
+            "es": "Cuando la seguridad se ve comprometida, las sentencias preparadas suelen presentar un riesgo mayor que los procedimientos almacenados."
+          }
+        }
+      ],
+      "correctAnswerIds": [1, 3]
+    }
+  ]
+}
