@@ -30,7 +30,7 @@
   |NFKD|Normalization Form Compatibility Decomposition|Crucial for text analysis where compatibility and the most detailed decomposition are required, such as in cryptographic operations, indexing, and any application needing the most atomic form of characters|Transformed into `K` to ensure compatibility across different systems|Stored as `e´` (codes `U+0065` and `U+0301`)|
 
 * These forms help in ensuring that Unicode characters are represented consistently in the database, during processing, and even when interfacing with other systems.
-  * Strings in a Unicode normalized form ensure that equivalent strings maintain a unique binary representation, clearly within the applied normalization form.
+  * Strings in a Unicode normalized form ensure that equivalent strings maintain a unique binary representation, naturally within the specific normalization form applied.
 
 #### Which form should be used by default?
 
@@ -45,7 +45,7 @@
 ### Account takeover
 
 * In those web applications where users can sign up using usernames that appear identical but have different representations, they might lead to account takeover scenarios.
-* For instance, the username `Amélie` can be represented in two different ways using the Unicode encoding standard:
+* For instance, the username `Amélie` can be represented in, at least, two different ways using the Unicode encoding standard:
   * The `é` character can be represented by the `U+00E9` code, providing a complete representation for `Amélie` as `\u0041\u006D\u00E9\u006C\u0069\u0065`.
   * The `é` can also be represented by breaking it down into an equivalent base letter `e`, with code `U+0065`, and combining acute accent `´`, with code `U+0301`, providing a complete representation for `Amélie` as `\u0041\u006D\u0065\u0301\u006C\u0069\u0065`.
   * These two characters, `é` and `é`, look the same, but do not compare as equal, and the strings have different lengths. In JavaScript:
@@ -59,7 +59,7 @@
     ```
 
 * In this scenario, normalizing the string `Amélie` into the *canonical form* helps to avoid such discrepancies by ensuring that visually identical strings are treated as equivalent.
-  * Getting back to the previous example based on the `é` character, but this time normalizing the string, the result would be:
+  * Using the previous example based on the `é` character, but this time normalizing the string, the result would be:
 
     ```javascript
     const str = "\u0065\u0301";
