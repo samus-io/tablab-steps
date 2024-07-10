@@ -36,7 +36,7 @@
 
 * The most common one is `NFC`. It is often recommended as the default choice because it is widely used and compatible with many systems and protocols.
   * It is actually considered the *normal* form of Unicode text on the web and in other computing environments, making it a safe default for general use.
-* Alternatively, to avoid odd characters such as `﹤` or `ⓩ`, the `NFKC` form can be applied, which replaces these characters with their standard equivalents (`<` and `z`).
+* Alternatively, to avoid odd characters such as `＜` or `ⓩ`, the `NFKC` form can be applied, which replaces these characters with their standard equivalents (`<` and `z`).
 
 ## What vulnerabilities could arise when Unicode normalization is not applied?
 
