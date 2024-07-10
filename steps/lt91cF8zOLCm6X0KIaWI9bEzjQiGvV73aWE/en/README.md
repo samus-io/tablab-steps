@@ -40,7 +40,7 @@
   const jsonData = {
     name: "John Doe",
     age: 30,
-    email: "john@example.com"
+    email: "john@example.tbl"
   };
 
   validateJSON(jsonData);
@@ -52,8 +52,7 @@
 ## Validator.js library
 
 * The [validator.js][4] library offers functions for validating various data types in JavaScript, some examples are:
-
-   `isEmail`: Validates email addresses.
+  * `isEmail`: Validates email addresses.
   * `isURL`: Validates URLs.
   * `isAlphanumeric`: Checks if a string consists only of letters and numbers.
   * `isLength`: Validates string length.
@@ -61,34 +60,34 @@
 
 ## File Upload use case: Filename length limit
 
-* **Scenario**
+### Scenario
 
-  * Consider the development of a file upload feature for a web application.
-  * It's essential to ensure that filenames conform to specific syntax rules.
-  * One crucial aspect is enforcing a maximum length limit for filenames.
-  * This maintains compatibility across various file systems and mitigates security risks associated with excessively long filenames.
+* Consider the development of a file upload feature for a web application.
+* It's essential to ensure that filenames conform to specific syntax rules.
+* One crucial aspect is enforcing a maximum length limit for filenames.
+* This maintains compatibility across various file systems and mitigates security risks associated with excessively long filenames.
 
-* **Implementation**
+### Implementation
 
-  * Syntax validation ensures that user input follows predefined rules and formats.
-  * Here, the focus is on validating filenames during the file upload process and incorporate additional syntax validations.
+* Syntax validation ensures that user input follows predefined rules and formats.
+* Here, the focus is on validating filenames during the file upload process and incorporate additional syntax validations.
 
-  * **Filename Length Limit**
+### Filename Length Limit
 
-    * Define a maximum length limit for filenames to maintain compatibility and prevent security risks related to excessively long filenames.
-    * Reject filenames exceeding the specified length limit and provide feedback to users.
+* Define a maximum length limit for filenames to maintain compatibility and prevent security risks related to excessively long filenames.
+* Reject filenames exceeding the specified length limit and provide feedback to users.
 
-  * **Filename Extension Check**
+### Filename Extension Check
 
-    * Split the filename by dot (`.`) to ensure it has exactly one extension.
-    * Prevent filenames with multiple extensions or filenames lacking an extension.
+* Split the filename by dot (`.`) to ensure it has exactly one extension.
+* Prevent filenames with multiple extensions or filenames lacking an extension.
 
-  * **Alphanumeric Check**
+### Alphanumeric Check
 
-    * Utilize the isAlphanumeric function from the `validator.js` library to verify if the filename is alphanumeric.
-    * This ensures filenames comprise only letters and numbers, enhancing security and compatibility.
+* Utilize the isAlphanumeric function from the `validator.js` library to verify if the filename is alphanumeric.
+* This ensures filenames comprise only letters and numbers, enhancing security and compatibility.
 
-* **Example**
+### Code example
 
   ```javascript
   const validator = require("validator");
@@ -119,8 +118,8 @@
   const invalidFilename = "image.jpg.php"; // Contains multiple extensions
 
   // Validate Filename Syntax
-  console.log("Syntax Validation for valid filename:", validateFilenameSyntax(validFilename)); // Output: true
-  console.log("Syntax Validation for invalid filename:", validateFilenameSyntax(invalidFilename)); // Output: false
+  console.log("Syntax Validation for valid filename:", validateFilenameSyntax(validFilename));
+  console.log("Syntax Validation for invalid filename:", validateFilenameSyntax(invalidFilename));
   ```
 
 * In this example, the validateFilename function performs multiple syntax validations:
