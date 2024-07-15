@@ -9,14 +9,13 @@
 * Every sentence must begin with a bullet point, like this one.
 * Avoid long sentences. If needed, split them by meaning, concept or context.
 * All sentences must be impersonal. Avoid first-person sentences when explaining a concept, such as *"You can create groups..."*. Instead, the impersonal approach, like *"Groups can be created..."* should be used.
-* Do not use capital letters after a colon (`:`).
-* In case of using bold, if the text preceding the colon no longer remains in bold, the bold must be ended before the colon (e.g., *"**Administrator**: has the rights to..."*).
+* Do not use capital letters after a colon (`:`), preferably continue with lowercase (e.g., *"Prepare: the application creates the statement..."*).
+* In case of using bold, if the text preceding the colon no longer remains in bold, the bold must be ended before the colon (e.g., *"**Prepare**: the application creates the statement..."*).
 
 ### Defining titles
 
 * It's not necessary to add a colon (`:`) to the end of a title to introduce a bulleted list.
-* Do not use capital letters for words that do not represent a concept. For example, a title like *"Practical Use Cases"* should simply be written as *"Practical use cases"*.
-  * However, when titles involve concepts such as *"Input Validation"* or *"Information Disclosure"*, it is appropriate to use a format like *"Input Validation overview"* with capitalization to emphasize the concept.
+* Do not use capital letters in titles, except for acronyms and the first letter (e.g., *"General best practices against SQL injections"*).
 
 ### Defining numeric enumerations
 
@@ -29,11 +28,13 @@
   1. Fourth sentence
   ```
 
+* A numerical enumeration will only be used when certain things happen that need to be described in a certain order.
+
 ### Using emojis
 
-* :writing_hand: (`:writing_hand:`): is used to indicate to the learner that a practical exercise follows.
-* :older_man: (`:older_man:`): is used to explain some concept that is related to the Step but is not specifically covered.
-* :warning: (`:warning:`): is used when the learner must pay attention to an important section.
+* :writing_hand: (`writing_hand`): is used to indicate to the learner that a practical exercise follows.
+* :older_man: (`older_man`): is used to explain some concept that is related to the Step but is not specifically covered.
+* :warning: (`warning`): is used when the learner must pay attention to an important section.
 
 ### Adding a table
 
