@@ -11,7 +11,7 @@
 ## What about Unicode normalization?
 
 * Unicode normalization is a process that ensures different binary representations of texts that are equivalent, meaning they appear identical, will be reduced to the same sequence of code points, thus resulting in the same binary value.
-* This process is essential in dealing with strings in programming and data processing, since it is not only useful for security reasons, but also for functionality.
+* This process is essential in dealing with strings in programming and data processing since it is not only useful for security reasons, but also for functionality.
 
   > :warning: Any web application that accepts input from users must always normalize it to a canonical form in Unicode.
 
@@ -24,13 +24,14 @@
 
   |Acronym|Term|Usage|Character `ᴷ` as example| Character `é` as example|
   |:--:|:--:|:--:|:--:|:--:|
-  |NFC|Normalization Form Canonical Composition|Often used when a predictable and human-readable form of text is necessary, such as when displaying text in user interfaces or when storing text that must appear consistent to end-users|Remains the same|Stored as `é` (code `U+00E9`)|
-  |NFD|Normalization Form Canonical Decomposition|Valuable in scenarios where text needs to be analyzed or processed at a character level, such as in search algorithms and text comparison operations, where diacritics and other modifiers need to be considered separately from their base characters|Remains the same|Stored as `e´` (codes `U+0065` and `U+0301`)|
-  |NFKC|Normalization Form Compatibility Composition|Particularly useful in instances where a form of the text is required that is compatible across different systems, while still retaining the maximum amount of information possible. It's used in systems where compatibility is more important than textual accuracy, such as in keyword generation for search engines|Transformed into `K` to ensure compatibility across different systems|Stored as `é` (code `U+00E9`)|
-  |NFKD|Normalization Form Compatibility Decomposition|Crucial for text analysis where compatibility and the most detailed decomposition are required, such as in cryptographic operations, indexing, and any application needing the most atomic form of characters|Transformed into `K` to ensure compatibility across different systems|Stored as `e´` (codes `U+0065` and `U+0301`)|
+  |`NFC`|Normalization Form Canonical Composition|Often used when a predictable and human-readable form of text is necessary, such as when displaying text in user interfaces or when storing text that must appear consistent to end-users|Remains the same|Stored as `é` (code `U+00E9`)|
+  |`NFD`|Normalization Form Canonical Decomposition|Valuable in scenarios where text needs to be analyzed or processed at a character level, such as in search algorithms and text comparison operations, where diacritics and other modifiers need to be considered separately from their base characters|Remains the same|Stored as `e´` (codes `U+0065` and `U+0301`)|
+  |`NFKC`|Normalization Form Compatibility Composition|Particularly useful in instances where a form of the text is required that is compatible across different systems, while still retaining the maximum amount of information possible. It's used in systems where compatibility is more important than textual accuracy, such as in keyword generation for search engines|Transformed into `K` to ensure compatibility across different systems|Stored as `é` (code `U+00E9`)|
+  |`NFKD`|Normalization Form Compatibility Decomposition|Crucial for text analysis where compatibility and the most detailed decomposition are required, such as in cryptographic operations, indexing, and any application needing the most atomic form of characters|Transformed into `K` to ensure compatibility across different systems|Stored as `e´` (codes `U+0065` and `U+0301`)|
 
 * These forms help in ensuring that Unicode characters are represented consistently in the database, during processing, and even when interfacing with other systems.
-  * Strings in a Unicode normalized form ensure that equivalent strings maintain a unique binary representation, naturally within the specific normalization form applied.
+* Strings in a Unicode normalized form ensure that equivalent strings maintain a unique binary representation, naturally within the same normalization form applied.
+  * For instance, in `NFC`, all characters are first decomposed, and then all combining sequences are systematically recomposed in a specific order as defined by the standard.
 
 #### Which form should be used by default?
 
@@ -40,7 +41,7 @@
 
 ## What vulnerabilities could arise when Unicode normalization is not applied?
 
-* Below are mentioned two actual implications of vulnerabilities caused by failing to adhere to Unicode normalization.
+* Below are mentioned two actual implications of vulnerabilities caused by failing to adhere to Unicode normalization, among various others.
 
 ### Account takeover
 
@@ -59,7 +60,7 @@
     ```
 
 * In this scenario, normalizing the string `Amélie` into the *canonical form* helps to avoid such discrepancies by ensuring that visually identical strings are treated as equivalent.
-  * Using the previous example based on the `é` character, but this time normalizing the string, the result would be:
+  * Using the previous example based on the `é` character but this time normalizing the string, the result would be:
 
     ```javascript
     const str = "\u0065\u0301";
