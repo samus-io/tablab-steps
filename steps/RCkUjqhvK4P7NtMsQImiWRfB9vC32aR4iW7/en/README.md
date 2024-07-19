@@ -1,5 +1,10 @@
 # Regular Expression (RegEx) validation
 
+TODO: 
+- Make sure all validations shown are only international values (e.g., do not provide DNI validation as example, since it applies only in Spain). In this sense, is IBAN international/european? Credit card? Phone?
+- Describe all validations shown, explaining every regex.
+- Make use of the same variable names on both code snippets.
+
 * `Regular expressions (RegEx)` are a fundamental tool in software development for pattern matching and validation.
 * RegEx is extensively used for input validation measures, ensuring that user-provided data meets specific criteria.
 
@@ -66,26 +71,26 @@
 ^-?\d+$
 ```
 
+### Date (DD/MM/YYYY)
+
+TODO
+
 ### Date (YYYY-MM-dd)
 
 ```regex
 ([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))
 ```
 
-### Date (DD/MM/YYYY) Format
+### HH:MM (12-hour format)
 
-TODO
+```regex
+^(0?[1-9]|1[0-2]):[0-5][0-9]$
+```
 
 ### Phone number (with country codes)
 
 ```regex
 \+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$
-```
-
-### HH:MM (12 HOUR)
-
-```regex
-^(0?[1-9]|1[0-2]):[0-5][0-9]$
 ```
 
 ### IBAN
