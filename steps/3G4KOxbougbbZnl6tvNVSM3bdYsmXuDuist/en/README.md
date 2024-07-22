@@ -1,8 +1,17 @@
 # Input validation overview
 
-* `Input validation` is the practice of verifying that user-provided data aligns with predefined criteria before it's processed or stored.
-* It involves examining and validating user-supplied data to ensure adherence to specified requirements and constraints.
+* `Input validation` is the practice of verifying that untrusted input aligns with predefined criteria before it's processed or stored.
+* It involves examining and validating untrusted input to ensure adherence to specified requirements and constraints.
 * Essentially, input validation acts as a gatekeeper, screening out invalid or malicious data to safeguard the application's integrity and prevent potential harm.
+
+## What is considered untrusted input?
+
+* `Untrusted input` is any data provided by an external source, referring to any data not produced or controlled by the application, such as:
+  * User-supplied data.
+  * External API responses.
+  * Transferred files content.
+
+  > :older_man: Validating every variable of an application is a time-consuming task from both development and performance standpoints. A useful guideline is to only validate data from all external sources of the application.
 
 ## What can be achieved with input validation
 
@@ -69,4 +78,4 @@
 * It acts as the final arbiter, rigorously scrutinizing incoming data to enforce business rules, sanitize inputs, and mitigate security risks.
 * Unlike client-side validation, which can be circumvented or disabled, server-side validation operates beyond the user's control, ensuring the integrity and trustworthiness of the application's data.
 
-  > 👴 By combining client-side validation for usability enhancements with server-side validation for security enforcement, developers need to find a delicate balance between user experience and application integrity and security, delivering a seamless yet fortified user interaction paradigm.
+  > :older_man: By combining client-side validation for usability enhancements with server-side validation for security enforcement, developers need to find a delicate balance between user experience and application integrity and security, delivering a seamless yet fortified user interaction paradigm.

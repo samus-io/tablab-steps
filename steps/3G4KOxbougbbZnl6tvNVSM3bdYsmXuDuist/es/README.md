@@ -1,8 +1,17 @@
 # Introducción a la validación de datos de entrada
 
-* La `validación de datos de entrada` es el proceso de asegurar que los datos proporcionados por el usuario se ajustan a unos criterios predefinidos antes de ser procesados o almacenados.
-* Consiste en examinar y validar los datos suministrados por el usuario para garantizar que cumplen los requisitos y las restricciones especificadas.
+* La `validación de datos de entrada` es el proceso de asegurar que entradas de datos no confiables se ajustan a unos criterios predefinidos antes de ser procesados o almacenados.
+* Consiste en examinar y validar las entradas de datos no confiables para garantizar que cumplen los requisitos y las restricciones especificadas.
 * Se puede comparar la validación de datos de entrada con un portero de la puerta de un edificio, ya que actúa filtrando los datos no válidos o maliciosos para salvaguardar la integridad de la aplicación y evitar posibles daños.
+
+## ¿Qué se considera una entrada de datos no confiable?
+
+* Una entrada de datos no confiable es cualquier dato proporcionado por una fuente externa, refiriéndose a cualquier dato no producido o controlado por la aplicación, como por ejemplo:
+  * Datos proporcionados por el usuario.
+  * Respuestas de API externas.
+  * Contenido de ficheros transferidos.
+
+  > :older_man: Validar todas las variables de una aplicación es una tarea que consume tiempo, tanto desde el punto de vista del desarrollo como del rendimiento. Una buena directriz es validar únicamente los datos de las fuentes externas de la aplicación.
 
 ## Qué se puede conseguir con la validación de datos de entrada
 
@@ -69,4 +78,4 @@
 * Actúa como árbitro final, examinando rigurosamente los datos entrantes para hacer cumplir las normas empresariales, sanear las entradas y mitigar los riesgos de seguridad.
 * A diferencia de la validación en el lado del cliente, que puede evitarse o desactivarse, la validación en el lado del servidor opera fuera del control del usuario, garantizando la integridad y fiabilidad de los datos de la aplicación.
 
-  > 👴 Al combinar la validación en el lado del cliente para mejorar la usabilidad con la validación en el lado del servidor para reforzar la seguridad, los desarrolladores tienen que encontrar un delicado equilibrio entre la experiencia del usuario y la integridad y seguridad de la aplicación, ofreciendo un paradigma de interacción con el usuario sin fisuras pero, a su vez, fortificado.
+  > :older_man: Al combinar la validación en el lado del cliente para mejorar la usabilidad con la validación en el lado del servidor para reforzar la seguridad, los desarrolladores tienen que encontrar un delicado equilibrio entre la experiencia del usuario y la integridad y seguridad de la aplicación, ofreciendo un paradigma de interacción con el usuario sin fisuras pero, a su vez, fortificado.
