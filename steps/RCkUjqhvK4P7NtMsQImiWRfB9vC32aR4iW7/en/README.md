@@ -1,10 +1,5 @@
 # Regular Expression (RegEx) validation
 
-TODO: 
-- Make sure all validations shown are only international values (e.g., do not provide DNI validation as example, since it applies only in Spain). In this sense, is IBAN international/european? Credit card? Phone?
-- Describe all validations shown, explaining every regex.
-- Make use of the same variable names on both code snippets.
-
 * `Regular expressions (RegEx)` are a fundamental tool in software development for pattern matching and validation.
 * RegEx is extensively used for input validation measures, ensuring that user-provided data meets specific criteria.
 
@@ -61,49 +56,62 @@ TODO:
 
 ### Alphanumeric characters (without space)
 
-```regex
-^[a-zA-Z0-9]*$
-```
+* This pattern ensures a string consists solely of alphanumeric characters (letters and digits) without any spaces. It allows for an empty string or any number of such characters:
 
-### Positive integer input
-
-```regex
-^-?\d+$
-```
+  ```regex
+  ^[a-zA-Z0-9]*$
+  ```
 
 ### Date (DD/MM/YYYY)
 
-TODO
+* The next regular expression checks for a date in the `DD/MM/YYYY` structure.
+* It verifies the day is between 01 and 31, the month ranges from 01 to 12, and the year is a four-digit number beginning with 19 or 20:
 
-### Date (YYYY-MM-dd)
+  ```regex
+  \b(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(19|20)\d{2}\b
+  ```
 
-```regex
-([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))
-```
+### Date (YYYY-MM-DD)
+
+* This pattern follows the same rules as the previous but changing the order to `YYYY-MM-DD`:
+
+  ```regex
+  ([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))
+  ```
 
 ### HH:MM (12-hour format)
 
-```regex
-^(0?[1-9]|1[0-2]):[0-5][0-9]$
-```
+* This RegEx checks for a time in the 12-hour format. It confirms the hour is between 01 and 12 and the minutes range from 00 to 59. A leading zero is optional for single-digit hours.
+
+  ```regex
+  ^(0?[1-9]|1[0-2]):[0-5][0-9]$
+  ```
 
 ### Phone number (with country codes)
 
-```regex
-\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$
-```
+* The next pattern is designed to validate an international phone number that includes a country code. It ensures the number starts with a plus sign, followed by a valid country code and up to 15 digits.
+
+  ```regex
+  \+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$
+  ```
 
 ### IBAN
 
-```regex
-^([A-Z]{2}[0-9]{2})([A-Z0-9]{1,30})$
-```
+* This pattern validates an International Bank Account Number (IBAN). It checks that the IBAN starts with a two-letter country code, followed by two check digits, and includes up to 30 alphanumeric characters.
+* Note that doesn't check if the IBAN is valid, it only check if its structure is valid:
+
+  ```regex
+  ^([A-Z]{2}[0-9]{2})([A-Z0-9]{1,30})$
+  ```
 
 ### Credit Card
 
-```regex
-(^4[0-9]{12}(?:[0-9]{3})?$)|(^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$)|(3[47][0-9]{13})|(^3(?:0[0-5]|[68][0-9])[0-9]{11}$)|(^6(?:011|5[0-9]{2})[0-9]{12}$)|(^(?:2131|1800|35\d{3})\d{11}$)
-```
+* The following regular expression checks for various credit card numbers, including those issued by Visa, MasterCard, American Express, Diners Club, Discover, and JCB.
+* It ensures the card number matches specific patterns for these card types, verifying the appropriate length and digit sequence:
+
+  ```regex
+  (^4[0-9]{12}(?:[0-9]{3})?$)|(^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$)|(3[47][0-9]{13})|(^3(?:0[0-5]|[68][0-9])[0-9]{11}$)|(^6(?:011|5[0-9]{2})[0-9]{12}$)|(^(?:2131|1800|35\d{3})\d{11}$)
+  ```
 
 ## Implementing RegEx
 
@@ -126,8 +134,8 @@ public static Boolean isValidEmail(String email){
 
 ```javascript
 function isValidEmail(email){
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return pattern.test(email);
 }
 ```
 
