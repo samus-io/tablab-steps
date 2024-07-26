@@ -31,13 +31,13 @@
 
 ### Syntactic validation
 
-* Focuses on the superficial characteristics of data, ensuring it meets the predefined structure and format expectations.
+* Focuses on the superficial characteristics of data, ensuring it meets the predefined structure and format expectations. This type of validation checks for correctness in terms of syntax without regard to the meaning of the data.
   * It's like a grammar check for your data, verifying if it aligns with the syntax rules.
 * Acts as the first line of defense, swiftly rejecting malformed or improperly formatted data before it infiltrates deeper layers of the application.
 
 #### Use cases
 
-* Data types: ensuring that numeric fields contain numbers, text fields contain alphabets, and email addresses adhere to the standard format (e.g., `user@example.tbl`).
+* Data types: ensuring that numeric fields contain numbers, text fields contain alphabets, and email addresses adhere to the standard format (e.g., `user@example.tbl`) or a date is in a specific format (e.g.,`DD-MM-YYYY`).
 * Length limits: checking if input lengths fall within acceptable boundaries to prevent buffer overflows or truncation issues.
 * Format constraints: validating data against predetermined patterns, such as credit card numbers, phone numbers, or postal codes.
 
@@ -45,12 +45,12 @@
 
 * Dives deeper than syntactic validation examining the meaning and context of the data beyond its surface appearance.
   * It's about ensuring that the data makes sense and aligns with the application's expectations.
-* Acts as the discerning judge, assessing the data to ensure it not only appears correct but also fits well within the overall context of the application's purpose.
+* Acts as a judge interpreting the facts of a case, assessing the data to ensure it not only appears correct but also fits well within the overall context of the application's purpose.
 
 #### Use cases
 
 * Range checks: verifying if numeric inputs fall within permissible ranges, such as ensuring a user's age is between 18 and 100.
-* Business rules: enforcing specific business logic constraints, like validating product quantities against available stock, checking if a booking falls within operating hours or verifying that an email domain is among those expected.
+* Business rules: enforcing specific business logic constraints, like validating product quantities against available stock, checking if a booking falls within operating hours or verifying that an email domain is among those expected, exists, and can receive emails.
 * Cross-field validation: examining relationships between multiple fields, such as verifying that a start date precedes an end date or ensuring consistency between related fields.
 
 ## Input validation challenges

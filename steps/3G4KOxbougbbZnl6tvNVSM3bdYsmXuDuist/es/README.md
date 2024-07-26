@@ -31,13 +31,13 @@
 
 ### Validación sintáctica
 
-* Se centra en las características superficiales de los datos, asegurándose de que cumplen las expectativas de estructura y de formato predefinidas.
+* Se centra en las características superficiales de los datos, asegurándose de que cumplen las expectativas de estructura y de formato predefinidas. Este tipo de validación verifica la corrección en términos de sintaxis sin tener en cuenta el significado de los datos.
   * Es como una revisión gramatical de los datos, la cual comprueba si se ajustan a las reglas sintácticas.
 * Actúa como primera línea de defensa, rechazando rápidamente los datos con formato incorrecto antes de que se infiltren en las capas más profundas de la aplicación.
 
 #### Casos de uso
 
-* Tipos de datos: garantizar que los campos numéricos realmente contengan números, los campos de texto contengan caracteres alfabéticos y las direcciones de correo electrónico se ajusten al formato estándar (e.g., `user@example.tbl`).
+* Tipos de datos: garantizar que los campos numéricos realmente contengan números, los campos de texto contengan caracteres alfabéticos, las direcciones de correo electrónico se ajusten al formato estándar (e.g., `user@example.tbl`) o una fecha esté en un formato específico (e.g., `DD-MM-YYYY`).
 * Límites de longitud: comprobar si las longitudes de entrada se encuentran dentro de los límites aceptables para evitar desbordamientos de búfer o problemas de truncamiento.
 * Restricciones de formato: validación de datos en función de patrones predeterminados, como números de tarjetas de crédito, números de teléfono o códigos postales.
 
@@ -45,12 +45,12 @@
 
 * Profundiza más allá de la validación sintáctica, examinando el significado y el contexto de los datos en lugar de únicamente su apariencia superficial.
   * Se trata de garantizar que los datos tengan sentido y se ajusten a las expectativas de la aplicación.
-* Actúa como un juez, evaluando los datos para asegurarse de que no sólo parecen correctos, sino que también encajan bien en el contexto general del objetivo de la aplicación.
+* Actúa como juez interpretando los hechos de un caso, evaluando los datos para asegurarse de que no sólo parecen correctos, sino que también encajan bien en el contexto general del objetivo de la aplicación.
 
 #### Casos de uso
 
 * Comprobación de rangos: verificar si las entradas numéricas se encuentran dentro de los rangos permitidos, por ejemplo, si la edad de un usuario está comprendida entre 18 y 100 años.
-* Reglas empresariales: aplicación de restricciones lógicas específicas, como la validación de la cantidad de un producto con respecto a las existencias disponibles, la comprobación de si una reserva se efectua dentro del horario operativo o la verificación de que un dominio de correo electrónico se encuentra entre los permitidos.
+* Reglas empresariales: aplicación de restricciones lógicas específicas, como la validación de la cantidad de un producto con respecto a las existencias disponibles, la comprobación de si una reserva se efectua dentro del horario operativo o la verificación de que un dominio de correo electrónico se encuentra entre los permitidos, existe y puede recibir correos electrónicos.
 * Validación cruzada de campos: examinar las relaciones entre varios campos, tales como verificar que una fecha de inicio precede a una fecha final o simplemente garantizar la coherencia entre campos relacionados.
 
 ## Desafíos de la validación de datos de entrada
