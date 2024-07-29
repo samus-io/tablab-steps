@@ -9,7 +9,7 @@
 * `Untrusted input` is any data provided by an external source, referring to any data not produced or controlled by the application, such as:
   * User-supplied data.
   * External API responses.
-  * Transferred files content.
+  * Files content.
 
   > :older_man: Validating every variable of an application is a time-consuming task from both development and performance standpoints. A useful guideline is to only validate data from all external sources of the application.
 

@@ -9,7 +9,7 @@
 * Una entrada de datos no confiable es cualquier dato proporcionado por una fuente externa, refiriéndose a cualquier dato no producido o controlado por la aplicación, como por ejemplo:
   * Datos proporcionados por el usuario.
   * Respuestas de API externas.
-  * Contenido de ficheros transferidos.
+  * Contenido de ficheros.
 
   > :older_man: Validar todas las variables de una aplicación es una tarea que consume tiempo, tanto desde el punto de vista del desarrollo como del rendimiento. Una buena directriz es validar únicamente los datos de las fuentes externas de la aplicación.
 
