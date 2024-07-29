@@ -69,3 +69,11 @@
   * **Definition**: Allows attackers to manipulate command arguments to alter command behavior.
   * **Focus**: Modifying arguments passed to commands rather than the commands themselves.
   * **Impact**: Causes unintended command execution and can lead to data theft or system compromise.
+
+## References
+
+* <https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html>
+* <https://portswigger.net/web-security/os-command-injection#how-to-prevent-os-command-injection-attacks>
+* <https://cwe.mitre.org/data/definitions/88.html>
+* <https://sonarsource.github.io/argument-injection-vectors/explained/>
+* <https://www.imperva.com/learn/application-security/command-injection/>
