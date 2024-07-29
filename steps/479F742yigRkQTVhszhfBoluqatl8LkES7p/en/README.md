@@ -60,12 +60,12 @@
 
 * **Command Injection**:
 
-* **Definition**: Allows attackers to execute arbitrary commands on the host operating system.
-* **Focus**: Inserting and executing entire commands within an application.
-* **Impact**: Full control over the system, leading to severe consequences like Remote Code Execution (RCE).
+  * **Definition**: Allows attackers to execute arbitrary commands on the host operating system.
+  * **Focus**: Inserting and executing entire commands within an application.
+  * **Impact**: Full control over the system, leading to severe consequences like Remote Code Execution (RCE).
 
 * **Argument Injection**:
 
-* **Definition**: Allows attackers to manipulate command arguments to alter command behavior.
-* **Focus**: Modifying arguments passed to commands rather than the commands themselves.
-* **Impact**: Causes unintended command execution and can lead to data theft or system compromise.
+  * **Definition**: Allows attackers to manipulate command arguments to alter command behavior.
+  * **Focus**: Modifying arguments passed to commands rather than the commands themselves.
+  * **Impact**: Causes unintended command execution and can lead to data theft or system compromise.
