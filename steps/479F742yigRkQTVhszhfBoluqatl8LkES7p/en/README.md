@@ -20,6 +20,8 @@
 
 ## Visual representation of Command Injection
 
+![image info](../../../static/images/command_injection.png)
+
 ## What could be achieved with this vulnerability?
 
 * **Remote Code Execution (RCE)**:
@@ -77,3 +79,4 @@
 * <https://cwe.mitre.org/data/definitions/88.html>
 * <https://sonarsource.github.io/argument-injection-vectors/explained/>
 * <https://www.imperva.com/learn/application-security/command-injection/>
+* <https://www.wallarm.com/what/command-injection-definition>
