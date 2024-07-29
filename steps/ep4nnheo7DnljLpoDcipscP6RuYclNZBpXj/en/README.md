@@ -1,4 +1,4 @@
-# What do we understand by “Step”?
+# What do we understand by "Step" in tablab.io?
 
 * What you are reading is a real example of a Step.
 * A learning unit designed to deliver a piece of information and specific knowledge in an easily digestible format.
