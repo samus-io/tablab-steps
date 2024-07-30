@@ -72,8 +72,8 @@
     {
       "type": "radio",
       "prompts": {
-        "en": "In Unicode, the character 'ř' can be produced from the letter 'r' combined with a caron (ˇ), represented by the code points '\\u0072\\u030C'. When normalized to NFC, what are the resulting code points?",
-        "es": "En Unicode, el carácter 'ř' puede producirse a partir de la letra 'r' combinada con un carón (ˇ), representado por los puntos de código '\\u0072\\u030C'. Cuando se normaliza a NFC, ¿cuáles son los puntos de código resultantes?"
+        "en": "In Unicode, the character 'ř' can be produced from the letter 'r' combined with a caron (ˇ), in this case represented by the code points '\\u0072\\u030C'. When this character is normalized to NFC, what code points are used?",
+        "es": "En Unicode, el carácter 'ř' puede producirse a partir de la letra 'r' combinada con un carón (ˇ), en este caso representado por los puntos de código '\\u0072\\u030C'. Cuando este carácter se normaliza a NFC, ¿qué puntos de código se utilizan?"
       },
       "answers": [
         {
