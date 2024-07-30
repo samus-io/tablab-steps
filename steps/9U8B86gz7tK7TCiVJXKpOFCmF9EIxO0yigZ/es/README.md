@@ -110,7 +110,7 @@
   }
   ```
 
-## ¿Cuál es la diferencia entre normalización y canonicalización?
+## ¿Cuál es la diferencia entre normalización y canonización?
 
 * Ambos métodos pretenden simplificar la comparación de distintas representaciones de un mismo objeto, pero uno de ellos adopta un enfoque más profundo.
 * La normalización se refiere al proceso de convertir cualquier representación de un objeto en un conjunto de formas aceptables, conocidas como formas normales. Una forma *normal* simplemente especifica la estructura del objeto, sin el requisito de unicidad.
@@ -118,6 +118,6 @@
   * Por ejemplo, un determinado proceso de normalización podría consistir simplemente en eliminar cualquier carácter no ASCII y sustituir los espacios por guiones en todos los nombres de archivo que proporcione un usuario al cargar un archivo en una aplicación web.
   * Teniendo en cuenta los posibles nombres de archivo `my document.pdf` y `MY DOCUMENT.pdf`, tanto `my-document.pdf` como `MY-DOCUMENT.pdf` serían nombres de archivo resultantes válidos, o incluso `My-Document.PDF` si el usuario proporciona `My Document.PDF`.
 * La canonización es el proceso de convertir cualquier representación de un objeto en una versión única y definitiva conocida como forma canónica, que es única para cada objeto.
-  * Tomando los mismos nombres de archivo `my document.pdf` y `MY DOCUMENT.pdf`, un proceso de canonicalización podría implicar la creación de una versión única no sólo eliminando cualquier carácter no ASCII y sustituyendo los espacios por guiones, sino también convirtiendo todos los nombres de archivo a minúsculas, dando como resultado `my-document.pdf` como único nombre de archivo aceptable, incluso cuando el usuario proporciona `My Document.PDF`.
+  * Tomando los mismos nombres de archivo `my document.pdf` y `MY DOCUMENT.pdf`, un proceso de canonización podría implicar la creación de una versión única no sólo eliminando cualquier carácter no ASCII y sustituyendo los espacios por guiones, sino también convirtiendo todos los nombres de archivo a minúsculas, dando como resultado `my-document.pdf` como único nombre de archivo aceptable, incluso cuando el usuario proporciona `My Document.PDF`.
   * En este caso, para determinar si dos representaciones son del mismo objeto, basta con comparar sus formas canónicas para comprobar si son iguales.
 * La canonización proporciona una forma directa de comparar objetos, pero puede resultar difícil aplicarla de manera uniforme, mientras que la normalización es más flexible para objetos complejos. Por este motivo, la normalización puede ser preferible cuando resulta difícil aplicar de forma coherente las formas canónicas.

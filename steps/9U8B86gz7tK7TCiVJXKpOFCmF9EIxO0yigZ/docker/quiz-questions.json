@@ -1,0 +1,111 @@
+{
+  "questions": [
+    {
+      "type": "checkbox",
+      "prompts": {
+        "en": "Which of the following statements are correct about normalization and canonicalization in the context of computer science?",
+        "es": "¿Cuál de las siguientes afirmaciones son correctas sobre la normalización y la canonización en el contexto de la informática?"
+      },
+      "answers": [
+        {
+          "id": 1,
+          "texts": {
+            "en": "Normalization and canonicalization both create a unique version of an object, but normalization does so without requiring uniqueness.",
+            "es": "Tanto la normalización como la canonización crean una versión única de un objeto, pero la normalización lo hace sin requerir unicidad."
+          }
+        },
+        {
+          "id": 2,
+          "texts": {
+            "en": "Canonicalization creates a unique, definitive version of an object, while normalization converts objects into a set of acceptable forms.",
+            "es": "La canonización crea una versión única y definitiva de un objeto, mientras que la normalización convierte los objetos en un conjunto de formas aceptables."
+          }
+        },
+        {
+          "id": 3,
+          "texts": {
+            "en": "Canonicalization turns any representation into a unique form for direct comparison, whereas normalization may not be as straightforward when comparing the resulting accepted forms.",
+            "es": "La canonización convierte cualquier representación en una forma única para la comparación directa, mientras que la normalización puede no ser tan sencilla a la hora de comparar las formas aceptadas resultantes."
+          }
+        },
+        {
+          "id": 4,
+          "texts": {
+            "en": "Normalization can be difficult to apply consistently, while canonicalization offers more flexibility for handling complex objects.",
+            "es": "La normalización puede ser difícil de aplicar de forma consistente, mientras que la canonización ofrece más flexibilidad para manejar objetos complejos."
+          }
+        },
+        {
+          "id": 5,
+          "texts": {
+            "en": "Normalization involves the use of Unicode characters, while canonicalization primarily deals with ASCII characters.",
+            "es": "La normalización implica el uso de caracteres Unicode, mientras que la canonización se basa principalmente en caracteres ASCII."
+          }
+        }
+      ],
+      "correctAnswerIds": [2, 3]
+    },
+    {
+      "type": "radio",
+      "prompts": {
+        "en": "As long as the Unicode normalization of user input data is carried out somewhere in the application as a security measure, where it actually takes place is not really important.",
+        "es": "Mientras la normalización Unicode de los datos introducidos por el usuario se lleve a cabo en algún lugar de la aplicación como medida de seguridad, el lugar donde se produzca no es realmente importante."
+      },
+      "answers": [
+        {
+          "id": 1,
+          "texts": {
+            "en": "True",
+            "es": "Cierto"
+          }
+        },
+        {
+          "id": 2,
+          "texts": {
+            "en": "False",
+            "es": "Falso"
+          }
+        }
+      ],
+      "correctAnswerIds": [2]
+    },
+    {
+      "type": "radio",
+      "prompts": {
+        "en": "In Unicode, the character \"ř\" can be produced from the letter \"r\" combined with a caron (ˇ), represented by the code points \"\u0072\u030C\". When normalized to NFC, what are the resulting code points?",
+        "es": "En Unicode, el carácter \"ř\" puede producirse a partir de la letra \"r\" combinada con un carón (ˇ), representado por los puntos de código \"\u0072\u030C\". Cuando se normaliza a NFC, ¿cuáles son los puntos de código resultantes?"
+      },
+      "answers": [
+        {
+          "id": 1,
+          "texts": {
+            "en": "\"\u0072\u030C\"",
+            "es": "\"\u0072\u030C\""
+          }
+        },
+        {
+          "id": 2,
+          "texts": {
+            "en": "\"\u0158\"",
+            "es": "\"\u0158\""
+          }
+        },
+        {
+          "id": 3,
+          "texts": {
+            "en": "\"\u0072\u0306\"",
+            "es": "\"\u0072\u0306\""
+          }
+        },
+        {
+          "id": 4,
+          "texts": {
+            "en": "\"\u0159\"",
+            "es": "\"\u0159\""
+          }
+        }
+      ],
+      "correctAnswerIds": [4]
+    }
+  ]
+}
