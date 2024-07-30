@@ -41,7 +41,7 @@
 
 ## ¿Qué vulnerabilidades pueden surgir cuando no se aplica la normalización Unicode?
 
-* Seguidamente se mencionan dos implicaciones reales de vulnerabilidades causadas por no adherirse a la normalización Unicode, de entre otras existentes.
+* Seguidamente se mencionan dos implicaciones reales de vulnerabilidades, de entre otras existentes, causadas por no adherirse a la normalización Unicode.
 
 ### Account takeover
 
