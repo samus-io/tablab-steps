@@ -37,9 +37,9 @@
 
 #### Use cases
 
-* Data types: ensuring that numeric fields contain numbers, text fields contain alphabets, and email addresses adhere to the standard format (e.g., `user@example.tbl`) or a date is in a specific format (e.g.,`DD-MM-YYYY`).
-* Length limits: checking if input lengths fall within acceptable boundaries to prevent buffer overflows or truncation issues.
-* Format constraints: validating data against predetermined patterns, such as credit card numbers, phone numbers, or postal codes.
+* **Data types**: ensuring that numeric fields contain numbers, text fields contain alphabets, and email addresses adhere to the standard format (e.g., `user@example.tbl`) or a date is in a specific format (e.g.,`DD-MM-YYYY`).
+* **Length limits**: checking if input lengths fall within acceptable boundaries to prevent buffer overflows or truncation issues.
+* **Format constraints**: validating data against predetermined patterns, such as credit card numbers, phone numbers, or postal codes.
 
 ### Semantic validation
 
@@ -49,9 +49,9 @@
 
 #### Use cases
 
-* Range checks: verifying if numeric inputs fall within permissible ranges, such as ensuring a user's age is between 18 and 100.
-* Business rules: enforcing specific business logic constraints, like validating product quantities against available stock, checking if a booking falls within operating hours or verifying that an email domain is among those expected, exists, and can receive emails.
-* Cross-field validation: examining relationships between multiple fields, such as verifying that a start date precedes an end date or ensuring consistency between related fields.
+* **Range checks**: verifying if numeric inputs fall within permissible ranges, such as ensuring a user's age is between 18 and 100.
+* **Business rules**: enforcing specific business logic constraints, like validating product quantities against available stock, checking if a booking falls within operating hours or verifying that an email domain is among those expected, exists, and can receive emails.
+* **Cross-field validation**: examining relationships between multiple fields, such as verifying that a start date precedes an end date or ensuring consistency between related fields.
 
 ## Input validation challenges
 
