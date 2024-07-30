@@ -121,3 +121,8 @@
   * Tomando los mismos nombres de archivo `my document.pdf` y `MY DOCUMENT.pdf`, un proceso de canonización podría implicar la creación de una versión única no sólo eliminando cualquier carácter no ASCII y sustituyendo los espacios por guiones, sino también convirtiendo todos los nombres de archivo a minúsculas, dando como resultado `my-document.pdf` como único nombre de archivo aceptable, incluso cuando el usuario proporciona `My Document.PDF`.
   * En este caso, para determinar si dos representaciones son del mismo objeto, basta con comparar sus formas canónicas para comprobar si son iguales.
 * La canonización proporciona una forma directa de comparar objetos, pero puede resultar difícil aplicarla de manera uniforme, mientras que la normalización es más flexible para objetos complejos. Por este motivo, la normalización puede ser preferible cuando resulta difícil aplicar de forma coherente las formas canónicas.
+
+## Test para consolidar :rocket:
+
+* Completa el cuestionario eligiendo la respuesta correcta para cada pregunta.
+  @@ExerciseBox@@

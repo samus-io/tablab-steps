@@ -121,3 +121,8 @@
   * Taking the same filenames `my document.pdf` and `MY DOCUMENT.pdf`, a canonicalization process could involve creating a unique version by not only removing any non-ASCII characters and substituting spaces with hyphens, but also converting the entire filenames to lowercase, resulting `my-document.pdf` as the only acceptable filename, even when the user provides `My Document.PDF`.
   * In this case, to determine if two representations are of the same object, it's enough to compare their canonical forms for equality.
 * Canonicalization provides a direct way to compare objects but can be challenging to apply uniformly, whereas normalization is more flexible for complex objects. For this reason, normalization might be preferable when it's difficult to consistently implement canonical forms.
+
+## Quiz to consolidate :rocket:
+
+* Complete the questionnaire by choosing the correct answer for each question.
+  @@ExerciseBox@@
