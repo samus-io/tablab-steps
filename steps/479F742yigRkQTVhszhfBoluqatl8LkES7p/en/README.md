@@ -2,13 +2,17 @@
 
 * `Command injection` is a type of vulnerability that allows an attacker to execute arbitrary commands on the host operating system via a vulnerable application.
 * This occurs when the application passes unsafe user-supplied data to a system shell.
+* As a result, an attacker can manipulate the command string to execute arbitrary commands, potentially leading to unauthorized access, data loss, or system compromise.
+* For example -  
+  * **Direct Command Injection**: user inputs are directly used in commands executed by the system shell.
+  * **Shell Interpretation**: special characters and command separators (e.g, `;`, `|`, `&&`) are interpreted by the system shell, allowing for the injection of additional commands.
 
 ## How does Command injection works?
 
 * **User input without proper sanitization**:
 
   * The application takes user input directly to construct a command.
-  * **Example**: A web form for deleting a file might take the filename from user input.
+  * For example, a web form for deleting a file might take the filename from user input.
   * Input: `file.txt; rm -rf /`
   * The application processes this input without sanitization.
 
@@ -22,55 +26,65 @@
 
 ![image info](../../../static/images/command_injection.png)
 
+* The image illustrates how an attacker can exploit a command injection vulnerability by injecting malicious shell commands into a vulnerable application's input.
+* The injected commands are executed by the OS, leading to providing potential output to the attacker.
+* This could be later used by the attacker for deleting files or corrupting system data.
+
 ## What could be achieved with this vulnerability?
 
 * **Remote Code Execution (RCE)**:
   * Attackers can execute arbitrary code on the target system.
-  * **Example**: An attacker might run a command to download and execute malware.
-  * Impact: Full control over the system, enabling further malicious activities such as installing backdoors, exfiltrating data, or launching additional attacks.
+  * For example, an attacker might run a command to download and execute malware.
+  * Impact: full control over the system, enabling further malicious activities such as installing backdoors, exfiltrating data, or launching additional attacks.
 
 * **Data Exfiltration**:
   * Attackers can read sensitive data from the system.
-  * **Example**: An attacker might read the contents of sensitive files, such as `/etc/passwd`.
+  * For example, an attacker might read the contents of sensitive files, such as `/etc/passwd`.
 
 * **Privilege Escalation**:
   * Attackers can escalate their privileges to gain higher-level access.
-  * **Example**: Exploiting setuid binaries to execute commands as a superuser.
+  * For example, exploiting setuid binaries to execute commands as a superuser.
 
 * **Denial of Service (DoS)**:
   * Attackers can disrupt the service by consuming resources or deleting critical files.
-  * **Example**: Running commands that exhaust system resources.
+  * For example, running commands that exhaust system resources.
 
 ## Argument Injection
 
-* `Argument injection` is a vulnerability where untrusted input is improperly handled as part of command arguments.
-* This allows attackers to manipulate command arguments, causing unintended command execution.
+* `Argument injection` is a subtype of Command Injection where user input is injected into command-line arguments, altering the command's intended behavior.
+* This vulnerability occurs when an application constructs command-line instructions using untrusted input as arguments, and the input is not properly validated or escaped.
+* Attackers can manipulate these arguments to inject additional commands or modify the command's execution, leading to unintended behavior or security breaches.
+* For example -
+  * **Argument Manipulation**: malicious input changes the arguments passed to a command rather than the command itself.
+  * **Command-Line Parsing**: the command-line parser processes the entire argument string, which can lead to the execution of unintended commands or modification of the command’s operation.
 
 ### How does Argument injection works?
 
 * **Manipulation of Input Parameters**:
   * An attacker manipulates input that is used to build command-line arguments.
-  * **Example**: A script for backup using filenames.
+  * For example,a function for searching files using a filename provided by the user.
 
 * **Injected Command Alters Behavior**:
 
-  * Malicious input: `file.txt; rm -rf /`
-  * The command executed becomes: `backup file.txt; rm -rf /`
+  * Malicious input: `search_term'; rm -rf /'`
+  * The command executed becomes: `grep 'search_term'; rm -rf /' /path/to/file`
   * This leads to unintended command execution and potential system compromise.
+  * The `grep` command is executed first to search for `search_term` in the specified file.
+  * The injected command `rm -rf /` is executed after `grep`, leading to the deletion of the root directory.
 
 ## Command Injection vs Argument Injection
 
 * **Command Injection**:
 
-  * **Definition**: Allows attackers to execute arbitrary commands on the host operating system.
-  * **Focus**: Inserting and executing entire commands within an application.
-  * **Impact**: Full control over the system, leading to severe consequences like Remote Code Execution (RCE).
+  * **Definition**: allows attackers to execute arbitrary commands on the host operating system.
+  * **Focus**: inserting and executing entire commands within an application.
+  * **Impact**: full control over the system, leading to severe consequences like Remote Code Execution (RCE).
 
 * **Argument Injection**:
 
-  * **Definition**: Allows attackers to manipulate command arguments to alter command behavior.
-  * **Focus**: Modifying arguments passed to commands rather than the commands themselves.
-  * **Impact**: Causes unintended command execution and can lead to data theft or system compromise.
+  * **Definition**: allows attackers to manipulate command arguments to alter command behavior.
+  * **Focus**: modifying arguments passed to commands rather than the commands themselves.
+  * **Impact**: causes unintended command execution and can lead to data theft or system compromise.
 
 ## References
 
