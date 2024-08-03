@@ -5,7 +5,7 @@
 * The most common issue arises when detailed internal error messages, such as stack traces, database dumps, and error codes, are exposed to users. These messages reveal implementation details that should always remain hidden. Such information can provide attackers with valuable insights into potential vulnerabilities within the site and can also be confusing for regular users.
 * Various common conditions can trigger errors, including out of memory situations, null pointer exceptions, system call failures, database unavailability, network timeouts. When developers do not effectively anticipate and handle such errors, it can leave the application open to exploitation by attackers.
 * Lack of proper logging, insecure error messages, improper input validation, insufficient logging are the common scenarios for improper error handling.
-* For instance, when a user attempts to access a non-existent file, the typical error message is “file not found” and when a user tries to access a file they do not have permission to view, the message would be “access denied”. Users should not even be aware of the file’s existence, but such discrepancies can easily reveal the presence or absence of inaccessible files or the directory structure of the site to attackers.
+* For instance, when a user attempts to access a non-existent file, the typical error message is `file not found` and when a user tries to access a file they do not have permission to view, the message would be `access denied`. Users should not even be aware of the file’s existence, but such discrepancies can easily reveal the presence or absence of inaccessible files or the directory structure of the site to attackers.
 
 ## Example scenarios
 
