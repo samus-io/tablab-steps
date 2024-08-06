@@ -62,15 +62,18 @@
 
 * **Manipulation of Input Parameters**:
   * An attacker manipulates input that is used to build command-line arguments.
-  * For example,a function for searching files using a filename provided by the user.
+  * For example, a web application allows users to download files using the `curl` command, taking a user-supplied URL as an argument.
 
 * **Injected Command Alters Behavior**:
 
-  * Malicious input: `search_term'; rm -rf /'`
-  * The command executed becomes: `grep 'search_term'; rm -rf /' /path/to/file`
+  * Malicious input: `file:///etc/passwd`
+  * The application sanitizes the input to remove characters like `;` and `|` that could be used to break the shell command.
+  * The input `file:///etc/passwd` is not filtered out.
+  * The command executed becomes: `curl file:///etc/passwd`
   * This leads to unintended command execution and potential system compromise.
-  * The `grep` command is executed first to search for `search_term` in the specified file.
-  * The injected command `rm -rf /` is executed after `grep`, leading to the deletion of the root directory.
+  * The curl command is executed with the argument file:///etc/passwd.
+  * The injected argument `file:///etc/passwd` causes curl to read the contents of the `/etc/passwd` file.
+  * This results in unauthorized access to sensitive information on the system.
 
 ## Command Injection vs Argument Injection
 
