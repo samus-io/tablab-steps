@@ -13,7 +13,7 @@
 * La normalización Unicode es un proceso que garantiza que diferentes representaciones binarias de textos que son equivalentes, es decir, que parecen idénticos, se reducen a la misma secuencia de puntos de código, lo que da como resultado el mismo valor binario.
 * Este proceso es esencial en el tratamiento de cadenas dentro del contexto de la programación y el tratamiento de datos, ya que no solamente es útil por razones de seguridad, sino también por motivos de funcionalidad.
 
-  > :warning: Cualquier aplicación web que acepte entradas de los usuarios debe normalizarlas siempre a una forma canónica en Unicode.
+  > :older_man: Garantizar que las entradas del usuario se normalizan a una forma canónica en Unicode constituye una práctica de seguridad para las aplicaciones web.
 
 ### Formas de normalización Unicode
 
@@ -39,9 +39,9 @@
   * De hecho, se considera la forma *normal* de texto Unicode en la web y en otros entornos informáticos, haciendo que la elección sea segura para el uso general.
 * Alternativamente, para evitar caracteres extraños como `＜` o `ⓩ`, se puede aplicar la forma `NFKC`, que sustituye estos caracteres por sus equivalentes estándar (`<` y `z`).
 
-## ¿Qué vulnerabilidades pueden surgir cuando no se aplica la normalización Unicode?
+## ¿Qué posibles vulnerabilidades de seguridad están asociadas a la normalización Unicode?
 
-* Seguidamente se mencionan dos implicaciones reales de vulnerabilidades, de entre otras existentes, causadas por no adherirse a la normalización Unicode.
+* Seguidamente se mencionan implicaciones reales de vulnerabilidades, de entre otras existentes, causadas por un proceso de normalización de Unicode deficiente.
 
 ### Account takeover
 
@@ -59,8 +59,8 @@
     console.log("\u0065\u0301".length); // => 2
     ```
 
-* En este escenario, la normalización de la cadena `Amélie` en la *forma canónica* ayuda a evitar tales discrepancias, garantizando que las cadenas visualmente idénticas sean tratadas como equivalentes.
-  * Utilizando el ejemplo anterior basado en el carácter `é` pero esta vez normalizando la cadena, el resultado sería:
+* En este escenario, conseguir una normalización adecuada de la cadena `Amélie` a una *forma canónica* ayuda a evitar tales discrepancias, garantizando que las cadenas visualmente idénticas sean tratadas como equivalentes.
+  * Utilizando el ejemplo anterior basado en el carácter `é`, pero aplicando la normalización, el resultado sería:
 
     ```javascript
     const str = "\u0065\u0301";
@@ -70,10 +70,15 @@
     console.log(normalized.length); // => 1
     ```
 
-### Cross-Site Scripting (XSS)
+### Evasión de filtro para inyección SQL
+
+* Tomando como ejemplo una aplicación web que construye consultas SQL utilizando el carácter `'` conjuntamente con las entradas del usuario, incluye una medida de seguridad para eliminar todos los caracteres `'` de la entrada, y luego aplica la normalización Unicode a las mismas justo después de dicha eliminación y antes de generar las consultas, este escenario podría conducir inadvertidamente a una vulnerabilidad de inyección SQL.
+* Un usuario malintencionado podría insertar un carácter Unicode diferente pero equivalente a `'`, como el apóstrofo de ancho completo `＇`, con el código `U+FF07`, para que cuando la entrada sea normalizada se cree una comilla simple `'`, lo que conduce al fallo de inyección SQL.
+
+### Evasión de filtro para Cross-Site Scripting (XSS)
 
 * Otro caso sencillo en el que se puede utilizar Unicode para saltarse los filtros de seguridad es cambiar los corchetes HTML por corchetes Unicode.
-* Por ejemplo, la etiqueta HTML `<script>`, utilizada para inyectar código javascript por usuarios malintencionados, puede ser sustituida por `＜script＞` que utiliza los caracteres `＜`, con código `U+FF1C`, y `＞`, con código `U+FF1E`. Sin una normalización Unicode adecuada, tanto `<script>` como `＜script＞` pueden considerarse equivalentes en algún punto de la aplicación, lo que puede eludir las medidas de seguridad especificadas contra la etiqueta HTML `<script>`.
+* Por ejemplo, la etiqueta HTML `<script>`, utilizada para inyectar código javascript por usuarios malintencionados, puede ser sustituida por `＜script＞` que utiliza los caracteres `＜`, con código `U+FF1C`, y `＞`, con código `U+FF1E`. Sin un proceso de normalización Unicode adecuado, tanto `<script>` como `＜script＞` pueden considerarse equivalentes en algún punto de la aplicación, lo que puede eludir las medidas de seguridad especificadas contra la etiqueta HTML `<script>`.
 
 ## Escenario práctico
 

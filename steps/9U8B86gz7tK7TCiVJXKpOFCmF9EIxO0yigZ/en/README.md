@@ -13,7 +13,7 @@
 * Unicode normalization is a process that ensures different binary representations of texts that are equivalent, meaning they appear identical, will be reduced to the same sequence of code points, thus resulting in the same binary value.
 * This process is essential in dealing with strings in programming and data processing since it is not only useful for security reasons, but also for functionality.
 
-  > :warning: Any web application that accepts input from users must always normalize it to a canonical form in Unicode.
+  > :older_man: Ensuring that user inputs are normalized to a canonical form in Unicode constitutes a security practice for web applications.
 
 ### Unicode normalization forms
 
@@ -39,9 +39,9 @@
   * It is actually considered the *normal* form of Unicode text on the web and in other computing environments, making it a safe default for general use.
 * Alternatively, to avoid odd characters such as `＜` or `ⓩ`, the `NFKC` form can be applied, which replaces these characters with their standard equivalents (`<` and `z`).
 
-## What vulnerabilities could arise when Unicode normalization is not applied?
+## What potential security vulnerabilities are associated with Unicode normalization?
 
-* Below are mentioned two actual implications of vulnerabilities caused by failing to adhere to Unicode normalization, among various others.
+* Below are mentioned actual implications of vulnerabilities caused by a deficient Unicode normalization process.
 
 ### Account takeover
 
@@ -59,8 +59,8 @@
     console.log("\u0065\u0301".length); // => 2
     ```
 
-* In this scenario, normalizing the string `Amélie` into the *canonical form* helps to avoid such discrepancies by ensuring that visually identical strings are treated as equivalent.
-  * Using the previous example based on the `é` character but this time normalizing the string, the result would be:
+* In this scenario, achieving a proper normalization of the string `Amélie` into a *canonical form* helps to avoid such discrepancies by ensuring that visually identical strings are treated as equivalent.
+  * Using the previous example based on the `é` character, but with normalization applied, the outcome would be:
 
     ```javascript
     const str = "\u0065\u0301";
@@ -70,10 +70,15 @@
     console.log(normalized.length); // => 1
     ```
 
-### Cross-Site Scripting (XSS)
+### SQL injection filter bypass
+
+* Taking as example a web application that constructs SQL queries using the character `'` along with user inputs, includes a security measure to remove all `'` characters from the input, and then applies Unicode normalization to the inputs after that deletion and before generating the queries, this scenario could inadvertently lead to a SQL injection vulnerability.
+* A malicious user could insert a different Unicode character equivalent to `'` such as the fullwidth apostrophe `＇`, with code `U+FF07`, and when the input gets normalised, a single quote `'` is created, conducting to the SQL injection flaw.
+
+### Cross-Site Scripting (XSS) filter bypass
 
 * Another simple case where Unicode can be used to bypass security filters is changing the HTML brackets for Unicode brackets.
-* For example, the HTML tag `<script>`, which used to inject javascript code by malicious users, can be replaced by `＜script＞` that uses the characters `＜`, with code `U+FF1C`, and `＞`, with code `U+FF1E`. Without proper Unicode normalization both `<script>` and `＜script＞` can be considered equivalent at some point in the application, which can circumvent the security measures specified against the HTML tag `<script>`.
+* For example, the HTML tag `<script>`, which used to inject javascript code by malicious users, can be replaced by `＜script＞` that uses the characters `＜`, with code `U+FF1C`, and `＞`, with code `U+FF1E`. Without an appropriate Unicode normalization process, both `<script>` and `＜script＞` can be considered equivalent at some point in the application, which can circumvent the security measures specified against the HTML tag `<script>`.
 
 ## Practical scenario
 
