@@ -1,0 +1,104 @@
+{
+  "questions": [
+    {
+      "type": "radio",
+      "prompts": {
+        "en": "A client tries to access a resource, but the client does not provide any credentials. Which HTTP response code should the server return in this scenario?",
+        "es": ""
+      },
+      "answers": [
+        {
+          "id": 1,
+          "texts": {
+            "en": "400 Bad Request",
+            "es": ""
+          }
+        },
+        {
+          "id": 2,
+          "texts": {
+            "en": "401 Unauthorized",
+            "es": ""
+          }
+        },
+        {
+          "id": 3,
+          "texts": {
+            "en": "403 Forbidden",
+            "es": ""
+          }
+        },
+        {
+          "id": 4,
+          "texts": {
+            "en": "404 Not Found",
+            "es": ""
+          }
+        }
+      ],
+      "correctAnswerIds": [2]
+    },
+    {
+      "type": "radio",
+      "prompts": {
+        "en": "Which HTTP response code is used by the server when it requires the client to switch to a different protocol?",
+        "es": ""
+      },
+      "answers": [
+        {
+          "id": 1,
+          "texts": {
+            "en": "405",
+            "es": ""
+          }
+        },
+        {
+          "id": 2,
+          "texts": {
+            "en": "417",
+            "es": ""
+          }
+        },
+        {
+          "id": 3,
+          "texts": {
+            "en": "426",
+            "es": ""
+          }
+        },
+        {
+          "id": 4,
+          "texts": {
+            "en": "403",
+            "es": ""
+          }
+        }
+      ],
+      "correctAnswerIds": [3]
+    },
+    {
+      "type": "radio",
+      "prompts": {
+        "en": "301 status code indicates a temporary redirect to a new URL, allowing the client to return to the original URL later",
+        "es": ""
+      },
+      "answers": [
+        {
+          "id": 1,
+          "texts": {
+            "en": "true",
+            "es": ""
+          }
+        },
+        {
+          "id": 2,
+          "texts": {
+            "en": "false",
+            "es": ""
+          }
+        }
+      ],
+      "correctAnswerIds": [2]
+    }
+  ]
+}
