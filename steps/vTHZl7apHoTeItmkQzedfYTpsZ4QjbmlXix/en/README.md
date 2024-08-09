@@ -115,7 +115,7 @@ app.post('/register', [
     if (!errors.isEmpty()) {
         return res.status(400).json({ message: "Something was incorrect. Please try again!" });
     }
-    res.send('Registration successful');
+    res.send('Registration successful!');
 });
 
 // Start the listener at a preferred port number
@@ -261,37 +261,36 @@ const app = express();
 
 // Listener for user Id in login process
 app.get('/user/:id', (req, res, next) => {
-const userId = req.params.id;
+    const userId = req.params.id;
 
-// Check if the User Id format is not valid
-if (!isValidUserId(userId)) {
-    return next(new AppError('We could not match your credentials to a valid account.', ERROR_CODES.VALIDATION_ERROR));
-}
+    // Check if the User Id format is not valid
+    if (!isValidUserId(userId)) {
+        return next(new AppError('We could not match your credentials to a valid account.', ERROR_CODES.VALIDATION_ERROR));
+    }
 
-// Simulate fetching user
-const user = getUserById(userId);
-if (!user) {
-    return next(new AppError('There was a problem in the input.', ERROR_CODES.NOT_FOUND));
-}
+    // Simulate fetching user
+    const user = getUserById(userId);
+    if (!user) {
+        return next(new AppError('There was a problem in the input.', ERROR_CODES.NOT_FOUND));
+    }
 
-res.send(user);
+    res.send(user);
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-console.error(err);  // Log the error details
-res.status(err.code).json({ error: err.message, code: err.code });
+    console.error(err);  // Log the error details
+    res.status(err.code).json({ error: err.message, code: err.code });
 });
-}
 
 function isValidUserId(id) {
-// Implement validation logic here
-return true;
+    // Implement validation logic here
+    return true;
 }
 
 function getUserById(id) {
-// Simulate user fetch
-return null;
+    // Simulate user fetch
+    return null;
 }
 ```
 
@@ -344,7 +343,6 @@ app.listen(3000);
 const express = require('express');
 const app = express();
 
-
 // Example async route that throws an error
 app.get('/example', async (req, res, next) => {
     try {
@@ -381,15 +379,14 @@ const app = express();
 
 // Example route with promise that might throw an error
 app.get('/example', (req, res, next) => {
-
     // .catch to handle promise rejection
     riskyPromiseFunction()
-        .then(() => {
-            res.send('Success');
-        })
-        .catch((error) => {
-            next(error);
-        });
+    .then(() => {
+        res.send('Success');
+    })
+    .catch((error) => {
+        next(error);
+    });
 });
 
 // Middleware to handle errors
@@ -508,7 +505,7 @@ var app = express();
 
 // Define request response in root URL (/)
 app.get('/', function (req, res) {
-  res.send('Hello World');
+    res.send('Hello World');
 });
 
 // This endpoint simulates the situation when the user is not authorized
@@ -523,7 +520,7 @@ app.post('/api/login', function (req, res) {
 
 // Launch listening server on port 3000
 app.listen(3000, function () {
-  console.log('App listening on port 3000!');
+    console.log('App listening on port 3000!');
 });
 
 ```
@@ -581,7 +578,7 @@ describe('Error Handling', () => {
             done();
         });
     });
-})
+});
 
 ```
 
@@ -608,7 +605,6 @@ app.use(express.json());
 
 // Route that processes user input
 app.post('/login', (req, res) => {
-
     // No validation on the request body
     const email = req.body.email;
     if(db.indexOf(email) > -1){
@@ -623,7 +619,7 @@ app.post('/login', (req, res) => {
 
 // Start the server
 app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+    console.log('Server is running on port 3000');
 });
 ```
 
@@ -663,24 +659,21 @@ app.use(express.json());
 app.post('/login', [
   body('email').isEmail()
 ], (req, res, next) => {
-
-    try{
-        
+    try{ 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-          throw new AppError("There is something wrong in the input!",400);
+            throw new AppError("There is something wrong in the input!",400);
         }
       
         if(db.indexOf(req.body.email) > -1){
-          // perform login operation here...
-          res.send("Login Successful!");
+            // perform login operation here...
+            res.send("Login Successful!");
         }else{
-          // Sending smart and safe message to the user
-          throw new AppError("The given credentials do not match with the valid account!",401);
+            // Sending smart and safe message to the user
+            throw new AppError("The given credentials do not match with the valid account!",401);
         }
      
         res.send("Login Successful!");
-    
     } catch (err) {
         console.error(err);
         throw new AppError("Something went wrong!",500);
@@ -689,13 +682,13 @@ app.post('/login', [
 
 // Middleware for centralized error handling
 app.use((err, req, res, next) => {
-  console.log(err.stack);
-  res.status(err.code || 500).send((err.code)? err.message : "Something went wrong!");
+    console.log(err.stack);
+    res.status(err.code || 500).send((err.code)? err.message : "Something went wrong!");
 });
 
 // Start the server
 app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+    console.log('Server is running on port 3000');
 });
 ```
 

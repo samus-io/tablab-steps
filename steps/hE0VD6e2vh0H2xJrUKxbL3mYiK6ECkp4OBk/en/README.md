@@ -43,9 +43,9 @@ Expect: 100-continue
 HTTP/1.1 100 continue
 ```
 
-* The server's `100 continue` response informs the client that it should proceed with sending the body of the request. This ensures that the client doesn't send large amounts of data if the server is going to reject the request based on the headers alone.
+* The server's `100 Continue` response informs the client that it should proceed with sending the body of the request. This ensures that the client doesn't send large amounts of data if the server is going to reject the request based on the headers alone.
   
-#### 101 Switching protocols
+#### 101 Switching Protocols
 
 * Issued in response to an upgrade request header from the client, this code indicates the new protocol the server is transitioning to.
 * For example, a client requests to switch from HTTP to the WebSocket protocol:
@@ -65,7 +65,7 @@ Upgrade: websocket
 Connection: Upgrade
 ```
 
-* The server's `101 switching protocols` response indicates that it is switching to the protocol specified in the upgrade header sent by the client. In this case, switching to the WebSocket protocol allows for real-time, full-duplex communication.
+* The server's `101 Switching Protocols` response indicates that it is switching to the protocol specified in the upgrade header sent by the client. In this case, switching to the WebSocket protocol allows for real-time, full-duplex communication.
   
 #### 102 Processing (WebDAV)
 
@@ -84,10 +84,10 @@ Destination: /newCollection
 HTTP/1.1 102 processing
 ```
 
-* The `102 processing` response informs the client that the request is being processed, but no final response is available yet. This is particularly useful for lengthy operations to prevent the client from timing out.
+* The `102 Processing` response informs the client that the request is being processed, but no final response is available yet. This is particularly useful for lengthy operations to prevent the client from timing out.
 * WebDav is a collection of HTTP extensions that allows to perform operations directly on web server from client. This ensures that the plaform is not only readable but also can be collaboratively operated from multiple clients.
 
-#### 103 Early hints
+#### 103 Early Hints
 
 * Mainly used with the link header, this code allows the user agent to begin preloading resources or establish connections to an origin from which the page will require resources while the server is preparing a full response.
 * For example, a client requests a webpage that includes several large resources.
@@ -105,7 +105,7 @@ Link: </style.css>; rel=preload; as=style
 Link: </script.js>; rel=preload; as=script
 ```
 
-* The `103 early hints` response allows the client to start preloading resources (like CSS and JavaScript files) while the server prepares the final response. This improves page load times and enhances the user experience by utilizing the time before the final response is ready.
+* The `103 Early Hints` response allows the client to start preloading resources (like CSS and JavaScript files) while the server prepares the final response. This improves page load times and enhances the user experience by utilizing the time before the final response is ready.
 
 ### 2xx – Successful codes
 
@@ -174,7 +174,7 @@ Content-Type: application/json
 HTTP/1.1 202 Accepted
 ```
 
-### 203 Non-authoritative information
+### 203 Non-Authoritative Information
 
 * It indicates that the request was successful, but the returned metadata is from a copy, not the original server. This is used for mirrors or backups.
 * For example, a client requests a resource from a mirror server:
@@ -191,7 +191,7 @@ Content-Type: text/html
 Content-Length: 1234
 ```
 
-### 204 No content
+### 204 No Content
 
 * It indicates that the request was successful, but there is no content to return. The headers may still be useful for updating cached information.
 * For example, a client deletes a user account:
@@ -206,7 +206,7 @@ DELETE /users/123 HTTP/1.1
 HTTP/1.1 204 No Content
 ```
 
-### 205 Reset content
+### 205 Reset Content
 
 * It indicates that the server successfully processed the request, and the user agent should reset the document view that sent the request.
 * For example, a client submits a form and needs to clear it afterwards:
@@ -224,7 +224,7 @@ name=John&email=john@domain.tbl
 HTTP/1.1 205 Reset Content
 ```
 
-### 206 Partial content
+### 206 Partial Content
 
 * It indicates that the server is delivering only part of the resource due to a `Range` header sent by the client.
 * For example, a client requests a portion of a large file:
@@ -246,7 +246,7 @@ Content-Length: 1000
 
 * These codes inform the client that further action is needed to complete the request, typically involving redirection.
 
-#### 300 Multiple choices
+#### 300 Multiple Choices
 
 * It indicates that the request has more than one possible response. The user agent or user should choose one. HTML links to the options are recommended to help the user pick.
 * For example, a client requests a file from a server, and the server responds with different versions of the file, such as `version1.pdf` and `version2.pdf`.
@@ -274,7 +274,7 @@ Content-Length: 1000
   </html>
 ```
 
-#### 301 Moved permanently
+#### 301 Moved Permanently
 
 * It indicates that the requested resource's URL has permanently changed. The new URL is provided in the response.
 
@@ -311,7 +311,7 @@ Location: http://domain.tbl/temporaryLocation
 Content-Length: 0
 ```
 
-#### 303 See other
+#### 303 See Other
 
 * It indicates that the client should retrieve the requested resource from a different URI using a `GET` request.
 
@@ -331,7 +331,7 @@ Content-Length: 0
   Content-Length: 0
   ```
 
-#### 304 Not modified
+#### 304 Not Modified
 
 * It indicates that the response has not been modified since the last request. The client should continue using the cached version.
 
@@ -352,7 +352,7 @@ Content-Length: 0
 
 * The server sends `200` along with new body if the content is modified after `If-Modified-Since` else it sends `304` with no body but with `Last-Modified` response header indicating when it was lastly modified.  
 
-#### 307 Temporary redirect
+#### 307 Temporary Redirect
 
 * It indicates that the client should access the requested resource at another URI using the same HTTP method as in the previous request.
 
@@ -372,7 +372,7 @@ Content-Length: 0
   Content-Length: 0
   ```
 
-#### 308 Permanent redirect
+#### 308 Permanent Redirect
 
 * It indicates that the resource is permanently located at a different URI, specified in the `Location` header. The client must use the same HTTP method for the new request.
 
@@ -398,7 +398,7 @@ Content-Length: 0
 
 * These codes denote issues with the request made by the client (browser), such as bad syntax or unauthorized access.
 
-#### 400 Bad request
+#### 400 Bad Request
 
 * Indicates that the server cannot or will not process the request due to client-side errors. Examples include malformed request syntax or invalid request message framing.
 * For example, a client sends an HTTP request with an invalid JSON body:
@@ -468,7 +468,7 @@ Content-Type: application/json
 
 * The `Authorization` header is used to send any kind of credentials to the server with different standard methods like `Bearer`.
 
-#### 404 Not found
+#### 404 Not Found
 
 * Indicates that the server cannot find the requested resource. This can mean the URL is not recognized or the resource does not exist.
 * For example, a client requests a non-existent resource:
@@ -488,7 +488,7 @@ Content-Type: application/json
 }
 ```
 
-#### 405 Method not allowed
+#### 405 Method Not Allowed
 
 * Indicates that the request method is known but not supported by the target resource. Commonly used when the method is not allowed for the requested resource.
 * For example, a client tries to `DELETE` a resource that only supports `GET` requests:
@@ -508,7 +508,7 @@ Content-Type: application/json
 }
 ```
 
-#### 406 Not acceptable
+#### 406 Not Acceptable
 
 * Indicates that the server cannot generate content that matches the criteria given by the client. Used when content negotiation fails.
 * For example, a client requests a resource with an unsupported media type:
@@ -529,7 +529,7 @@ Content-Type: application/json
 }
 ```
 
-#### 407 Proxy authentication required
+#### 407 Proxy Authentication Required
 
 * Similar to `401 Unauthorized`, but authentication is needed by a proxy server. The client must authenticate with the proxy.
 * For example, a client requests a resource through a proxy without proper proxy authentication:
@@ -552,7 +552,7 @@ Content-Type: application/json
 
 * `Proxy-Authorization` is similar to `Authorization` but only for proxy authentication.
 
-#### 408 Request timeout
+#### 408 Request Timeout
 
 * Indicates that the server timed out waiting for the request. Often used when a connection remains idle.
 * For example, a client does not send the full request within the server's timeout period:
@@ -617,7 +617,7 @@ Content-Type: application/json
 }
 ```
 
-#### 411 Length required
+#### 411 Length Required
 
 * Indicates that the server requires the `Content-Length` header in the request. This header is necessary for processing the request.
 * For example, a client sends a `POST` request without a `Content-Length` header:
@@ -638,7 +638,7 @@ Content-Type: application/json
 }
 ```
 
-#### 412 Precondition failed
+#### 412 Precondition Failed
 
 * Indicates that a precondition specified in the request headers is not met. Used when conditional headers are not satisfied.
 * For example, a client’s request includes a condition that fails:
@@ -661,7 +661,7 @@ Content-Type: application/json
 
 * This code is sent to the client with conditional requests on methods other than `GET` or `HEAD` when the condition defined by the `If-Unmodified-Since` or `If-Match` headers is not fulfilled. Meaning that the request (usually an upload or a modification of a resource) cannot be made because the document has been edited in-between and a `412 Precondition Failed` error is thrown.
 
-#### 413 Content too large
+#### 413 Content Too Large
 
 * Indicates that the request payload is larger than the server can process. The server may close the connection or return a `Retry-After` header.
 * For example, a client sends a large file that exceeds server limits with `<input type="file">` HTML element:
@@ -690,7 +690,7 @@ Content-Type: application/json
 }
 ```
 
-#### 414 URI too long
+#### 414 URI Too Long
 
 * Indicates that the URI requested by the client is too long for the server to process. Often used with `GET` requests that include long query strings.
 * For example, a client sends a `GET` request with an excessively long URI:
@@ -710,7 +710,7 @@ Content-Type: application/json
 }
 ```
 
-#### 415 Unsupported media type
+#### 415 Unsupported Media Type
 
 * Indicates that the media format of the request data is not supported by the server. Used when the server cannot process the media type of the request.
 * For example, a client sends a request with an unsupported media type:
@@ -733,7 +733,7 @@ Content-Type: application/json
 }
 ```
 
-#### 416 Range not satisfiable
+#### 416 Range Not Satisfiable
 
 * Indicates that the range specified in the `Range` header cannot be fulfilled. Used when the requested range is outside the bounds of the resource.
 * For example, a client requests a byte range outside the file size:
@@ -754,7 +754,7 @@ Content-Type: application/json
 }
 ```
 
-#### 417 Expectation failed
+#### 417 Expectation Failed
 
 * Indicates that the server cannot meet the expectations specified in the `Expect` header. Used when the server cannot fulfill the `Expect` request header field.
 * For example, a client includes an `Expect` header that the server cannot handle:
@@ -779,7 +779,7 @@ Content-Type: application/json
 }
 ```
 
-#### 421 Misdirected request
+#### 421 Misdirected Request
 
 * Indicates that the request was directed at a server that cannot produce a response. Often used when the server is not configured for the requested URI scheme and authority.
 * For example, a request is sent to a server not configured to handle the URI:
@@ -800,7 +800,7 @@ Content-Type: application/json
 }
 ```
 
-#### 422 Unprocessable content (WebDAV)
+#### 422 Unprocessable Content (WebDAV)
 
 * Indicates that the request was well-formed but contains semantic errors that prevent processing. Used in WebDAV for semantic issues with the request.
 * For example, a client submits a resource with invalid data:
@@ -850,7 +850,7 @@ Content-Type: application/json
 }
 ```
 
-#### 424 Failed dependency (WebDAV)
+#### 424 Failed Dependency (WebDAV)
 
 * Indicates that a request failed due to the failure of a previous request. Used in WebDAV when a dependent request fails.
 * For example, a client tries to update a resource that depends on another failed update:
@@ -875,7 +875,7 @@ Content-Type: application/json
 }
 ```
 
-#### 426 Upgrade required
+#### 426 Upgrade Required
 
 * Indicates that the server refuses to process the request using the current protocol. The client must upgrade to a different protocol.
 * For example, a client requests an HTTPS resource over HTTP:
@@ -895,7 +895,7 @@ Content-Type: application/json
 }
 ```
 
-#### 428 Precondition required
+#### 428 Precondition Required
 
 * Indicates that the server requires the request to be conditional. Used to prevent lost update problems in resource updates.
 * For example, a client tries to modify a resource without conditional headers like `If-match`:
@@ -920,7 +920,7 @@ Content-Type: application/json
 }
 ```
 
-#### 429 Too many requests
+#### 429 Too Many Requests
 
 * Indicates that the client has sent too many requests in a given time period. Used for rate limiting.
 * For example, a client exceeds the rate limit for API requests:
@@ -940,7 +940,7 @@ Content-Type: application/json
 }
 ```
 
-#### 431 Request header fields too large
+#### 431 Request Header Fields Too Large
 
 * Indicates that the server is unwilling to process the request due to its header fields being too large. The request may need to be resubmitted with smaller headers.
 * For example, a client sends a request with excessively large headers:
@@ -961,7 +961,7 @@ Content-Type: application/json
 }
 ```
 
-#### 451 Unavailable for legal reasons
+#### 451 Unavailable For Legal Reasons
 
 * Indicates that the requested resource cannot be provided due to legal reasons. This may include content censored by a government.
 * For example, a client requests a page blocked due to legal restrictions:
@@ -985,7 +985,7 @@ Content-Type: application/json
 
 * These codes indicate problems on the server side that prevent it from providing a valid response.
 
-#### 500 Internal server error
+#### 500 Internal Server Error
 
 * Indicates that the server encountered an unexpected condition that prevented it from fulfilling the request. A general error message for server-side issues.
 * For example, a server encounters an unhandled exception:
@@ -1005,9 +1005,9 @@ Content-Type: application/json
 }
 ```
 
-* This is the most commuly used response code even if there are multiple codes available for different type of errors in server.
+* This is the most commonly used response code even if there are multiple codes available for different type of errors in server.
 
-#### 501 Not implemented
+#### 501 Not Implemented
 
 * Indicates that the server does not support the functionality required to fulfill the request. The request method is not supported.
 * For example, a client uses an unsupported HTTP method:
@@ -1027,7 +1027,7 @@ Content-Type: application/json
 }
 ```
 
-#### 502 Bad gateway
+#### 502 Bad Gateway
 
 * Indicates that the server, while acting as a gateway or proxy, received an invalid response from an upstream server. Used when the server cannot get a valid response.
 * For example, a proxy server receives a bad response from an upstream server:
@@ -1047,7 +1047,7 @@ Content-Type: application/json
 }
 ```
 
-#### 503 Service unavailable
+#### 503 Service Unavailable
 
 * Indicates that the server is currently unable to handle the request due to temporary overloading or maintenance. Used for temporary conditions.
 * For example, a server is down for maintenance:
@@ -1067,7 +1067,7 @@ Content-Type: application/json
 }
 ```
 
-#### 504 Gateway timeout
+#### 504 Gateway Timeout
 
 * Indicates that the server, while acting as a gateway or proxy, did not receive a timely response from an upstream server. Used when a response is delayed.
 * For example, a proxy server times out waiting for a response:
@@ -1087,7 +1087,7 @@ Content-Type: application/json
 }
 ```
 
-#### 505 HTTP version not supported
+#### 505 HTTP Version Not Supported
 
 * Indicates that the server does not support the HTTP protocol version used in the request. Used when an unsupported HTTP version is requested.
 * For example, a client requests a resource using an outdated HTTP version 1.0:
@@ -1107,7 +1107,7 @@ Content-Type: application/json
 }
 ```
 
-#### 506 Variant also negotiates
+#### 506 Variant Also Negotiates
 
 * Indicates an internal server error where the resource is configured to negotiate content itself, leading to an infinite negotiation loop. Used when content negotiation fails internally.
 * For example, a resource incorrectly handles content negotiation:
@@ -1127,7 +1127,7 @@ Content-Type: application/json
 }
 ```
 
-#### 507 Insufficient storage (WebDAV)
+#### 507 Insufficient Storage (WebDAV)
 
 * Indicates that the server cannot store the representation needed to complete the request. Used in WebDAV for storage issues.
 * For example, a client’s request exceeds available storage:
@@ -1150,7 +1150,7 @@ Content-Type: application/json
 }
 ```
 
-#### 508 Loop detected (WebDAV)
+#### 508 Loop Detected (WebDAV)
 
 * Indicates that the server detected an infinite loop while processing a request. Used in WebDAV when a request causes a loop.
 
@@ -1173,7 +1173,7 @@ Content-Type: application/json
 
 * `PROPFIND` is a method used to fetch the properties stored in the form of XML from the server.
 
-#### 510 Not extended
+#### 510 Not Extended
 
 * Indicates that further extensions to the request are required for the server to fulfill it. Used when additional information or extensions are needed.
 * For example, a request requires additional parameters or headers:
@@ -1193,7 +1193,7 @@ Content-Type: application/json
 }
 ```
 
-#### 511 Network authentication required
+#### 511 Network Authentication Required
 
 * Indicates that the client needs to authenticate to gain network access. Used for network-level authentication.
 * For example, a client needs to authenticate to access a network resource:
