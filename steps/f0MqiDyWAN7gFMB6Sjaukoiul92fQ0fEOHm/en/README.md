@@ -27,7 +27,6 @@
 
 * Ensure all data received from users is validated, including query parameters, headers, and body data.
 * Always validate data on the server, even if client-side validation is in place.
-* Remove any potentially harmful characters or patterns from input data.
 * Leverage well-maintained libraries for robust validation.
 * Use schemas or comprehensive rules to ensure all aspects of the data are validated.
 
@@ -48,52 +47,52 @@
 ### Authentication errors
 
 * Instead of revealing whether a username or password is incorrect, provide a generic error message.
-* Instead of a specific error message like `The username doesn’t exist.`, use a generic error message like `We couldn't match your credentials to a valid account.`
+* Instead of a specific error message like `The username doesn’t exis.`, use a generic error message like `We couldn't match your credentials to a valid account`.
 
 ### Authorization errors
 
 * Do not disclose specific authorization issues; instead, use a generic message.
-* Instead of a specific error message like `You do not have permission to access the admin panel.`, use a generic error message like `You are not authorized to perform this action.`
+* Instead of a specific error message like `You do not have permission to access the admin panel`, use a generic error message like `You are not authorized to perform this action`.
 
 ### Resource not found
 
 * Avoid revealing whether a resource exists or not, and use a generic response for missing resources.
-* Instead of a specific error message like `Product ID 123 not found.`, use a generic error message like `The requested resource could not be found.`
+* Instead of a specific error message like `Product ID 123 not found`, use a generic error message like `The requested resource could not be found`.
 
 ### Database errors
 
 * Prevent exposing database structures or SQL errors by providing a general error message.
-* Instead of a specific error message like `SQL Error: syntax error at or near 'DROP TABLE products'.`, use a generic error message like `An error occurred while processing your request. Please try again later.`
+* Instead of a specific error message like `SQL Error: syntax error at or near 'DROP TABLE products'`, use a generic error message like `An error occurred while processing your request. Please try again later`.
 
 ### Validation errors
 
 * Provide a general response for validation failures without revealing which field caused the error.
-* Instead of a specific error message like `The email address is invalid.`, use a generic error message like `There was a problem with the input provided.`
+* Instead of showing a technical error like `Input does not match pattern [a-z]{1,15}`, provide a clear and user-friendly message like `Username must be alphanumeric and between 1 to 15 characters long`.
 
 ### File upload errors
 
 * Avoid disclosing details about file paths or server configurations when an error occurs during file upload.
-* Instead of a specific error message like `File upload failed: /var/www/uploads/tmp/file.txt not found.`, use a generic error message like `File upload failed. Please try again.`
+* Instead of a specific error message like `File upload failed: /var/www/uploads/tmp/file.txt not found`, use a generic error message like `File upload failed. Please try again`.
 
 ### Server errors
 
 * Do not reveal internal server issues or stack traces to the user.
-* Instead of a specific error message like `NullPointerException at line 45 in Main.java.`, use a generic error message like `An unexpected error occurred. Please try again later.`
+* Instead of a specific error message like `NullPointerException at line 45 in Main.java`, use a generic error message like `An unexpected error occurred. Please try again later`.
 
 ### Rate limiting
 
 * Provide a general message when rate limiting is applied, without revealing specific thresholds or limits.
-* Instead of a specific error message like `You have exceeded the rate limit of 100 requests per minute.`, use a generic error message like `Too many requests. Please try again later.`
+* Instead of a specific error message like `You have exceeded the rate limit of 100 requests per minute`, use a generic error message like `Too many requests. Please try again later`.
 
 ### Form submission errors
 
 * Generalize error messages for form submissions to avoid revealing which field caused the issue.
-* Instead of a specific error message like `The 'age' field must be a number.`, use a generic error message like `There was an error with your submission. Please check your input and try again.`
+* Instead of a specific error message like `The 'age' field must be a number`, use a generic error message like `There was an error with your submission. Please check your input and try again`.
 
 ### Payment errors
 
 * Provide a generic message for payment processing errors to avoid revealing details about the failure.
-* Instead of a specific error message like `Payment failed due to insufficient funds.`, use a generic error message like `Payment could not be processed. Please check your payment details and try again.`
+* Instead of a specific error message like `Payment failed due to insufficient funds`, use a generic error message like `Payment could not be processed. Please check your payment details and try again`.
 
 ## Implement robust error handling
 
@@ -104,8 +103,7 @@
 
 #### Catch and handle all errors
 
-* Use `try-catch` blocks in synchronous code.
-* Use `.catch` for handling promise rejections.
+* Use `try-catch` blocks for exception handling in synchronous code.
 * Use middleware for handling errors globally.
 * Ensure the application can continue to function or degrade gracefully in the event of an error.
 * For example, display a maintenance page or fallback content if a critical error occurs.
@@ -113,10 +111,10 @@
 #### Use asynchronous error handling
 
 * Ensure that asynchronous operations have proper error handling. For example, use `async/await` with `try-catch` blocks in Node.js.
-* Asynchronous error handling in JavaScript involves managing errors that occur in code executed asynchronously, such as operations involving `callbacks`, `Promises`, or the `async/await` syntax.
-* Using `try-catch` blocks in `async` functions is like putting a safety net around the risky parts of the code. This prevents errors from causing the entire program to crash.
+* Asynchronous error handling involves managing errors that occur in code executed asynchronously, such as operations involving `callbacks`, `Promise`, or the `async/await` syntax.
+* Using `try-catch` blocks in asynchronous functions is like putting a safety net around the risky parts of the code. This prevents errors from causing the entire program to crash.
 
-#### Actively Log meaningful error messages
+#### Actively log meaningful error messages
 
 * Log errors to a secure location without exposing them to users. Ensure logs do not contain sensitive information.
 * For example, use logging libraries to store error logs securely and monitor them regularly.
