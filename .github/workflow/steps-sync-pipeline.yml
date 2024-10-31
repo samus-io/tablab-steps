@@ -1,0 +1,46 @@
+name: Sync public steps to private repository
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - 'steps/**'
+      - 'static/**'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone tablab-steps public repository
+      uses: actions/checkout@v4
+      with:
+        ref: "main"
+        path: "tablab-steps"
+        token: ${{ secrets.PRIVATE_STEPS_REPOSITORY_TOKEN }}
+
+    - name: Clone private steps repository
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ secrets.PRIVATE_REPOSITORY }}
+        ref: "public"
+        path: "private-steps-repo"
+        token: ${{ secrets.PRIVATE_STEPS_REPOSITORY_TOKEN }}
+
+    - name: Sync changes from public steps repository
+      env:
+        TOKEN: ${{ secrets.PRIVATE_STEPS_REPOSITORY_TOKEN }}
+        REPOSITORY: ${{ secrets.PRIVATE_REPOSITORY }}
+      run: |
+        cp -R ./tablab-steps/steps/* ./private-steps-repo/steps/
+        cp -R ./tablab-steps/static/images/* ./private-steps-repo/static/images/learning/
+        cp -R ./tablab-steps/scripts/* ./private-steps-repo/scripts/
+        
+        cd ./private-steps-repo
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+
+        git add .
+        git commit -m "Content merged from public repository"
+        git push https://x-access-token:${TOKEN}@github.com/${REPOSITORY}.git public
