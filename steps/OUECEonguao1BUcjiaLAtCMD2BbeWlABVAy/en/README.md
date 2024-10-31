@@ -27,7 +27,7 @@
 * The most common method for file uploads is using the `multipart/form-data` format because it efficiently handles binary data. FortiWeb processes and scans the uploaded file directly from this format without requiring any additional steps from developers.
 * Below is an example of an HTTP request where the file is sent in a multipart form:
 
-  ```
+  ```text
   POST /upload HTTP/2
   Host: domain.tbl
   User-Agent: Mozilla/5.0 (compatible; MSIE 11.0; Windows; Windows NT 6.2; Win64; x64; en-US Trident/7.0)
@@ -51,7 +51,7 @@
 * This is particularly useful for web applications that need to transmit binary data through non-binary channels while maintaining security.
 * Below is an example of an HTTP request where the file is sent in Base64 with a simple POST:
 
-  ```
+  ```text
   POST /upload HTTP/2
   Host: domain.tbl
   User-Agent: Mozilla/5.0 (compatible; MSIE 11.0; Windows; Windows NT 6.2; Win64; x64; en-US Trident/7.0)
@@ -71,7 +71,7 @@
 
 * Below is an example of an HTTP request where the file is sent in Base64 with JSON:
 
-  ```
+  ```text
   POST /upload HTTP/2
   Host: domain.tbl
   User-Agent: Mozilla/5.0 (compatible; MSIE 11.0; Windows; Windows NT 6.2; Win64; x64; en-US Trident/7.0)
@@ -85,3 +85,29 @@
     "file": "<base64-file>"
   }
   ```
+
+## Testing file upload implementation
+
+* To find out if the implementation has been done in such a way that FortiWeb detects malware, an EICAR file can be used.
+
+### What is an EICAR?
+
+* The EICAR Anti-Virus Test File or EICAR test file is a computer file that was developed by the European Institute for Computer Antivirus Research (EICAR).
+* Its purpose is to test the response of computer antivirus programs. Instead of using real malware, which could cause real damage, this test file allows to test anti-virus software without having to use a real computer virus.
+* The content of the EICAR file its only a sequence of ASCII characters that Anti-Virus will always detect. The simplest EICAR file content is the following:
+
+  ```
+  X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
+  ```
+
+* The EICAR file can be created adding the above characters in a file using a text editor or it can be downloaded in the official [EICAR][1] website.
+
+### Testing FortiWeb scanning
+
+* When the file upload implementation is done, its possible to test if FortiWeb will detect correctly malware uploading the EICAR file.
+* Once uploaded, if the file upload is implemented using some above methods, the server will not receive the file and FortiWeb will return the following 403 HTTP response:
+
+![FortiWeb block page][2]
+
+[1]: https://www.eicar.org/download-anti-malware-testfile/#:~:text=enabled%20protocol%20HTTPS-,EICAR.COM,-DOWNLOAD
+[2]:
