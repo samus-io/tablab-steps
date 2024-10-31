@@ -10,7 +10,7 @@
   * [ ] Set a file name length limit.
   * [ ] Restrict the allowed characters (e.g., only consider `A-Z`, `a-z`, `0-9`, `-`, and `.` as valid characters).
   * [ ] Handle file names as case-insensitive.
-  * [ ] Restrict reserved names in Windows.
+  * [ ] Restrict reserved names in Windows and Linux.
   * [ ] Avoid hidden files and trailing periods and spaces (e.g., `.htaccess`).
 
 ## Generating unique and random file names

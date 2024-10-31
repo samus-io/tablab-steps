@@ -97,7 +97,7 @@
 
 * Most technical specifications must be enclosed in backticks (`` ` ``).
 * Endpoints or filenames must employ *camelCase* (e.g., `/deleteUser`, `userInvoice.pdf`).
-* When using a domain name as an example, always use the top-level domain `tbl` (`<domain-name>.tbl`).
+* When using a domain name as an example, always use the non-existent top-level domain `tbl` (`<domain-name>.tbl`).
   * Its recommended using the domains `domain.tbl` or `example.tbl`.
   * However, when discussing scenarios with attacker and victim domains, `attacker.tbl` and `victim.tbl` or `trusted.tbl` and `untrusted.tbl` can be used, instead of `domain.tbl` and `example.tbl`.
   * If you are explaining an image in the Step that contains domain names, use the domain names that you want to be in the image, we will create the image using the domain names used in the explanation.
