@@ -20,12 +20,11 @@ const main = () => {
       return Promise.all([
         fs.mkdir(`${nanoid}/es`),
         fs.mkdir(`${nanoid}/en`),
-        fs.mkdir(`${nanoid}/docker`),
       ]);
     })
     .then(() => {
       fs.writeFile(`${nanoid}/es/README.md`, ``);
-      fs.writeFile(`${nanoid}/en/README.md`, `# \n\n`);
+      fs.writeFile(`${nanoid}/en/README.md`, `# TODO\n`);
 
       const properties = {
         numExercises: 0,
