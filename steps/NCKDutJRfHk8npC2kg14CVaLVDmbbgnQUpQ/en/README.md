@@ -63,7 +63,7 @@
 
 ## Non-compliant code in Java
 
-* The code snippet below demonstrates an insecure file upload implementation in Java Jakarta application, where the original file name from the user is used without any validation, leading to risks such as file overwriting and file enumeration, among others:
+* The code snippet below demonstrates an insecure file upload implementation in a Java Jakarta application, where the original file name received from the user is used without any validation, leading to risks such as file overwriting and file enumeration, among others:
 
   ```java
   import jakarta.json.Json;
@@ -87,7 +87,6 @@
   @WebServlet("/upload")
   @MultipartConfig
   public class FileUploadServlet extends HttpServlet {
-
       private String uploadFolderPath;
 
       @Override
@@ -107,9 +106,10 @@
       @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
           Part filePart;
+
           try {
               // Get the file part from the request
-              filePart = request.getPart("formFile");
+              filePart = request.getPart("file");
           } catch (ServletException | IOException e) {
               JsonObject model = Json.createObjectBuilder().add("message", "No file uploaded").build();
               response.getOutputStream().println(model.toString());
@@ -128,13 +128,11 @@
               return;
           }
 
-          // Respond to the client
           response.getOutputStream().println("File uploaded successfully");
           response.setStatus(200);
       }
   
       private void saveFile(String filename, InputStream fileContent) throws IOException {
-          // Use the original filename provided by the user
           File file = new File(uploadFolderPath, filename);
 
           // Try-with-resources to ensure the FileOutputStream is automatically closed after use
@@ -157,7 +155,7 @@
 
 ## Non-compliant code in Node.js using `multer`
 
-* The code snippet below demonstrates an insecure file upload implementation in an `Express.js` application using `multer`, where the original file name from the user is used without any validation, leading to risks such as file overwriting and file enumeration, among others:
+* The code snippet below demonstrates an insecure file upload implementation in an `Express.js` application using `multer`, where the original file name received from the user is used without any validation, leading to risks such as file overwriting and file enumeration, among others:
 
   ```javascript
   const express = require("express");
@@ -202,14 +200,18 @@
 
 ## Compliant code in Java while generating a random file name
 
-* The following code snippet illustrates how to handle file uploads using Java Jakarta and storing files in a specific folder with randomly generated names via UUID, ensuring the file names are both unique and unpredictable:
+* The following code snippet illustrates how to handle file uploads in Java Jakarta and storing files in a specific folder with randomly generated names via UUID, ensuring the file names are both unique and unpredictable:
 
   ```java
   import java.util.UUID;
+
   ...
+
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
     ...
+
     try {
         // Generate a random file name via UUID
         String filename = UUID.randomUUID() + ".pdf";
@@ -221,7 +223,6 @@
         return;
     }
 
-    // Respond to the client
     response.getOutputStream().println("File uploaded successfully");
     response.setStatus(200);
   }
@@ -262,7 +263,7 @@
 
 ## Compliant code in Java while keeping the original file name
 
-* The following code snippet demonstrates how to handle file uploads using Java Jakarta and storing files in a specific folder while preserving the original file name sent by the user. However, it applies a custom file name length limit, restricts characters and reserved names, treats file names as case-insensitive, prevents hidden files or those ending with a period or space, and ensures no file name collisions:
+* The following code snippet demonstrates how to handle file uploads in Java Jakarta storing files in a specific folder while preserving the original file name sent by the user. It applies a custom file name length limit, restricts characters and reserved names, treats file names as case-insensitive, prevents hidden files or those ending with a period or space, and ensures no file name collisions:
 
   ```java
   import java.net.URLDecoder;
@@ -272,7 +273,6 @@
   ```
 
   ```java
-  ...
   private static final Integer MAX_FILENAME_LENGTH = 100;
   private static final String ALPHANUMERIC_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -280,11 +280,11 @@
       SecureRandom secureRandom = new SecureRandom();
       StringBuilder stringBuilder = new StringBuilder(length);
 
-      // Generate random characters from the ALPHANUMERIC_CHARACTERS
       for (int i = 0; i < length; i++) {
           int index = secureRandom.nextInt(ALPHANUMERIC_CHARACTERS.length());
           stringBuilder.append(ALPHANUMERIC_CHARACTERS.charAt(index));
       }
+
       return stringBuilder.toString();
   }
 
@@ -299,13 +299,12 @@
       return pattern.matcher(filename).matches();
   }
 
-  private String sanitiseFilename(String filename) throws SecurityException {
-      // Decode URI component
+  private String sanitizeFilename(String filename) throws SecurityException {
       String decodedFilename = URLDecoder.decode(filename, StandardCharsets.UTF_8);
 
-      // Compare filename length
       if (decodedFilename.length() > MAX_FILENAME_LENGTH)
           throw new SecurityException("File name too long");
+      
       if (!isFilenameAllowed(decodedFilename))
           throw new SecurityException("File name can only contain alphanumeric characters, hyphens, dots and spaces");
   
@@ -332,13 +331,13 @@
   ```java
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ...
-    try {
-        // Sanitize filename
-        String filename = filePart.getSubmittedFileName();
-        String sanitizedFilename = sanitiseFilename(filename);
 
-        // Save the file using the filename and content stream from the file part
+    ...
+
+    try {
+        String filename = filePart.getSubmittedFileName();
+        String sanitizedFilename = sanitizeFilename(filename);
+
         saveFile(sanitizedFilename, filePart.getInputStream());
     } catch (IOException e) {
         response.setStatus(500);
@@ -349,7 +348,6 @@
         return;
     }
 
-    // Respond to the client
     response.getOutputStream().println("File uploaded successfully");
     response.setStatus(200);
   }
@@ -361,7 +359,7 @@
 
 ## Compliant code in Node.js using `multer` while keeping the original file name
 
-* The following code snippet demonstrates how to handle file uploads using the `multer` middleware and storing files in a specific folder while preserving the original file name sent by the user. However, it applies a custom file name length limit, restricts characters and reserved names using the `sanitize-filename` package, treats file names as case-insensitive, prevents hidden files or those ending with a period or space, and ensures no file name collisions:
+* The following code snippet demonstrates how to handle file uploads using the `multer` middleware and storing files in a specific folder while preserving the original file name sent by the user. It applies a custom file name length limit, restricts characters and reserved names using the `sanitize-filename` package, treats file names as case-insensitive, prevents hidden files or those ending with a period or space, and ensures no file name collisions:
 
   ```javascript
   const sanitizeFilename = require("sanitize-filename");

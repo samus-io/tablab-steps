@@ -59,4 +59,381 @@
 * Empezar un nombre de archivo con un punto (e.g., `.htaccess`) está ampliamente aceptado y se utiliza habitualmente para crear archivos ocultos, especialmente en sistemas tipo UNIX, donde el punto indica que el archivo debe quedar oculto de los listados de directorios estándar, e incluso ser omitido en los análisis de seguridad automatizados. Los atacantes pueden aprovechar estos archivos para eludir controles de seguridad, ocultar scripts maliciosos o modificar configuraciones del servidor.
 * Los archivos que terminan con un punto o un espacio pueden aprovecharse de las incoherencias en la forma en que los distintos sistemas operativos y sistemas de ficheros gestionan los nombres de archivo, lo que provoca errores de acceso a los mismos, problemas de compatibilidad en el Explorador de Windows o problemas con otras aplicaciones, incluso cuando el sistema de ficheros subyacente los admite.
 
+@@TagStart@@java
+
+## Código de disconformidad en Java
+
+* El siguiente fragmento de código muestra una implementación insegura de carga de archivos en una aplicación Java Jakarta, en la que se utiliza el nombre de archivo recibido por parte del usuario sin ningún tipo de validación, lo que conlleva riesgos como la sobreescritura y la enumeración de archivos, entre otros:
+
+  ```java
+  import jakarta.json.Json;
+  import jakarta.json.JsonObject;
+  import jakarta.servlet.ServletConfig;
+  import jakarta.servlet.ServletException;
+  import jakarta.servlet.annotation.MultipartConfig;
+  import jakarta.servlet.annotation.WebServlet;
+  import jakarta.servlet.http.HttpServlet;
+  import jakarta.servlet.http.HttpServletRequest;
+  import jakarta.servlet.http.HttpServletResponse;
+  import jakarta.servlet.http.Part;
+
+  import java.io.File;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.io.InputStream;
+  ```
+
+  ```java
+  @WebServlet("/upload")
+  @MultipartConfig
+  public class FileUploadServlet extends HttpServlet {
+      private String uploadFolderPath;
+
+      @Override
+      public void init(ServletConfig config) throws ServletException {
+          super.init(config);
+
+          // Define the path to the folder where uploaded files will be stored
+          uploadFolderPath = getServletContext().getRealPath("/") + "uploads";
+
+          // Check if the 'uploads' folder exists; if not, create it
+          File uploadDir = new File(uploadFolderPath);
+          if (!uploadDir.exists()) {
+              uploadDir.mkdirs();
+          }
+      }
+
+      @Override
+      protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+          Part filePart;
+
+          try {
+              // Get the file part from the request
+              filePart = request.getPart("file");
+          } catch (ServletException | IOException e) {
+              JsonObject model = Json.createObjectBuilder().add("message", "No file uploaded").build();
+              response.getOutputStream().println(model.toString());
+              response.setStatus(400);
+              return;
+          }
+
+          try {
+              // Use the original filename provided by the user
+              String filename = filePart.getSubmittedFileName(); 
+
+              // Save the file using the filename and content stream from the file part
+              saveFile(filename, filePart.getInputStream());
+          } catch (IOException e) {
+              response.setStatus(500);
+              return;
+          }
+
+          response.getOutputStream().println("File uploaded successfully");
+          response.setStatus(200);
+      }
+  
+      private void saveFile(String filename, InputStream fileContent) throws IOException {
+          File file = new File(uploadFolderPath, filename);
+
+          // Try-with-resources to ensure the FileOutputStream is automatically closed after use
+          try (FileOutputStream fos = new FileOutputStream(file)) {
+              byte[] buffer = new byte[8192];
+              int bytesRead;
+
+              // Reads the file content in chunks and writes it to the destination file
+              while ((bytesRead = fileContent.read(buffer)) != -1) {
+                  fos.write(buffer, 0, bytesRead);
+              }
+          }
+      }
+  }
+  ```
+
+@@TagEnd@@
+
+@@TagStart@@node.js
+
+## Código de disconformidad en Node.js usando `multer`
+
+* El siguiente fragmento de código muestra una implementación insegura de carga de archivos en una aplicación `Express.js` utilizando `multer`, en la que se utiliza el nombre de archivo recibido por parte del usuario sin ningún tipo de validación, lo que conlleva riesgos como la sobreescritura y la enumeración de archivos, entre otros:
+
+  ```javascript
+  const express = require("express");
+  const multer = require("multer");
+  const path = require("path");
+  const fs = require("fs");
+
+  const app = express();
+
+  // Define the path to the folder where uploaded files will be stored
+  const uploadFolderPath = path.join(__dirname, "uploads");
+
+  // Check if the 'uploads' folder exists; if not, create it
+  if (!fs.existsSync(uploadFolderPath)) fs.mkdirSync(uploadFolderPath, { recursive: true });
+
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, uploadFolderPath);
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.originalname); // Use the original filename provided by the user
+    }
+  });
+
+  const upload = multer({
+    storage: storage
+  });
+
+  app.post("/upload", upload.single("file"), (req, res) => {
+    if (!req.file) {
+      res.status(400).json({ message: "No file uploaded" });
+      return;
+    }
+
+    res.send("File uploaded successfully");
+  });
+  ```
+
+@@TagEnd@@
+
+@@TagStart@@java
+
+## Código de conformidad en Java generando un nombre de archivo aleatorio
+
+* El siguiente fragmento de código ilustra cómo gestionar la carga de archivos en Java Jakarta y almacenar los archivos en una carpeta específica con nombres generados aleatoriamente mediante UUID, garantizando que los nombres de los archivos sean únicos e impredecibles:
+
+  ```java
+  import java.util.UUID;
+
+  ...
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    ...
+
+    try {
+        // Generate a random file name via UUID
+        String filename = UUID.randomUUID() + ".pdf";
+
+        // Save the file using the filename and content stream from the file part
+        saveFile(filename, filePart.getInputStream());
+    } catch (IOException e) {
+        response.setStatus(500);
+        return;
+    }
+
+    response.getOutputStream().println("File uploaded successfully");
+    response.setStatus(200);
+  }
+  ```
+
+  * En este caso, el código está diseñado para tener en cuenta únicamente cargas de archivos PDF en la aplicación.
+
+@@TagEnd@@
+
+@@TagStart@@node.js
+
+## Código de conformidad en Node.js usando `multer` y generando un nombre de archivo aleatorio
+
+* El siguiente fragmento de código ilustra cómo gestionar la carga de archivos utilizando el *middleware* `multer` y almacenando los archivos en una carpeta específica con nombres generados aleatoriamente mediante UUID, garantizando que los nombres de los archivos sean únicos e impredecibles:
+
+  ```javascript
+  const uuid = require("uuid");
+
+  ...
+
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, uploadFolderPath);
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${uuid.v4()}.pdf`); 
+    }
+  });
+
+  ...
+  ```
+
+  * En este caso, el código está diseñado para tener en cuenta únicamente cargas de archivos PDF en la aplicación.
+
+@@TagEnd@@
+
+@@TagStart@@java
+
+## Código de conformidad en Java manteniendo el nombre de archivo original
+
+* El siguiente fragmento de código muestra cómo gestionar la carga de archivos en Java Jakarta almacenando los archivos en una carpeta específica y conservando el nombre de archivo original enviado por el usuario.
+* El código aplica un límite personalizado a la longitud de los nombres de archivo, restringe los caracteres y los nombres reservados, no distingue entre mayúsculas y minúsculas, evita los archivos ocultos o los que terminan con un punto o un espacio, y garantiza que no se produzcan colisiones entre los nombres de archivo:
+
+  ```java
+  import java.net.URLDecoder;
+  import java.nio.charset.StandardCharsets;
+  import java.security.SecureRandom;
+  import java.util.regex.Pattern;
+  ```
+
+  ```java
+  private static final Integer MAX_FILENAME_LENGTH = 100;
+  private static final String ALPHANUMERIC_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+  private String generateRandomString(Integer length) {
+      SecureRandom secureRandom = new SecureRandom();
+      StringBuilder stringBuilder = new StringBuilder(length);
+
+      for (int i = 0; i < length; i++) {
+          int index = secureRandom.nextInt(ALPHANUMERIC_CHARACTERS.length());
+          stringBuilder.append(ALPHANUMERIC_CHARACTERS.charAt(index));
+      }
+
+      return stringBuilder.toString();
+  }
+
+  private Boolean isFilenameAllowed(String filename) {
+      // Restrict to alphanumeric, hyphens, spaces and dots
+      Pattern pattern = Pattern.compile("^[a-zA-Z0-9.\\- ]*$");
+      return pattern.matcher(filename).matches();
+  }
+
+  private Boolean isWindowsReservedName(String filename) {
+      Pattern pattern = Pattern.compile("^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\\..*)?$", Pattern.CASE_INSENSITIVE);
+      return pattern.matcher(filename).matches();
+  }
+
+  private String sanitizeFilename(String filename) throws SecurityException {
+      String decodedFilename = URLDecoder.decode(filename, StandardCharsets.UTF_8);
+
+      if (decodedFilename.length() > MAX_FILENAME_LENGTH)
+          throw new SecurityException("File name too long");
+      
+      if (!isFilenameAllowed(decodedFilename))
+          throw new SecurityException("File name can only contain alphanumeric characters, hyphens, dots and spaces");
+  
+      // Avoid hidden files and trailing periods and spaces
+      String trimmedFilename = decodedFilename.replaceAll("^[.\\s]+|[.\\s]+$", "");
+
+      // Handle case-insensitive
+      String lowerCaseFilename = trimmedFilename.toLowerCase();
+
+      // Replace spaces with hyphens
+      String canonicalizedFilename = lowerCaseFilename.replaceAll("\\s+", "-");
+
+      // Restrict reserved names in Windows
+      if (isWindowsReservedName(canonicalizedFilename)) {
+          throw new SecurityException("File name cannot be a Windows reserved name");
+      }
+
+      // Ensure no file name collisions
+      String randomString = generateRandomString(6);
+      return randomString + "_" + canonicalizedFilename;
+  }
+  ```
+
+  ```java
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    ...
+
+    try {
+        String filename = filePart.getSubmittedFileName();
+        String sanitizedFilename = sanitizeFilename(filename);
+
+        saveFile(sanitizedFilename, filePart.getInputStream());
+    } catch (IOException e) {
+        response.setStatus(500);
+        return;
+    }
+    catch (SecurityException e) {
+        response.setStatus(400);
+        return;
+    }
+
+    response.getOutputStream().println("File uploaded successfully");
+    response.setStatus(200);
+  }
+  ```
+
+@@TagEnd@@
+
+@@TagStart@@node.js
+
+## Código de conformidad en Node.js usando `multer` y manteniendo el nombre de archivo original
+
+* El siguiente fragmento de código demuestra cómo gestionar la subida de archivos utilizando el *middleware* `multer` y almacenando los archivos en una carpeta específica mientras se conserva el nombre de archivo original enviado por el usuario.
+* El código aplica un límite personalizado a la longitud de los nombres de archivo, restringe caracteres y nombres reservados utilizando el paquete `sanitize-filename`, trata los nombres de archivo sin distinguir mayúsculas de minúsculas, evita los archivos ocultos o los que terminan con un punto o un espacio y garantiza que no se produzcan colisiones entre nombres de archivo:
+
+  ```javascript
+  const sanitizeFilename = require("sanitize-filename");
+  ```
+
+  ```javascript
+  const MAX_FILENAME_LENGTH = 100;
+
+  const generateRandomString = (length = 6) => {
+    return Math.random().toString(36).substring(2, 2 + length);
+  };
+
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, uploadFolderPath);
+    },
+    filename: (req, file, cb) => {
+      const decodedFilename = decodeURIComponent(file.originalname);
+      const error = new multer.MulterError("LIMIT_UNEXPECTED_FILE", file.fieldname);
+
+      if (decodedFilename.length > MAX_FILENAME_LENGTH) {
+        error.message = "File name too long";
+        cb(error);
+        return;
+      }
+
+      const trimmedFilename = decodedFilename.replace(/^[.\s]+|[.\s]+$/g, ""); // Remove enclosing periods and spaces
+      const lowerCaseFilename = trimmedFilename.toLowerCase();
+      const canonicalizedFilename = lowerCaseFilename.replace(/\s+/g, "-"); // Replace spaces with hyphens
+      const sanitizedFilename = sanitizeFilename(canonicalizedFilename);
+
+      if (!sanitizedFilename) {
+        error.message = "Invalid file name";
+        cb(error);
+        return;
+      }
+
+      // Ensure no file name collisions
+      const randomString = generateRandomString();
+      const filename = `${randomString}_${sanitizedFilename}`;
+
+      cb(null, filename);
+    }
+  });
+  ```
+
+  ```javascript
+  const upload = multer({ storage: storage });
+  const uploadSingleFile = upload.single("file");
+
+  app.post("/upload", (req, res) => {
+    uploadSingleFile(req, res, (err) => {
+      if (err instanceof multer.MulterError) {
+        res.status(400).send({ message: err.message });
+        return;
+      } else if (err) {
+        res.status(500).json({ message: "An unknown error occurred while processing the file" });
+        return;
+      }
+
+      if (!req.file) {
+        res.status(400).json({ message: "No file uploaded" });
+        return;
+      }
+
+      res.send("File uploaded successfully");
+    });
+  });
+  ```
+
+  > :warning: Dado que algunas de las medidas de seguridad implementadas pueden eliminar caracteres no deseados, es aconsejable aplicar primero el saneamiento del nombre del archivo y luego verificar la extensión del mismo.
+
+@@TagEnd@@
+
 [1]: https://www.ascii-code.com/
