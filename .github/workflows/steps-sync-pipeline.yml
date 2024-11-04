@@ -34,7 +34,7 @@ jobs:
         REPOSITORY: ${{ secrets.PRIVATE_REPOSITORY }}
       run: |
         cp -R ./tablab-steps/steps/* ./private-steps-repo/steps/
-        cp -R ./tablab-steps/static/images/* ./private-steps-repo/static/images/learning/
+        cp -R ./tablab-steps/static/images/* ./private-steps-repo/static/images/
         cp -R ./tablab-steps/scripts/* ./private-steps-repo/scripts/
         
         cd ./private-steps-repo
