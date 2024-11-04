@@ -3,6 +3,8 @@
 * La carga insegura de archivos hace referencia a una vulnerabilidad de seguridad que se produce cuando una aplicación permite a los usuarios cargar archivos sin verificar correctamente sus propiedades, como el nombre, el tipo, el contenido o el tamaño del archivo, lo que supone un riesgo potencial para el sistema.
 * Cuando estas comprobaciones no se aplican correctamente, una simple función de carga de archivos podría ser explotada para cargar archivos maliciosos, incluyendo scripts del lado del servidor que pueden permitir a los atacantes ejecutar código arbitrario en el propio servidor o incluso en los dispositivos de los usuarios o empleados cuando estos acceden y abren estos archivos.
 
+![Insecure file upload overview][1]
+
 ## Qué se podría conseguir con una subida de archivos insegura
 
 * Los usuarios malintencionados pueden cargar malware que puede ejecutarse en el servidor o en los dispositivos de los usuarios, dando lugar al robo de datos, acceso no autorizado o compromiso total del sistema.
@@ -98,3 +100,5 @@ Los archivos de gran tamaño también pueden hacer que las **copias de seguridad
 
 * Los metadatos pueden **revelar involuntariamente información personal** como nombres de usuario, direcciones de correo electrónico o detalles de dispositivos.
 * Las imágenes y los vídeos pueden llevar incrustados **datos de geolocalización**, que pueden revelar la ubicación física del usuario o de la organización.
+
+[1]: /static/images/insecure-file-upload-overview.png

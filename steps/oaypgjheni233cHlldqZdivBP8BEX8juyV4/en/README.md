@@ -2,6 +2,8 @@
 
 * Extension validation ensures that uploaded files match the expected and approved file types by checking their extensions.
 
+![File extension validation][1]
+
 ## Recommended security practices
 
 * **Decode from URL-encoded format file names** prior to validation to prevent bypass techniques like null byte characters (e.g., `image.php%00.png`).
@@ -250,3 +252,5 @@
   ```html
   <input type="file" id="fileInput" accept=".jpg, .jpeg, .png" />
   ```
+
+[1]: /static/images/file-extension-validation.png

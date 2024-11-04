@@ -3,6 +3,8 @@
 * `Insecure file upload` refers to a web security vulnerability that occurs when an application allows users to upload files without correctly verifying the file's properties like the file's name, type, content, or size, posing a potential risk to the system.
 * When these checks are not properly enforced, a simple file upload feature could be exploited to upload dangerous files, including server-side scripts that can allow attackers to execute malicious code on the server or even on the desktops of users or employees when they access these files.
 
+![Insecure file upload overview][1]
+
 ## What could be achieved with an insecure file upload
 
 * Malicious users can upload malware that may execute on the server or user devices, resulting in data theft, unauthorized access, or full system compromise.
@@ -98,3 +100,5 @@
 
 * Metadata can unintentionally **disclose personal information** like usernames, email addresses, or device details.
 * Images and videos can have embedded **geolocation data**, potentially revealing the user's or organization's physical location.
+
+[1]: /static/images/insecure-file-upload-overview.png
