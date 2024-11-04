@@ -51,4 +51,4 @@
 * As an application grows in size and complexity, it can become challenging to implement frequent updates.
 * Additionally, maintaining at least three separate layers of hardware and software can lead to inefficiencies for a business.
 
-[1]: /static/images/learning/three-tier-software-architecture.png
+[1]: /static/images/three-tier-software-architecture.png

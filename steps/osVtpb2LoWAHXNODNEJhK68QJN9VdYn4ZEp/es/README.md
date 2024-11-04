@@ -33,4 +33,4 @@
   * Otro caso es cuando utilizamos un `iframe`, donde este permite cargar el contenido de un origen distinto mediante un `frame` (siempre y cuando otras políticas de seguridad nos lo permitan). Cabe destacar que aunque sea possible crear un `frame` de otro origen, la regla sigue siendo la misma, no se puede acceder a la respuesta o contenido del `frame` pero si es posible interactuar con él.
   * También los archivos CSS, JavaScript e imágenes están excluidas de la política `SOP`.
 
-[1]: /static/images/learning/how-sop-works-example.png
+[1]: /static/images/how-sop-works-example.png

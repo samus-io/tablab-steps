@@ -45,6 +45,6 @@
 * Finalmente cuando ya se ha comprobado que la CSP se ha generado correctamente, se procede a copiar el valor de la CSP con el botón `Copy`.
 
 [1]: https://chrome.google.com/webstore/detail/laboratory/mjcamldajgnpgjcpacomkgfhccnibldg
-[2]: /static/images/learning/laboratory-image.png
-[3]: /static/images/learning/laboratory-record-site.png
-[4]: /static/images/learning/csp-console-error.png
+[2]: /static/images/laboratory-image.png
+[3]: /static/images/laboratory-record-site.png
+[4]: /static/images/csp-console-error.png

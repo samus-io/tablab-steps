@@ -82,4 +82,4 @@
 
   > :older_man: Al combinar la validación en el lado del cliente para mejorar la usabilidad con la validación en el lado del servidor para reforzar la seguridad, los desarrolladores tienen que encontrar un delicado equilibrio entre la experiencia del usuario y la integridad y seguridad de la aplicación, ofreciendo un paradigma de interacción con el usuario sin fisuras pero, a su vez, fortificado.
 
-[1]: /static/images/learning/insecure-input-validation-overview.png
+[1]: /static/images/insecure-input-validation-overview.png

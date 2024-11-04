@@ -62,4 +62,4 @@
   * Estos proxies HTTP inversos deben mantenerse en sus propias subredes, separadas de las subredes de otros servidores web.
 * Siempre que sea posible, los recursos deben limitarse a un único segmento de red para evitar que sean accesibles en **puertos de servicio** a través de múltiples interfaces de red.
 
-[1]: /static/images/learning/three-tier-software-and-secure-architecture-integration.png
+[1]: /static/images/three-tier-software-and-secure-architecture-integration.png

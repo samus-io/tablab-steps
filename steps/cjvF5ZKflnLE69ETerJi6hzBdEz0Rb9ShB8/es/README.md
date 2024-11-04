@@ -161,4 +161,4 @@
 @@TagEnd@@
 
 [1]: https://json-schema.org/
-[2]: /static/images/learning/syntax-validation-sample.png
+[2]: /static/images/syntax-validation-sample.png

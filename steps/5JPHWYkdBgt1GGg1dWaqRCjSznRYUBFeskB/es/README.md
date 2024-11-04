@@ -74,4 +74,4 @@
 * El exploit se envía en una petición y se activa cuando la aplicación gestiona una petición diferente.
 * Los escáneres automatizados modernos son incapaces de realizar lo necesario para descubrir vulnerabilidades de segundo orden. Esto se debe a que hay varios escenarios posibles, y sin una comprensión del significado y el uso de los elementos de datos dentro de la aplicación, el trabajo involucrado en la detección de inyecciones SQL de segundo orden crece exponencialmente. El factor humano es necesario.
 
-[1]: /static/images/learning/types-of-sql-injection.png
+[1]: /static/images/types-of-sql-injection.png

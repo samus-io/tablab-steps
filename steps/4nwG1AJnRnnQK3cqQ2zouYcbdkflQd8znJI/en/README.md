@@ -35,4 +35,4 @@
 * SQL Injection has become a prevalent concern with database-driven websites. This vulnerability is relatively easy to identify and exploit, making it a common target. Therefore, any website or software application that manages a database is likely to face attempted attacks of this nature.
 * This security flaw is frequently encountered in PHP and ASP applications, primarily because older functional interfaces are commonly used. In contrast, Java and ASP.NET applications are generally less susceptible to easily exploitable SQL injections due to the inherent characteristics of their programmatic interfaces.
 
-[1]: /static/images/learning/basic-sql-injection-exploitation-flow.png
+[1]: /static/images/basic-sql-injection-exploitation-flow.png

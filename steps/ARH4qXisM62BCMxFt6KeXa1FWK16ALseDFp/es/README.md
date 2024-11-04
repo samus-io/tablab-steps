@@ -21,4 +21,4 @@
   
 * Al implementar una cabecera CSP se define una lista de orígenes permitidos para todos los tipos de recurso que la aplicación web utiliza y restringe los demás, de esta forma se pueden evitar vulnerabilidades del lado del cliente.
 
-[1]: /static/images/learning/content-security-policy-graphical-representation.png
+[1]: /static/images/content-security-policy-graphical-representation.png

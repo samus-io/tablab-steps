@@ -51,4 +51,4 @@
 * A medida que una aplicación crece en tamaño y complejidad, puede resultar complicado implementar actualizaciones frecuentes.
 * Además, mantener al menos tres niveles separados de hardware y software puede generar ineficiencias para una empresa.
 
-[1]: /static/images/learning/three-tier-software-architecture.png
+[1]: /static/images/three-tier-software-architecture.png

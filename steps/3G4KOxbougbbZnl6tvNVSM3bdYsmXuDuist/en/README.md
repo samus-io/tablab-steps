@@ -82,4 +82,4 @@
 
   > :older_man: By combining client-side validation for usability enhancements with server-side validation for security enforcement, developers need to find a delicate balance between user experience and application integrity and security, delivering a seamless yet fortified user interaction paradigm.
 
-[1]: /static/images/learning/insecure-input-validation-overview.png
+[1]: /static/images/insecure-input-validation-overview.png

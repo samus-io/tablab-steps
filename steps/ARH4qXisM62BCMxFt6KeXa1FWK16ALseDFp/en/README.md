@@ -21,4 +21,4 @@
   
 * By setting a CSP header, you define a list of allowed origins for all resource types used by the web application and restrict the others, thus avoiding client-side vulnerabilities.
 
-[1]: /static/images/learning/content-security-policy-graphical-representation.png
+[1]: /static/images/content-security-policy-graphical-representation.png

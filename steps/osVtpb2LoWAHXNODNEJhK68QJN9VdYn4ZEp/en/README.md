@@ -33,4 +33,4 @@
   * Another case is when we use an `iframe`, where it allows us to load the content of a different origin through a `frame` (as long as other security policies allow us to do so). It should be noted that although it is possible to create a `frame` from another origin, the rule remains the same, you can not access the response or content of the `frame` but it is possible to interact with it.
     * Also CSS, JavaScript and images are excluded from the `SOP` policy.
 
-[1]: /static/images/learning/how-sop-works-example.png
+[1]: /static/images/how-sop-works-example.png

@@ -74,4 +74,4 @@
 * The exploit is submitted in one request and triggered when the application handles a different request.
 * Modern automated scanners are still unable to perform what is necessary to discover second-order vulnerabilities. This is because there are several possible scenarios, and without an understanding of the meaning and use of data elements within the application, the work involved in detecting second-order SQL injections grows exponentially. The human factor is necessary.
 
-[1]: /static/images/learning/types-of-sql-injection.png
+[1]: /static/images/types-of-sql-injection.png

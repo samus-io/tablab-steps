@@ -35,4 +35,4 @@
 * Las inyecciones SQL se han convertido en un problema frecuente en los sitios web de carácter *database-driven* por el hecho que esta vulnerabilidad es relativamente fácil de identificar y explotar, lo cual la convierte en un objetivo habitual y, en este sentido, es probable que cualquier sitio web o aplicación de software que gestione una base de datos se enfrente a intentos de ataques de esta naturaleza.
 * Este fallo de seguridad se encuentra con frecuencia en aplicaciones PHP y ASP principalmente porque se suelen utilizar interfaces funcionales antiguas. En cambio, las aplicaciones Java y ASP.NET suelen ser menos susceptibles a inyecciones SQL explotables debido a las características inherentes de sus interfaces programáticas.
 
-[1]: /static/images/learning/basic-sql-injection-exploitation-flow.png
+[1]: /static/images/basic-sql-injection-exploitation-flow.png

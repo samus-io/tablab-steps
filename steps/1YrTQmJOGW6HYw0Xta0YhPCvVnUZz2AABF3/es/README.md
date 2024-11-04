@@ -7,4 +7,4 @@
 * En la siguiente imagen se puede observar las cabeceras de respuesta de una aplicación web que deja al descubierto que servidor web utiliza y su versión:
 ![Server Header of Apache][1]
 
-[1]: /static/images/learning/apache-server-header.png
+[1]: /static/images/apache-server-header.png

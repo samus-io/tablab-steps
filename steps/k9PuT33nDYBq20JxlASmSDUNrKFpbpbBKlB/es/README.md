@@ -38,4 +38,4 @@
 * Es aconsejable emplear varios proveedores y soluciones de seguridad para analizar el tráfico entre niveles.
 * Las reglas de seguridad deben aplicarse lo más cerca al origen posible.
 
-[1]: /static/images/learning/three-tier-secure-architecture.png
+[1]: /static/images/three-tier-secure-architecture.png

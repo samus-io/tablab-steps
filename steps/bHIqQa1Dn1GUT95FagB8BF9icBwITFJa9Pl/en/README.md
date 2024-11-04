@@ -320,4 +320,4 @@
 
   > :warning: Frontend data input validation does not provide security benefits due to potential code tampering, but it supports further data normalization and validation tasks and typically leads to an improved user experience.
 
-[1]: /static/images/learning/allow-list-validation-overview.png
+[1]: /static/images/allow-list-validation-overview.png

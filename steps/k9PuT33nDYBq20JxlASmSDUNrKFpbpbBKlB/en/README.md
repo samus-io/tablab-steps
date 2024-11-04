@@ -38,4 +38,4 @@
 * It's advisable to employ multiple security providers and solutions to analyze traffic between tiers.
 * Security rules should be applied as close to the origin as possible.
 
-[1]: /static/images/learning/three-tier-secure-architecture.png
+[1]: /static/images/three-tier-secure-architecture.png

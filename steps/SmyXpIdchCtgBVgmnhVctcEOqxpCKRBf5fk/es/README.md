@@ -40,4 +40,4 @@
 * :writing_hand: Esta aplicación web utiliza un parámetro para incluir imágenes en la página web, explota la vulnerabilidad accediendo al `/etc/passwd`:
 @@ExerciseBox@@
 
-[1]: /static/images/learning/path-traversal-example.png
+[1]: /static/images/path-traversal-example.png

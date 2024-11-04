@@ -320,4 +320,4 @@
 
   > :warning: La validación de la entrada de datos en el *frontend* no aporta ventajas de seguridad debido a la posible manipulación del código, pero facilita otras tareas de normalización y validación de datos y suele mejorar la experiencia del usuario.
 
-[1]: /static/images/learning/allow-list-validation-overview.png
+[1]: /static/images/allow-list-validation-overview.png

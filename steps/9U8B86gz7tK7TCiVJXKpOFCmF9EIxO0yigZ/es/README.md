@@ -141,5 +141,5 @@
 * Completa el cuestionario eligiendo la respuesta correcta para cada pregunta.
   @@ExerciseBox@@
 
-[1]: /static/images/learning/normalization-process-sample.png
-[2]: /static/images/learning/canonicalization-process-sample.png
+[1]: /static/images/normalization-process-sample.png
+[2]: /static/images/canonicalization-process-sample.png

@@ -7,4 +7,4 @@
 * In the following image, you can see the response headers of a web application that reveal which web server it is using and its version:
 ![Server Header of Apache][1]
 
-[1]: /static/images/learning/apache-server-header.png
+[1]: /static/images/apache-server-header.png

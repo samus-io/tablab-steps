@@ -62,4 +62,4 @@
   * These reverse HTTP proxies should be kept on their own subnets, separate from the subnets of other web servers.
 * Resources should, whenever possible, be confined to a single network segment to avoid having resources accessible **on service ports** across multiple network interfaces.
 
-[1]: /static/images/learning/three-tier-software-and-secure-architecture-integration.png
+[1]: /static/images/three-tier-software-and-secure-architecture-integration.png

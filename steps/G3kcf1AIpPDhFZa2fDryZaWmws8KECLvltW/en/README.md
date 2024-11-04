@@ -8,4 +8,4 @@
 
 ![Developer Console Header Response][1]
 
-[1]: /static/images/learning/developer-console-network.png
+[1]: /static/images/developer-console-network.png
