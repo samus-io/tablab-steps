@@ -61,7 +61,7 @@
 
 @@TagStart@@java
 
-## Código de disconformidad en Java
+## Código de incumplimiento en Java
 
 * El siguiente fragmento de código muestra una implementación insegura de carga de archivos en una aplicación Java Jakarta, en la que se utiliza el nombre de archivo recibido por parte del usuario sin ningún tipo de validación, lo que conlleva riesgos como la sobreescritura y la enumeración de archivos, entre otros:
 
@@ -153,7 +153,7 @@
 
 @@TagStart@@node.js
 
-## Código de disconformidad en Node.js usando `multer`
+## Código de incumplimiento en Node.js usando `multer`
 
 * El siguiente fragmento de código muestra una implementación insegura de carga de archivos en una aplicación `Express.js` utilizando `multer`, en la que se utiliza el nombre de archivo recibido por parte del usuario sin ningún tipo de validación, lo que conlleva riesgos como la sobreescritura y la enumeración de archivos, entre otros:
 
@@ -198,7 +198,7 @@
 
 @@TagStart@@java
 
-## Código de conformidad en Java generando un nombre de archivo aleatorio
+## Código de cumplimiento en Java generando un nombre de archivo aleatorio
 
 * El siguiente fragmento de código ilustra cómo gestionar la carga de archivos en Java Jakarta y almacenar los archivos en una carpeta específica con nombres generados aleatoriamente mediante UUID, garantizando que los nombres de los archivos sean únicos e impredecibles:
 
@@ -234,7 +234,7 @@
 
 @@TagStart@@node.js
 
-## Código de conformidad en Node.js usando `multer` y generando un nombre de archivo aleatorio
+## Código de cumplimiento en Node.js usando `multer` y generando un nombre de archivo aleatorio
 
 * El siguiente fragmento de código ilustra cómo gestionar la carga de archivos utilizando el *middleware* `multer` y almacenando los archivos en una carpeta específica con nombres generados aleatoriamente mediante UUID, garantizando que los nombres de los archivos sean únicos e impredecibles:
 
@@ -261,7 +261,7 @@
 
 @@TagStart@@java
 
-## Código de conformidad en Java manteniendo el nombre de archivo original
+## Código de cumplimiento en Java manteniendo el nombre de archivo original
 
 * El siguiente fragmento de código muestra cómo gestionar la carga de archivos en Java Jakarta almacenando los archivos en una carpeta específica y conservando el nombre de archivo original enviado por el usuario.
 * El código aplica un límite personalizado a la longitud de los nombres de archivo, restringe los caracteres y los nombres reservados, no distingue entre mayúsculas y minúsculas, evita los archivos ocultos o los que terminan con un punto o un espacio, y garantiza que no se produzcan colisiones entre los nombres de archivo:
@@ -358,7 +358,7 @@
 
 @@TagStart@@node.js
 
-## Código de conformidad en Node.js usando `multer` y manteniendo el nombre de archivo original
+## Código de cumplimiento en Node.js usando `multer` y manteniendo el nombre de archivo original
 
 * El siguiente fragmento de código demuestra cómo gestionar la subida de archivos utilizando el *middleware* `multer` y almacenando los archivos en una carpeta específica mientras se conserva el nombre de archivo original enviado por el usuario.
 * El código aplica un límite personalizado a la longitud de los nombres de archivo, restringe caracteres y nombres reservados utilizando el paquete `sanitize-filename`, trata los nombres de archivo sin distinguir mayúsculas de minúsculas, evita los archivos ocultos o los que terminan con un punto o un espacio y garantiza que no se produzcan colisiones entre nombres de archivo:
