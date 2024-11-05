@@ -7,9 +7,9 @@
 ## Recommended security practices
 
 * **Decode from URL-encoded format file names** prior to validation to prevent bypass techniques like null byte characters (e.g., `image.php%00.png`).
-* **Apply robust filtering** to avoid common pitfalls, such as regex patterns that can be bypassed.
-* In cases where the web application only accepts a single file type (e.g., `.pdf`), **hardcode the allowed extension** when storing the file. If more file types are required, **define an allow-list** that restricts file extensions to only those necessary for business needs (e.g., `.jpg`, `.jpeg`, `.png`).
+* In cases where the web application only accepts a single file type (e.g., `.pdf`), **hardcode the allowed extension** when storing the file. If multiple file types are permitted, **define an allow-list** that restricts file extensions to only those necessary for business needs (e.g., `.jpg`, `.jpeg` and `.png`).
 * **Disallow files with multiple extensions or missing extensions** to mitigate the risk of exploitation.
+* **Apply robust filtering**  when validating to avoid common pitfalls, such as regex patterns that can be bypassed.
 
   > :warning: Be aware that frontend validation can be bypassed, making it insufficient; it should only be considered a tool for improving user experience.
 
@@ -41,9 +41,10 @@
       @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
           Part filePart;
+
           try {
               // Get the file part from the request
-              filePart = request.getPart("formFile");
+              filePart = request.getPart("file");
           }
           catch (ServletException | IOException e) {
               JsonObject model = Json.createObjectBuilder().add("message", "No file uploaded").build();
@@ -63,7 +64,6 @@
               return;
           }
 
-          // Respond to the client
           response.getOutputStream().println("File uploaded successfully");
           response.setStatus(200);
       }
@@ -141,20 +141,24 @@
           String decodedFilename = URLDecoder.decode(filename, StandardCharsets.UTF_8);
           String lowerCaseFilename = decodedFilename.toLowerCase();
           Integer lastDotIndex = lowerCaseFilename.lastIndexOf(".");
+
           if (lastDotIndex == -1) // No extension found
               return false;
           if (lowerCaseFilename.split("\\.").length -1 > 1) // Multiple extension found
               return false;
+
           String extension = lowerCaseFilename.substring(lastDotIndex);
+
           return ALLOWED_EXTENSIONS.contains(extension);
       }
 
       @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
           Part filePart;
+
           try {
               // Get the file part from the request
-              filePart = request.getPart("formFile");
+              filePart = request.getPart("file");
           }
           catch (ServletException | IOException e) {
               JsonObject model = Json.createObjectBuilder().add("message", "No file uploaded").build();
@@ -173,7 +177,6 @@
               return;
           }
 
-          // Respond to the client
           response.getOutputStream().println("File uploaded successfully");
           response.setStatus(200);
       }

@@ -15,7 +15,7 @@
 
 ## Explotación de cargas de archivos inseguras
 
-### Evadiendo las comprobaciones de las extensiones de archivo
+### Eludiendo las comprobaciones de las extensiones de archivo
 
 * Usando letras mayúsculas (e.g., `.pHp`, `.pHP5` o `.ASP`).
 * Añadiendo una extensión válida antes de la extensión de ejecución (e.g., `image.png.php` o `image.png.php5`).
