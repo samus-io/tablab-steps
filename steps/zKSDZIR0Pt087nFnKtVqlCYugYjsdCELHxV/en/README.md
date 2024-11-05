@@ -29,7 +29,7 @@
 
   * The HTTP headers that are commonly used in conjunction with MIME to manage content in HTTP transactions are:
     * `Content-Type`: to specify the media type and subtype of the content.
-    * `Content-Disposition`: to indicate if the content should be displayed inline, as part of a web page, or treated as an attachment to be downloaded to local storage. In a `multipart/form-data` body, the HTTP `Content-Disposition` header is responsible for providing information about each subpart.
+    * `Content-Disposition`: to indicate if the content can be displayed `inline` (default value), meaning as part of a web page, or treated as an `attachment` to be downloaded to local storage. In a `multipart/form-data` body, the HTTP `Content-Disposition` header is responsible for providing information about each subpart.
 * File type validation based on the MIME type in the `Content-Type` header is unreliable for security purposes since it can be easily spoofed, even though certain libraries or packages may depend on this value to confirm that file matches the expected type.
 * However, it can still be useful to enhance the user experience by offering a preliminary check for incorrect file types.
 
@@ -37,7 +37,7 @@
 
 ### Non-compliant code in Java
 
-* This implementation uses Java Jakarta to handle file uploads, which identifies the file type via the received `Content-Type` HTTP header, and then performs a security check accordingly that can be easily bypassed by spoofing the `Content-Type` header in the request:
+* This implementation in Java Jakarta handles file uploads identifying the file type via the received `Content-Type` HTTP header, and then performs a security check accordingly that can be easily bypassed by spoofing the `Content-Type` header in the request:
 
   ```java
   import jakarta.json.Json;
@@ -64,9 +64,10 @@
       @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
           Part filePart;
+
           try {
               // Get the file part from the request
-              filePart = request.getPart("formFile");
+              filePart = request.getPart("file");
           }
           catch (ServletException | IOException e) {
               JsonObject model = Json.createObjectBuilder().add("message", "No file uploaded").build();
@@ -75,8 +76,9 @@
               return;
           }
 
-          // Get MIME type and compare it with allowed MIME types
+          // Get MIME type via the Content Type and compare it with allowed MIME types
           String mimetype = filePart.getContentType();
+
           if (!ALLOWED_TYPES.contains(mimetype)) {
               JsonObject model = Json.createObjectBuilder().add("message", "Unexpected file type").build();
               response.getOutputStream().println(model.toString());
@@ -84,7 +86,6 @@
               return;
           }
 
-          // Respond to the client
           response.getOutputStream().println("File uploaded successfully");
           response.setStatus(200);
       }
@@ -143,6 +144,7 @@
     if (!file) return;
 
     const validTypes = ["image/jpeg", "image/png"];
+
     if (!validTypes.includes(file.type)) {
       // Handle unexpected file notification
     }
@@ -191,9 +193,10 @@
       @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
           Part filePart;
+
           try {
               // Get the file part from the request
-              filePart = request.getPart("formFile");
+              filePart = request.getPart("file");
           }
           catch (ServletException | IOException e) {
               JsonObject model = Json.createObjectBuilder().add("message", "No file uploaded").build();
@@ -201,11 +204,11 @@
               response.setStatus(400);
               return;
           }
-          Tika tika = new Tika();
 
-          // Get MIME type via magic number and compare it with allowed MIME types
+          // Get MIME type via the magic number and compare it with allowed MIME types
+          Tika tika = new Tika();
           String mimetype = tika.detect(filePart.getInputStream());
-          System.out.println(mimetype);
+
           if (!ALLOWED_TYPES.contains(mimetype)) {
               JsonObject model = Json.createObjectBuilder().add("message", "Unexpected file type").build();
               response.getOutputStream().println(model.toString());
@@ -213,7 +216,6 @@
               return;
           }
 
-          // Respond to the client
           response.getOutputStream().println("File uploaded successfully");
           response.setStatus(200);
       }

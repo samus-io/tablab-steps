@@ -57,7 +57,7 @@
   * Los archivos `pdf` empiezan por `25 50 44 46 2D` (correspondiente a `%PDF-`).
   * Los archivos `zip` empiezan por `50 4B 03 04` (correspondiente a `PK␃␄`).
 * Los atacantes pueden añadir fácilmente un número mágico válido a los archivos maliciosos, haciéndolos parecer legítimos. Por ejemplo, añadir la firma `%PDF-2.0` al principio de un archivo *webshell* puede engañar al sistema haciéndole creer que se trata de un archivo PDF.
-  > :older_man: `webshell` es el nombre común dado a un script utilizado por los atacantes que, cuando se carga en un servidor web, les permite ejecutar comandos del sistema y tomar el control del servidor como si tuvieran acceso directo al shell, pero todo de forma remota a través de la web.
+  > :older_man: `webshell` es el nombre común dado a un *script* utilizado por los atacantes que, cuando se carga en un servidor web, les permite ejecutar comandos del sistema y tomar el control del servidor como si tuvieran acceso directo la línia de comandos, pero todo de forma remota a través de la web.
 * La siguiente ejecución de comandos es un ejemplo demostrativo de cómo puede realizarse.
   1. En primer lugar, se muestra el contenido del fichero `webshell.php`:
 
