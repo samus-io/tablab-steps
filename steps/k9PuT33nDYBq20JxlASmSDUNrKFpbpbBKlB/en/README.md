@@ -7,7 +7,7 @@
 * Tiers are separated by firewalls and the traffic between is inspected by IDS/IPS systems.
   * Each tier has its own network segments.
 * In a closed tier architecture, all communications originating from lower tiers can reach an asset belonging to any higher tier, but not the other way around; communications originating from a specific tier can only reach an asset belonging to the tier immediately below.
-* The 3-tier architecture is very common in traditional on-premises infrastructures.
+* The 3-tier architecture has been common in traditional on-premises infrastructures.
 
 ## Demilitarized Tier
 
