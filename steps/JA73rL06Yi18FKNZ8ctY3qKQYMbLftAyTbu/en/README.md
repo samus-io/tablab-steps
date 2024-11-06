@@ -1,6 +1,6 @@
 # File storage location and filesystem permissions when uploading files
 
-* Whenever possible, store uploaded files on a separate server or service dedicated exclusively to file storage. This approach provides complete segregation of duties between the application serving users and the host managing file uploads and storage, thereby reducing the impact of potential vulnerabilities.
+* Whenever possible, store uploaded files on a separate server or service dedicated exclusively to file storage. This approach provides complete segregation of duties between the application  handling user interactions and upload requests from the server managing file storage, thereby reducing the impact of potential vulnerabilities.
   * If a separate storage server is not feasible and files need to be saved on the same server, ensure they are stored outside the webroot directory. This prevents direct access to the files through the web server, minimizing the risk of exploitation.
 * Ensuring proper file permissions, especially when storing files on the server, is also essential for reducing security risks.
 * Keeping uploaded files in memory or temporary storage during processing and only transferring them to permanent storage after passing validation checks is recommended, as it prevents malicious files from becoming accessible before being removed by validation.
@@ -16,7 +16,7 @@
 
 * When stored files on a server require public access, it is advised to avoid direct access to uploaded files via URLs. Instead, implement a server-side handler to securely serve the files using an internal mapping system that references them by unique IDs rather than their actual file names.
   * As an example, the system should map a unique ID to each corresponding file name (e.g., `12345` &rarr; `document.pdf`).
-* Permitting direct URL access to files (e.g., `https://domain.tbl/uploads/document.pdf`) can expose the application to major security risks, particularly in the presence of existing vulnerabilities related to directory traversal attacks, unauthorized file access, and potential sensitive information leakage via predictable URLs.
+* Permitting direct URL access to files (e.g., `https://domain.tbl/uploads/document.pdf`) can expose the application to major security risks, particularly in the presence of existing vulnerabilities related to path traversal attacks, unauthorized file access, and potential sensitive information leakage via predictable URLs.
 * A server-side handler allows easy enforcement of permissions and access controls before serving a file, ensuring that only authorized users can access specific files.
 
 ### How it works
@@ -26,11 +26,11 @@
 
 @@TagStart@@java
 
-## Non-compliant code in Java
+## Non-compliant code in Java storing files on the same Linux server
 
-* The following code snippet uses Java Jakarta for handling file uploads, however, it stores files directly in the `uploads` directory within the webroot, and makes them publicly accessible via URLs (e.g., `https://domain.tbl/uploads/document.pdf`) without any internal mapping or sanitization:
+* The following code snippet in Java Jakarta stores files directly in the `uploads` directory within the webroot, and makes them publicly accessible via URLs (e.g., `https://domain.tbl/uploads/document.pdf`) without any internal mapping or sanitization:
 
-  ```java 
+  ```java
   import jakarta.json.Json;
   import jakarta.json.JsonObject;
   import jakarta.servlet.ServletConfig;
@@ -59,6 +59,7 @@
       @Override
       public void init(ServletConfig config) throws ServletException {
           super.init(config);
+
           // Define the path for the upload directory relative to the web application's root
           uploadFolderPath = getServletContext().getRealPath("/") + "uploads";
   
@@ -72,8 +73,9 @@
       @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
           Part filePart;
+
           try {
-              filePart = request.getPart("formFile");
+              filePart = request.getPart("file");
               String filename = filePart.getSubmittedFileName();
   
               // Save the file to the uploads directory
@@ -110,6 +112,7 @@
           response.setContentType("text/plain");
           response.setCharacterEncoding("UTF-8");
           response.setStatus(HttpServletResponse.SC_OK);
+
           try (var out = response.getOutputStream()) {
               out.println(message);
           }
@@ -185,10 +188,9 @@
 
 @@TagStart@@java
 
-## Compliant code in Java
+## Compliant code in Java storing files on the same Linux server
 
-* By keeping files in memory, storing them outside the webroot with proper permissions, and incorporating a mapping system for public access, the following code adheres to best practices for file storage locations and filesystem permissions.
-* The next code snippet follows the best practices mentioned above for file upload:
+* By keeping files in memory, storing them outside the webroot with proper permissions, and incorporating a mapping system for public access, the following code adheres to best practices for file storage locations and filesystem permissions:
 
   ```java
   import jakarta.json.Json;
@@ -225,6 +227,7 @@
       @Override
       public void init(ServletConfig config) throws ServletException {
           super.init(config);
+
           // Create the directory if it does not exist
           File uploadDir = new File(UPLOAD_FOLDER_PATH);
           if (!uploadDir.exists()) {
@@ -235,8 +238,9 @@
       @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
           Part filePart;
+
           try {
-              filePart = request.getPart("formFile");
+              filePart = request.getPart("file");
               String filename = filePart.getSubmittedFileName();
   
               // Save the file to the uploads directory
@@ -259,7 +263,7 @@
           File file = new File(UPLOAD_FOLDER_PATH, storedName);
           String path = file.getAbsolutePath();
   
-          safeFileInDatabase(id, originalName, storedName, path);
+          saveFileInDatabase(id, originalName, storedName, path);
   
           // Use try-with-resources to automatically close the FileOutputStream
           try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -282,10 +286,11 @@
               int index = secureRandom.nextInt(ALPHANUMERIC_CHARACTERS.length());
               stringBuilder.append(ALPHANUMERIC_CHARACTERS.charAt(index));
           }
+
           return stringBuilder.toString();
       }
   
-      private void safeFileInDatabase(String id, String originalName, String storedName, String path) {
+      private void saveFileInDatabase(String id, String originalName, String storedName, String path) {
           try (Connection conn = DatabaseManager.getConnection()) {
               String query = "INSERT INTO files (id, original_name, stored_name, path) VALUES (?, ?, ?, ?)";
   
@@ -305,7 +310,9 @@
   }
   ```
 
-* The next code snippet follows the best practices mentioned above for file download:
+  * In this case, the code is designed to consider only PDF file uploads to the application.
+
+* The following code corresponds to the file download functionality:
 
   ```java
   import jakarta.json.Json;
@@ -340,22 +347,15 @@
   
       @Override
       public void init(ServletConfig config) throws ServletException {
-          super.init(config);
-          // Create the directory if it does not exist to ensure uploaded files have a storage location
-          File uploadDir = new File(UPLOAD_FOLDER_PATH);
-          if (!uploadDir.exists()) {
-              uploadDir.mkdirs();
-          }
+        ...
       }
   
       @Override
       protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
           String pathInfo = request.getPathInfo();
-  
-          // Extract the filename from the URL, removing the leading slash
-          String id = pathInfo.substring(1);
-  
+          String id = pathInfo.substring(1); // Extract the filename from the URL, removing the leading slash
           String path = getPathFromId(id);
+
           if (path == null) {
               sendErrorResponse(response, "File not found", HttpServletResponse.SC_NOT_FOUND);
               return;
@@ -374,7 +374,6 @@
       }
   
       private String getPathFromId(String id) {
-  
           try (Connection conn = DatabaseManager.getConnection()) {
               String query = "SELECT path FROM files WHERE id = ?";
   
@@ -389,13 +388,14 @@
           } catch (SQLException e) {
               throw new RuntimeException(e);
           }
+
           return null;
       }
   ...
   }
   ```
 
-* However, before running this code, the database `files` should be created:
+* However, before running this code, the table `files` must be created first:
 
   ```sql
   CREATE TABLE IF NOT EXISTS files (
@@ -405,7 +405,7 @@
     path TEXT
   )
   ```
- 
+
 * Also, the directory for storing uploads outside the webroot must be created:
 
   ```bash
@@ -418,7 +418,7 @@
   sudo chown -R www-data:www-data /srv/uploads
   ```
 
-* Permissions should be adjusted to allow only read and write access for the `www-data` user:
+* Finally, permissions should be adjusted to allow only read and write access for the `www-data` user:
 
   ```bash
   sudo chmod -R 600 /srv/uploads
