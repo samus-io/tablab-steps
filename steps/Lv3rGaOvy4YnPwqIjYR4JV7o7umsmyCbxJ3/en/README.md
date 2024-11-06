@@ -1,4 +1,4 @@
-# Enforcing access control to file upload functionalities in Node.js with `express-session`
+# Enforcing access control to file upload functionalities using Express in Node.js
 
 * When applying access control to file upload functionalities, it's essential to consider both access to the file upload feature of the web application and access to the actual uploaded files.
 * Generally, the file upload feature of the application might be open to the public or restricted to users, whereas file access could be public, restricted to certain users, or entirely disallowed.
