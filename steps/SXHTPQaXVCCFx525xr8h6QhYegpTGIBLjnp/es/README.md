@@ -1,16 +1,16 @@
-# Enforcing access control to file upload functionalities in Java Jakarta
+# Aplicación de control de acceso a funciones de carga de archivos en Java Jakarta
 
-* When applying access control to file upload functionalities, it's essential to consider both access to the file upload feature of the web application and access to the actual uploaded files.
-* Generally, the file upload feature of the application might be open to the public or restricted to users, whereas file access could be public, restricted to certain users, or entirely disallowed.
-* Authentication, authorization and access control are the terms involved in this process:
-  * Authentication is the process of verifying the identity of a user or system.
-  * Authorization is the process of specifying which actions or resources are allowed to a user or system.
-  * Access control refers to the mechanisms that enforce both authentication and authorization, determining who can access which resources and in what circumstances.
-* Putting these concepts in place help prevent unauthorized file uploads, data breaches, and access to sensitive information.
+* Al aplicar control de acceso a las funcionalidades de carga de archivos, es esencial tener en cuenta tanto el acceso a la propia función de carga de archivos de la aplicación como el acceso a los archivos cargados.
+* Generalmente, la función de carga de archivos de la aplicación se encuentra abierta al público o restringida a ciertos usuarios, mientras que el acceso a los archivos se encuentra abierto al público, restringido a ciertos usuarios o totalmente prohibido.
+* Autenticación, autorización y control de acceso son los términos que intervienen en este proceso:
+  * La autenticación es el proceso de verificación de la identidad de un usuario o sistema.
+  * La autorización es el proceso de especificar qué acciones o recursos están permitidos a un usuario o sistema.
+  * El control de acceso se refiere a los mecanismos que imponen tanto la autenticación como la autorización, determinando quién puede acceder a qué recursos y en qué circunstancias.
+* La aplicación de estos conceptos ayuda a evitar la carga no autorizada de archivos, las filtraciones de datos y el acceso a información confidencial.
 
-## Non-compliant code in Java Jakarta
+## Código de incumplimiento en Java Jakarta
 
-* The code snippet below lacks access control mechanisms, exposing the web application to broken access control and potential information disclosure:
+* El siguiente fragmento de código carece de mecanismos de control de acceso, lo que expone a la aplicación web a ser susceptible de vulnerabilidades de *broken access control* y a una potencial filtración de información:
 
   ```java
   import jakarta.json.Json;
@@ -209,9 +209,9 @@
   }
   ```
 
-## Compliant code in Java Jakarta using a middleware
+## Código de cumplimiento en Java Jakarta
 
-* The following code snippet uses a middleware to restrict file upload and file access to authenticated users exclusively:
+* El siguiente fragmento de código utiliza un *middleware* para permitir la carga de archivos y el acceso a los mismos exclusivamente a usuarios autenticados:
 
   ```java
   import jakarta.json.Json;
@@ -259,12 +259,12 @@
   }
   ```
 
-  * Notice how the middleware ensures that only authenticated users (those with an active session containing a `User` object) can access the `/upload` and `/download/*` routes, otherwise returning a `401 Unauthorized` status.
+  * Se puede observar cómo el middleware garantiza que únicamente los usuarios autenticados (aquellos con una sesión activa que contenga un objeto `User`) puedan acceder a las rutas `/upload` y `/download/*`, devolviendo en caso contrario un estado `401 Unauthorized`.
 
-## Exercise to practice :writing_hand:
+## Ejercicio para practicar :writing_hand:
 
-* The following application, despite appearances, lacks access control mechanisms, as there are no server-side measures to prevent anonymous users from uploading or downloading files.
-* As can be demonstrated by opening the code editor via the `Open Code Editor` button and launching the integrated terminal, anyone can run the following commands to upload and download a file, considering the `APP_URL` as an environment variable pointing to the web application's base path:
+* La siguiente aplicación, a pesar de las apariencias, carece de mecanismos de control de acceso, ya que no existen medidas en el servidor para evitar que usuarios anónimos carguen o descarguen archivos.
+* Como puede demostrarse abriendo el editor de código mediante el botón `Open Code Editor` e iniciando la terminal integrada, cualquiera puede ejecutar los siguientes comandos para cargar y descargar un archivo, siendo `APP_URL` una variable de entorno que apunta a la ruta base de la aplicación web:
 
   ```bash
   curl -F "formFile=@landscape.png" $APP_URL/upload
@@ -274,12 +274,12 @@
   curl $APP_URL/download/landscape.png -o landscape.png
   ```
 
-* Additionally, any user registered to the application can freely use the upload and download features without restrictions once logged in, such as:
-  * `jackson01` (role: `admin`, password: `dX2%V5h|s5>C}]V`).
-  * `johndoe` (role: `moderator`, password: `7j@H!3p%!&8l^S2`).
-  * `alice99` (role: `member`, password: `u^#B&2y!F7@d$E9`).
-* The goal here is to edit the source code to enforce a server-side access control policy, limiting file uploads to authenticated users (those with an active session) and allowing only users with the `admin` or `moderator` role to download files. Successful requests should return a `200 OK` status, while unauthorized attempts should result in a `401 Unauthorized` status.
-* More precisely, the modifications should be made in the `AuthFilter.java` and `AuthPrivFilter.java` files, located in `/home/coder/app/src/main/java/io/ontablab/`.
-* After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
+* Asimismo, cualquier usuario registrado en la aplicación puede utilizar libremente las funciones de carga y descarga sin restricciones una vez iniciada la sesión, como por ejemplo:
+  * `jackson01` (rol: `admin`, contraseña: `dX2%V5h|s5>C}]V`).
+  * `johndoe` (rol: `moderator`, contraseña: `7j@H!3p%!&8l^S2`).
+  * `alice99` (rol: `member`, contraseña: `u^#B&2y!F7@d$E9`).
+* El objetivo aquí es editar el código fuente para aplicar una política de control de acceso en el servidor, limitando la subida de archivos a los usuarios autenticados (aquellos con una sesión activa) y permitiendo únicamente a los usuarios con el rol `admin` o `moderator` la descarga de archivos. Las peticiones exitosas deberían devolver un estado `200 OK`, mientras que los intentos no autorizados deberían resultar en un estado `401 Unauthorized`.
+  * Más concretamente, las modificaciones de código deben realizarse en los archivos `AuthFilter.java` y `AuthPrivFilter.java`, ubicados en `/home/coder/app/src/main/java/io/ontablab/`.
+* Una vez realizados los cambios, se debe pulsar el botón `Verify Completion` para confirmar que se ha completado el ejercicio.
 
   @@ExerciseBox@@
