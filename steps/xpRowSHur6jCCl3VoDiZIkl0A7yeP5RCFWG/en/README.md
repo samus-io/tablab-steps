@@ -7,7 +7,7 @@
 
 ## Analyzing files in a controlled sandbox environment
 
-* A sandbox is a controlled and isolated environment used to run, analyze, and test potentially untrusted or malicious software without risking harm to the host system or network. This environment acts as a virtual testing ground where files can be observed safely.
+* A `sandbox` is a controlled and isolated environment used to run, analyze, and test potentially untrusted or malicious software without risking harm to the host system or network. This environment acts as a virtual testing ground where files can be observed safely.
 * The primary purpose of a sandbox is to provide a safe space where suspicious files can be executed and observed to determine their behavior and potential impact.
 * Utilizing a sandbox significantly minimizes the risk of exposure to malicious files, as it prevents them from interacting with or compromising the main system environment. This approach enhances overall security by detecting and mitigating threats before they can cause harm.
 * Malware analysis platforms utilize isolated environments like sandboxes to safely execute and monitor suspicious files.
@@ -24,4 +24,4 @@
 
 * Certain `Web Application Firewalls (WAFs)` incorporate specialized file malware detection features in their file upload protection or content scanning modules that could be leveraged to satisfy the file content validation requirements.
 * This feature's implementation typically demands a close integration between the WAF and the web application, as the firewall must be aware of all endpoint calls handling file uploads, along with the HTTP request parameters and the encoding selected by the client for transmission.
-* Cloud-based WAFs, as opposed to physical WAFs, are more likely to provide this feature while offering a much simpler setup for implementation.
+* Cloud-based WAFs, as opposed to on-premises appliance-based WAFs, are more likely to provide this feature while offering a much simpler setup for implementation.
