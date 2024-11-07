@@ -300,8 +300,8 @@
       return pattern.matcher(filename).matches();
   }
 
-  private String sanitizeFilename(String filename) throws SecurityException {
-      String decodedFilename = URLDecoder.decode(filename, StandardCharsets.UTF_8);
+  private String generateSafeFilename(String originalFilename) throws SecurityException {
+      String decodedFilename = URLDecoder.decode(originalFilename, StandardCharsets.UTF_8);
 
       if (decodedFilename.length() > MAX_FILENAME_LENGTH)
           throw new SecurityException("File name too long");
@@ -337,7 +337,7 @@
 
     try {
         String filename = filePart.getSubmittedFileName();
-        String sanitizedFilename = sanitizeFilename(filename);
+        String sanitizedFilename = generateSafeFilename(filename);
 
         saveFile(sanitizedFilename, filePart.getInputStream());
     } catch (IOException e) {
