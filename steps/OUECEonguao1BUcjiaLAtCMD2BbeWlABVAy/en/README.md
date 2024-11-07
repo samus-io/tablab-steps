@@ -45,24 +45,6 @@
   -----------------------------41762806061171117218568726803--
   ```
 
-### File upload via `application/x-www-form-urlencoded` and base64
-
-* Files can be uploaded using Base64 encoding, which is often necessary when binary files need to be transmitted over text-based protocols. In these cases, FortiWeb automatically decodes the base64-encoded file and conducts a comprehensive scan to ensure no security threats are present.
-* This is particularly useful for web applications that need to transmit binary data through non-binary channels while maintaining security.
-* Below is an example of an HTTP request where the file is sent in Base64 with a simple POST:
-
-  ```text
-  POST /upload HTTP/2
-  Host: domain.tbl
-  User-Agent: Mozilla/5.0 (compatible; MSIE 11.0; Windows; Windows NT 6.2; Win64; x64; en-US Trident/7.0)
-  Accept-Encoding: gzip, deflate, br, zstd
-  Content-Type: application/x-www-form-urlencoded
-  Content-Length: 933513
-  Connection: keep-alive
-  
-  file=<base64-file>
-  ```
-
 ### File upload via `application/json` and base64
 
 * Files can also be uploaded using JSON, with a few specific limitations. When using JSON to upload files, both the file and the filename must be included in the root of the JSON object.
@@ -88,26 +70,27 @@
 
 ## Testing file upload implementation
 
-* To find out if the implementation has been done in such a way that FortiWeb detects malware, an EICAR file can be used.
+* To ensure that file upload mechanisms are properly implemented and that FortiWeb Cloud effectively detects and blocks malware, an EICAR test file can be used for testing purposes. This check validation of FortiWeb’s scanning capabilities without exposing the system to real malware.
 
 ### What is an EICAR?
 
-* The EICAR Anti-Virus Test File or EICAR test file is a computer file that was developed by the European Institute for Computer Antivirus Research (EICAR).
-* Its purpose is to test the response of computer antivirus programs. Instead of using real malware, which could cause real damage, this test file allows to test anti-virus software without having to use a real computer virus.
-* The content of the EICAR file its only a sequence of ASCII characters that Anti-Virus will always detect. The simplest EICAR file content is the following:
+* The EICAR Anti-Virus Test File, or EICAR test file, is a non-malicious file developed by the European Institute for Computer Antivirus Research (EICAR) to safely test antivirus and security systems.
+* Its purpose is designed to trigger antivirus and security system responses as a real malware file would, without the risk of causing actual harm.
+* The content of the EICAR file is a simple ASCII text file with a specific sequence of characters that antivirus software will detect as if it were a malicious file. The simplest form of the EICAR file content is as follows:
 
   ```
   X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
   ```
 
-* The EICAR file can be created adding the above characters in a file using a text editor or it can be downloaded in the official [EICAR][1] website.
+* The EICAR file can be created by copying and pasting the above character sequence into a text editor and saving it with a .txt extension. Alternatively, it can be downloaded directly from the official [EICAR website][1].
 
 ### Testing FortiWeb scanning
 
-* When the file upload implementation is done, its possible to test if FortiWeb will detect correctly malware uploading the EICAR file.
-* Once uploaded, if the file upload is implemented using some above methods, the server will not receive the file and FortiWeb will return the following 403 HTTP response:
+* After implementing file upload handling, it’s crucial to test if FortiWeb correctly identifies and blocks potentially harmful files, such as the EICAR test file.
+* Attempt to upload the EICAR file using the application’s file upload functionality. This file simulates malware, and its detection will validate that FortiWeb’s security layer is active and configured correctly.
+* If FortiWeb is configured properly, it should intercept the EICAR file upload and prevent the server from receiving it. In such cases, FortiWeb will return an HTTP 403 (Forbidden) response, indicating that the file has been blocked due to potential security risks:
 
 ![FortiWeb block page][2]
 
 [1]: https://www.eicar.org/download-anti-malware-testfile/#:~:text=enabled%20protocol%20HTTPS-,EICAR.COM,-DOWNLOAD
-[2]:
+[2]: /static/images/fortiweb-eicar-alert.png
