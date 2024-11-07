@@ -4,9 +4,10 @@
 
 ## Security considerations to be taken into account
 
-* **Limit the file size** of each uploaded file to prevent excessive use of storage space and to protect the server from dealing with files that are too large, potentially affecting its performance or causing crashes.
-* **Limit the total uploads a user can perform** to protect storage capacity and minimize the risk of a `Denial of Service (DoS)` attack by restricting the number of files a user is allowed to upload. This measure helps to prevent the server from being flooded with excessive files, which could exhaust storage resources.
-* **Limit the number of uploads and download requests rates** by setting restrictions on the number of upload and download requests a user can make in a short period in order to prevent a any single user from flooding the server with numerous requests within a short timeframe and ensure smooth processing of legitimate traffic.
+* Generally, employing a dedicated storage service, possibly third-party, is recommended from a security standpoint. In any case, regardless of the configuration adopted, the following measures should be in place:
+  * **Limit the file size** of each uploaded file to prevent excessive use of storage space and to protect the system from dealing with files that are too large, potentially affecting its performance or causing crashes.
+  * **Limit the total uploads a user can perform** to protect storage capacity and minimize the risk of a `Denial of Service (DoS)` attack by restricting the number of files a user is allowed to upload. This measure helps to prevent the system from being flooded with excessive files, which could exhaust storage resources.
+  * **Limit the number of uploads and download requests rates** by imposing restrictions on the number of upload and download requests a user can make in a short period. This helps prevent any single user from flooding the system with numerous requests within a short timeframe and ensure smooth processing of legitimate traffic.
 
 @@TagStart@@java
 
