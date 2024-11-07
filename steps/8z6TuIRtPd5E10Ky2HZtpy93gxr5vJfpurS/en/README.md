@@ -6,8 +6,7 @@
 
 * **Limit the file size** of each uploaded file to prevent excessive use of storage space and to protect the server from dealing with files that are too large, potentially affecting its performance or causing crashes.
 * **Limit the total uploads a user can perform** to protect storage capacity and minimize the risk of a `Denial of Service (DoS)` attack by restricting the number of files a user is allowed to upload. This measure helps to prevent the server from being flooded with excessive files, which could exhaust storage resources.
-* **Limit the number of uploads in a given time period** by setting a rate limit on file uploads, preventing a single user from flooding the server with numerous requests within a short timeframe. This helps manage server load and ensures fair usage.
-* **Limit the number of downloads/request rates** by setting restrictions on the number of download requests a user can make in a specific time period, similar to upload controls, to prevent abuse and ensure smooth processing of legitimate traffic.
+* **Limit the number of uploads and download requests rates** by setting restrictions on the number of upload and download requests a user can make in a short period in order to prevent a any single user from flooding the server with numerous requests within a short timeframe and ensure smooth processing of legitimate traffic.
 
 @@TagStart@@java
 
@@ -44,6 +43,7 @@
       @Override
       public void init(ServletConfig config) throws ServletException {
           super.init(config);
+
           // Define the path for the upload directory relative to the web application's root
           uploadFolderPath = getServletContext().getRealPath("/") + "uploads";
   
@@ -57,12 +57,10 @@
       @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
           Part filePart;
+
           try {
-              filePart = request.getPart("formFile");
+              filePart = request.getPart("file");
               String filename = filePart.getSubmittedFileName();
-  
-              // No file size limit
-              // No upload rate limit
   
               // Save the file to the uploads directory
               saveFile(filename, filePart.getInputStream());
@@ -98,6 +96,7 @@
           response.setContentType("text/plain");
           response.setCharacterEncoding("UTF-8");
           response.setStatus(HttpServletResponse.SC_OK);
+
           try (var out = response.getOutputStream()) {
               out.println(message);
           }
@@ -176,11 +175,8 @@
   });
   ```
 
-@@TagEnd@@
+  @@TagEnd@@
 
-### Issues with this implementation
-
-* **No file size limit** is currently enforced, allowing users to upload excessively large files, which can result in server crashes or significant storage consumption.
-* **No upload rate limit** exists, enabling users to send a high volume of upload requests to the server, potentially exhausting its resources and causing a Denial of Service (DoS).
-* **No download rate limit** means that users can continuously make download requests, potentially overwhelming the server and degrade performance for all users.
-* **No proper error handling for uploads** is in place, so if an error occurs during the upload process it is not managed correctly, potentially leading to user experience issues and potential security vulnerabilities.
+  * There's **no file size limit** enforced in this code, allowing users to upload excessively large files, which can result in server crashes or significant storage consumption.
+  * **No limits are set on the total number of files a user can upload**, permitting unlimited uploads, potentially endangering the server's storage capacity.
+  * **No upload and download rate limit** exists, enabling users to send a high volume of upload and download requests to the server, potentially exhausting its resources, degrading overall performance, or even causing a denial of service (DoS).
