@@ -207,11 +207,16 @@
 
 * The following code snippet illustrates how to handle file uploads in Java Jakarta and storing files in a specific folder with randomly generated names via UUID, ensuring the file names are both unique and unpredictable:
 
+  <details>
+    <summary>Dependencies</summary>
+
+    ```java
+    import java.util.UUID;
+    ```
+
+  </details>
+
   ```java
-  import java.util.UUID;
-
-  ...
-
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -243,9 +248,16 @@
 
 * The following code snippet illustrates how to handle file uploads using the `multer` middleware and storing files in a specific folder with randomly generated names via UUID, ensuring the file names are both unique and unpredictable:
 
-  ```javascript
-  const uuid = require("uuid");
+  <details>
+    <summary>Dependencies</summary>
 
+    ```javascript
+    const uuid = require("uuid");
+    ```
+
+  </details>
+
+  ```javascript
   ...
 
   const storage = multer.diskStorage({
@@ -270,17 +282,17 @@
 
 * The following code snippet demonstrates how to handle file uploads in Java Jakarta storing files in a specific folder while preserving the original file name sent by the user. It applies a custom file name length limit, restricts characters and reserved names, treats file names as case-insensitive, prevents hidden files or those ending with a period or space, and ensures no file name collisions:
 
-<details>
-  <summary>Dependencies</summary>
+  <details>
+    <summary>Dependencies</summary>
 
-  ```java
-  import java.net.URLDecoder;
-  import java.nio.charset.StandardCharsets;
-  import java.security.SecureRandom;
-  import java.util.regex.Pattern;
-  ```
+    ```java
+    import java.net.URLDecoder;
+    import java.nio.charset.StandardCharsets;
+    import java.security.SecureRandom;
+    import java.util.regex.Pattern;
+    ```
 
-</details>
+  </details>
 
   ```java
   private static final Integer MAX_FILENAME_LENGTH = 100;

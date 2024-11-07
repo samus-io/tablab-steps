@@ -65,28 +65,28 @@
 
 * El siguiente fragmento de código muestra una implementación insegura de carga de archivos en una aplicación Java Jakarta, en la que se utiliza el nombre de archivo recibido por parte del usuario sin ningún tipo de validación, lo que conlleva riesgos como la sobreescritura y la enumeración de archivos, entre otros:
 
-<details>
-  <summary>Dependencies</summary>
+  <details>
+    <summary>Dependencies</summary>
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletConfig;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletConfig;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
 
-  import java.io.File;
-  import java.io.FileOutputStream;
-  import java.io.IOException;
-  import java.io.InputStream;
-  ```
+    import java.io.File;
+    import java.io.FileOutputStream;
+    import java.io.IOException;
+    import java.io.InputStream;
+    ```
 
-</details>
+  </details>
 
   ```java
   @WebServlet("/upload")
@@ -207,11 +207,16 @@
 
 * El siguiente fragmento de código ilustra cómo gestionar la carga de archivos en Java Jakarta y almacenar los archivos en una carpeta específica con nombres generados aleatoriamente mediante UUID, garantizando que los nombres de los archivos sean únicos e impredecibles:
 
+  <details>
+    <summary>Dependencies</summary>
+
+    ```java
+    import java.util.UUID;
+    ```
+
+  </details>
+
   ```java
-  import java.util.UUID;
-
-  ...
-
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -243,9 +248,16 @@
 
 * El siguiente fragmento de código ilustra cómo gestionar la carga de archivos utilizando el *middleware* `multer` y almacenando los archivos en una carpeta específica con nombres generados aleatoriamente mediante UUID, garantizando que los nombres de los archivos sean únicos e impredecibles:
 
-  ```javascript
-  const uuid = require("uuid");
+  <details>
+    <summary>Dependencies</summary>
 
+    ```javascript
+    const uuid = require("uuid");
+    ```
+
+  </details>
+
+  ```javascript
   ...
 
   const storage = multer.diskStorage({
@@ -271,17 +283,17 @@
 * El siguiente fragmento de código muestra cómo gestionar la carga de archivos en Java Jakarta almacenando los archivos en una carpeta específica y conservando el nombre de archivo original enviado por el usuario.
 * El código aplica un límite personalizado a la longitud de los nombres de archivo, restringe los caracteres y los nombres reservados, no distingue entre mayúsculas y minúsculas, evita los archivos ocultos o los que terminan con un punto o un espacio, y garantiza que no se produzcan colisiones entre los nombres de archivo:
 
-<details>
-  <summary>Dependencies</summary>
+  <details>
+    <summary>Dependencies</summary>
 
-  ```java
-  import java.net.URLDecoder;
-  import java.nio.charset.StandardCharsets;
-  import java.security.SecureRandom;
-  import java.util.regex.Pattern;
-  ```
+    ```java
+    import java.net.URLDecoder;
+    import java.nio.charset.StandardCharsets;
+    import java.security.SecureRandom;
+    import java.util.regex.Pattern;
+    ```
 
-</details>
+  </details>
 
   ```java
   private static final Integer MAX_FILENAME_LENGTH = 100;
