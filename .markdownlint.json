@@ -23,5 +23,8 @@
     "siblings_only": true
   },
   "__MD031__": false,
+  "MD033": {
+    "allowed_elements": ["details", "summary"]
+  },
   "MD038": false
 }

@@ -65,6 +65,9 @@
 
 * The code snippet below demonstrates an insecure file upload implementation in a Java Jakarta application, where the original file name received from the user is used without any validation, leading to risks such as file overwriting and file enumeration, among others:
 
+<details>
+  <summary>Dependencies</summary>
+
   ```java
   import jakarta.json.Json;
   import jakarta.json.JsonObject;
@@ -82,6 +85,8 @@
   import java.io.IOException;
   import java.io.InputStream;
   ```
+
+</details>
 
   ```java
   @WebServlet("/upload")
@@ -265,12 +270,17 @@
 
 * The following code snippet demonstrates how to handle file uploads in Java Jakarta storing files in a specific folder while preserving the original file name sent by the user. It applies a custom file name length limit, restricts characters and reserved names, treats file names as case-insensitive, prevents hidden files or those ending with a period or space, and ensures no file name collisions:
 
+<details>
+  <summary>Dependencies</summary>
+
   ```java
   import java.net.URLDecoder;
   import java.nio.charset.StandardCharsets;
   import java.security.SecureRandom;
   import java.util.regex.Pattern;
   ```
+
+</details>
 
   ```java
   private static final Integer MAX_FILENAME_LENGTH = 100;
@@ -336,9 +346,9 @@
 
     try {
         String filename = filePart.getSubmittedFileName();
-        String sanitizedFilename = generateSafeFilename(filename);
+        String safeFilename = generateSafeFilename(filename);
 
-        saveFile(sanitizedFilename, filePart.getInputStream());
+        saveFile(safeFilename, filePart.getInputStream());
     } catch (IOException e) {
         response.setStatus(500);
         return;

@@ -65,6 +65,9 @@
 
 * El siguiente fragmento de código muestra una implementación insegura de carga de archivos en una aplicación Java Jakarta, en la que se utiliza el nombre de archivo recibido por parte del usuario sin ningún tipo de validación, lo que conlleva riesgos como la sobreescritura y la enumeración de archivos, entre otros:
 
+<details>
+  <summary>Dependencies</summary>
+
   ```java
   import jakarta.json.Json;
   import jakarta.json.JsonObject;
@@ -82,6 +85,8 @@
   import java.io.IOException;
   import java.io.InputStream;
   ```
+
+</details>
 
   ```java
   @WebServlet("/upload")
@@ -266,12 +271,17 @@
 * El siguiente fragmento de código muestra cómo gestionar la carga de archivos en Java Jakarta almacenando los archivos en una carpeta específica y conservando el nombre de archivo original enviado por el usuario.
 * El código aplica un límite personalizado a la longitud de los nombres de archivo, restringe los caracteres y los nombres reservados, no distingue entre mayúsculas y minúsculas, evita los archivos ocultos o los que terminan con un punto o un espacio, y garantiza que no se produzcan colisiones entre los nombres de archivo:
 
+<details>
+  <summary>Dependencies</summary>
+
   ```java
   import java.net.URLDecoder;
   import java.nio.charset.StandardCharsets;
   import java.security.SecureRandom;
   import java.util.regex.Pattern;
   ```
+
+</details>
 
   ```java
   private static final Integer MAX_FILENAME_LENGTH = 100;
@@ -337,9 +347,9 @@
 
     try {
         String filename = filePart.getSubmittedFileName();
-        String sanitizedFilename = generateSafeFilename(filename);
+        String safeFilename = generateSafeFilename(filename);
 
-        saveFile(sanitizedFilename, filePart.getInputStream());
+        saveFile(safeFilename, filePart.getInputStream());
     } catch (IOException e) {
         response.setStatus(500);
         return;
