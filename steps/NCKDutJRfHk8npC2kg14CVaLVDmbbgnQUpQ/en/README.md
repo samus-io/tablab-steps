@@ -65,28 +65,28 @@
 
 * The code snippet below demonstrates an insecure file upload implementation in a Java Jakarta application, where the original file name received from the user is used without any validation, leading to risks such as file overwriting and file enumeration, among others:
 
-<details>
-  <summary>Dependencies</summary>
+  <details>
+    <summary>Dependencies</summary>
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletConfig;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletConfig;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
 
-  import java.io.File;
-  import java.io.FileOutputStream;
-  import java.io.IOException;
-  import java.io.InputStream;
-  ```
+    import java.io.File;
+    import java.io.FileOutputStream;
+    import java.io.IOException;
+    import java.io.InputStream;
+    ```
 
-</details>
+  </details>
 
   ```java
   @WebServlet("/upload")
