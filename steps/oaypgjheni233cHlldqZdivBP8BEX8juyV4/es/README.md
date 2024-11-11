@@ -114,7 +114,7 @@
 
 @@TagStart@@java
 
-## Código de cumplimiento en Java
+## Código de cumplimiento en Java Jakarta
 
 * El fragmento de código que se muestra seguidamente protege la función de carga de archivos descodificando el nombre del archivo antes de la validación, aplicando una lista de extensiones permitidas y evitando los archivos sin extensión o con extensiones múltiples:
 

@@ -207,7 +207,7 @@
 
 @@TagStart@@java
 
-## Código de cumplimiento en Java almacenando archivos en el mismo servidor Linux
+## Código de cumplimiento en Java Jakarta almacenando archivos en el mismo servidor Linux
 
 * Manteniendo los archivos en memoria, almacenándolos fuera de *webroot* con los permisos adecuados e incorporando un sistema de mapeo para el acceso público, el siguiente código se adhiere a las mejores prácticas para el almacenamiento de archivos y permisos del sistema de ficheros:
 

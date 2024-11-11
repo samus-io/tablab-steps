@@ -114,7 +114,7 @@
 
 @@TagStart@@java
 
-## Compliant code in Java
+## Compliant code in Java Jakarta
 
 * The code snippet below secures the file upload feature by decoding the file name before validation, applying an allow-list of allowed extensions, and preventing files with multiple or missing extensions:
 

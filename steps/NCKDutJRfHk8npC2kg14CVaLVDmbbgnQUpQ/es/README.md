@@ -210,7 +210,7 @@
 
 @@TagStart@@java
 
-## Código de cumplimiento en Java generando un nombre de archivo aleatorio
+## Código de cumplimiento en Java Jakarta generando un nombre de archivo aleatorio
 
 * El siguiente fragmento de código ilustra cómo gestionar la carga de archivos en Java Jakarta y almacenar los archivos en una carpeta específica con nombres generados aleatoriamente mediante UUID, garantizando que los nombres de los archivos sean únicos e impredecibles:
 
@@ -275,7 +275,7 @@
 
 @@TagStart@@java
 
-## Código de cumplimiento en Java manteniendo el nombre de archivo original
+## Código de cumplimiento en Java Jakarta manteniendo el nombre de archivo original
 
 * El siguiente fragmento de código muestra cómo gestionar la carga de archivos en Java Jakarta almacenando los archivos en una carpeta específica y conservando el nombre de archivo original enviado por el usuario.
 * El código aplica un límite personalizado a la longitud de los nombres de archivo, restringe los caracteres y los nombres reservados, no distingue entre mayúsculas y minúsculas, evita los archivos ocultos o los que terminan con un punto o un espacio, y garantiza que no se produzcan colisiones entre los nombres de archivo:

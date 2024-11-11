@@ -210,7 +210,7 @@
 
 @@TagStart@@java
 
-## Compliant code in Java while generating a random file name
+## Compliant code in Java Jakarta while generating a random file name
 
 * The following code snippet illustrates how to handle file uploads in Java Jakarta and storing files in a specific folder with randomly generated names via UUID, ensuring the file names are both unique and unpredictable:
 
@@ -275,7 +275,7 @@
 
 @@TagStart@@java
 
-## Compliant code in Java while keeping the original file name
+## Compliant code in Java Jakarta while keeping the original file name
 
 * The following code snippet demonstrates how to handle file uploads in Java Jakarta storing files in a specific folder while preserving the original file name sent by the user. It applies a custom file name length limit, restricts characters and reserved names, treats file names as case-insensitive, prevents hidden files or those ending with a period or space, and ensures no file name collisions:
 

@@ -207,7 +207,7 @@
 
 @@TagStart@@java
 
-## Compliant code in Java storing files on the same Linux server
+## Compliant code in Java Jakarta storing files on the same Linux server
 
 * By keeping files in memory, storing them outside the webroot with proper permissions, and incorporating a mapping system for public access, the following code adheres to best practices for file storage locations and filesystem permissions:
 
