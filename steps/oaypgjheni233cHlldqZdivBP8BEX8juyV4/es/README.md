@@ -83,17 +83,10 @@
 
 * El siguiente fragmento de código utiliza `multer` para cargar archivos, pero la validación de extensión aplicada puede eludirse mediante el uso de una extensión doble. Únicamente comprueba si aparece `.jpg`, `.jpeg` o `.png` en el nombre del archivo, lo cual es insuficiente:
 
-  <details>
-    <summary>Dependencias</summary>
-
-    ```javascript
-    const express = require("express");
-    const multer = require("multer");
-    ```
-
-  </details>
-
   ```javascript
+  const express = require("express");
+  const multer = require("multer");
+
   const upload = multer({
     ...
   });

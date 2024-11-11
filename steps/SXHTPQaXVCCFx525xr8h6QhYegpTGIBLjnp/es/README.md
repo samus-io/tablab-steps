@@ -83,30 +83,26 @@
               sendErrorResponse(response, "Internal server error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
           }
       }
-  
-      private void saveFile(String filename, InputStream fileContent) throws IOException {
-          File file = new File(uploadFolderPath, filename);
-  
-          // Use try-with-resources to automatically close the FileOutputStream
-          try (FileOutputStream fos = new FileOutputStream(file)) {
-              byte[] buffer = new byte[BUFFER_SIZE];
-              int bytesRead;
-  
-              // Read the file content in chunks to efficiently handle larger files
-              while ((bytesRead = fileContent.read(buffer)) != -1) {
-                  fos.write(buffer, 0, bytesRead);
-              }
-          }
-      }
-
-      ...
   ```
   
   <details>
     <summary>Código contextual</summary>
 
     ```java
-        ...
+        private void saveFile(String filename, InputStream fileContent) throws IOException {
+            File file = new File(uploadFolderPath, filename);
+    
+            // Use try-with-resources to automatically close the FileOutputStream
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                byte[] buffer = new byte[BUFFER_SIZE];
+                int bytesRead;
+    
+                // Read the file content in chunks to efficiently handle larger files
+                while ((bytesRead = fileContent.read(buffer)) != -1) {
+                    fos.write(buffer, 0, bytesRead);
+                }
+            }
+        }
 
         private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
             // Prepare a plain text response to indicate successful file upload
@@ -174,56 +170,63 @@
           // Send the requested file back to the client
           sendFileResponse(response, requestedFile);
       }
-  
-      private void sendFileListResponse(HttpServletResponse response) throws IOException {
-          JsonArray fileListJson = getUploadedFilesJson();
-
-          response.setContentType("application/json");
-          response.setCharacterEncoding("UTF-8");
-          response.setStatus(HttpServletResponse.SC_OK);
-  
-          // Use try-with-resources to ensure the OutputStream is properly closed
-          try (OutputStream out = response.getOutputStream()) {
-              out.write(fileListJson.toString().getBytes());
-          }
-      }
-  
-      private JsonArray getUploadedFilesJson() {
-          // Retrieve the list of filenames from the uploads directory, or an empty list if none are found
-          File uploadDir = new File(uploadFolderPath);
-          String[] filenames = Optional.ofNullable(uploadDir.list()).orElse(new String[0]);
-          return convertArrayToJson(filenames);
-      }
-  
-      private JsonArray convertArrayToJson(String[] filenames) {
-          // Stream through filenames to efficiently build a JSON array
-          JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-          Arrays.stream(filenames).forEach(arrayBuilder::add);
-          return arrayBuilder.build();
-      }
-  
-      private void sendFileResponse(HttpServletResponse response, File file) throws IOException {
-          // Determine the MIME type of the file to set the appropriate content type
-          String mimeType = Optional.ofNullable(getServletContext().getMimeType(file.getAbsolutePath()))
-                  .orElse("application/octet-stream");
-
-          response.setContentType(mimeType);
-          response.setContentLengthLong(file.length());
-  
-          // Use try-with-resources to ensure FileInputStream and OutputStream are closed properly
-          try (FileInputStream inStream = new FileInputStream(file);
-               OutputStream outStream = response.getOutputStream()) {
-              byte[] buffer = new byte[BUFFER_SIZE];
-              int bytesRead;
-              
-              // Read and write the file in chunks to handle large files efficiently
-              while ((bytesRead = inStream.read(buffer)) != -1) {
-                  outStream.write(buffer, 0, bytesRead);
-              }
-          }
-      }
-  }
   ```
+
+  <details>
+    <summary>Código contextual</summary>
+
+    ```java
+        private void sendFileListResponse(HttpServletResponse response) throws IOException {
+            JsonArray fileListJson = getUploadedFilesJson();
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+    
+            // Use try-with-resources to ensure the OutputStream is properly closed
+            try (OutputStream out = response.getOutputStream()) {
+                out.write(fileListJson.toString().getBytes());
+            }
+        }
+    
+        private JsonArray getUploadedFilesJson() {
+            // Retrieve the list of filenames from the uploads directory, or an empty list if none are found
+            File uploadDir = new File(uploadFolderPath);
+            String[] filenames = Optional.ofNullable(uploadDir.list()).orElse(new String[0]);
+            return convertArrayToJson(filenames);
+        }
+    
+        private JsonArray convertArrayToJson(String[] filenames) {
+            // Stream through filenames to efficiently build a JSON array
+            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+            Arrays.stream(filenames).forEach(arrayBuilder::add);
+            return arrayBuilder.build();
+        }
+    
+        private void sendFileResponse(HttpServletResponse response, File file) throws IOException {
+            // Determine the MIME type of the file to set the appropriate content type
+            String mimeType = Optional.ofNullable(getServletContext().getMimeType(file.getAbsolutePath()))
+                    .orElse("application/octet-stream");
+
+            response.setContentType(mimeType);
+            response.setContentLengthLong(file.length());
+    
+            // Use try-with-resources to ensure FileInputStream and OutputStream are closed properly
+            try (FileInputStream inStream = new FileInputStream(file);
+                OutputStream outStream = response.getOutputStream()) {
+                byte[] buffer = new byte[BUFFER_SIZE];
+                int bytesRead;
+                
+                // Read and write the file in chunks to handle large files efficiently
+                while ((bytesRead = inStream.read(buffer)) != -1) {
+                    outStream.write(buffer, 0, bytesRead);
+                }
+            }
+        }
+    }
+    ```
+
+  </details>
 
 ## Código de cumplimiento en Java Jakarta
 

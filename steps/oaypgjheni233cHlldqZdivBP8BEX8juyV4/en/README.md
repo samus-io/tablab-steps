@@ -83,17 +83,10 @@
 
 * The given code snippet uses `multer` for file uploads, but its extension validation is susceptible to a double extension bypass. It only checks for `.jpg`, `.jpeg`, `.png` in the file name, which is inadequate:
 
-  <details>
-    <summary>Dependencies</summary>
-
-    ```javascript
-    const express = require("express");
-    const multer = require("multer");
-    ```
-
-  </details>
-
   ```javascript
+  const express = require("express");
+  const multer = require("multer");
+
   const upload = multer({
     ...
   });

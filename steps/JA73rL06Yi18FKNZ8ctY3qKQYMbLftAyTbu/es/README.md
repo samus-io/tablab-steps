@@ -111,8 +111,6 @@
               }
           }
       }
-
-      ...
   ```
 
   <details>
@@ -303,19 +301,6 @@
           }
       }
   
-      private String generateUniqueId() {
-          SecureRandom secureRandom = new SecureRandom();
-          StringBuilder stringBuilder = new StringBuilder(8);
-  
-          // Generate random characters from the ALPHANUMERIC_CHARACTERS
-          for (int i = 0; i < 8; i++) {
-              int index = secureRandom.nextInt(ALPHANUMERIC_CHARACTERS.length());
-              stringBuilder.append(ALPHANUMERIC_CHARACTERS.charAt(index));
-          }
-
-          return stringBuilder.toString();
-      }
-  
       private void saveFileInDatabase(String id, String originalName, String storedName, String path) {
           try (Connection conn = DatabaseManager.getConnection()) {
               String query = "INSERT INTO files (id, original_name, stored_name, path) VALUES (?, ?, ?, ?)";
@@ -332,9 +317,55 @@
               throw new RuntimeException(e);
           }
       }
-  ...
-  }
   ```
+
+  <details>
+    <summary>Código contextual</summary>
+
+    ```java
+        private String generateUniqueId() {
+            SecureRandom secureRandom = new SecureRandom();
+            StringBuilder stringBuilder = new StringBuilder(8);
+    
+            // Generate random characters from the ALPHANUMERIC_CHARACTERS
+            for (int i = 0; i < 8; i++) {
+                int index = secureRandom.nextInt(ALPHANUMERIC_CHARACTERS.length());
+                stringBuilder.append(ALPHANUMERIC_CHARACTERS.charAt(index));
+            }
+
+            return stringBuilder.toString();
+        }
+
+        private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
+            // Prepare a plain text response to indicate successful file upload
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            try (var out = response.getOutputStream()) {
+                out.println(message);
+            }
+        }
+    
+        private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
+            // Create a JSON object to send back a structured error response
+            JsonObject errorResponse = Json.createObjectBuilder()
+                    .add("message", message)
+                    .build();
+    
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(statusCode);
+    
+            // Write the JSON error message to the response output
+            try (var out = response.getOutputStream()) {
+                out.println(errorResponse.toString());
+            }
+        }
+    }
+    ```
+
+  </details>
 
   * En este caso, el código está diseñado para tener en cuenta únicamente las cargas de archivos PDF en la aplicación.
 
@@ -422,9 +453,52 @@
 
           return null;
       }
-  ...
-  }
   ```
+
+  <details>
+    <summary>Código contextual</summary>
+
+    ```java
+        private void sendFileResponse(HttpServletResponse response, File file) throws IOException {
+            // Determine the MIME type of the file to set the appropriate content type
+            String mimeType = Optional.ofNullable(getServletContext().getMimeType(file.getAbsolutePath()))
+                    .orElse("application/octet-stream");
+
+            response.setContentType(mimeType);
+            response.setContentLengthLong(file.length());
+    
+            // Use try-with-resources to ensure FileInputStream and OutputStream are closed properly
+            try (FileInputStream inStream = new FileInputStream(file);
+                OutputStream outStream = response.getOutputStream()) {
+                byte[] buffer = new byte[BUFFER_SIZE];
+                int bytesRead;
+                
+                // Read and write the file in chunks to handle large files efficiently
+                while ((bytesRead = inStream.read(buffer)) != -1) {
+                    outStream.write(buffer, 0, bytesRead);
+                }
+            }
+        }
+
+        private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
+            // Create a JSON object to send back a structured error response
+            JsonObject errorResponse = Json.createObjectBuilder()
+                    .add("message", message)
+                    .build();
+    
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(statusCode);
+    
+            // Write the JSON error message to the response output
+            try (var out = response.getOutputStream()) {
+                out.println(errorResponse.toString());
+            }
+        }
+    }
+    ```
+
+  </details>
 
 * Sin embargo, antes de ejecutar este código, debe crearse primero la tabla `files`:
 
