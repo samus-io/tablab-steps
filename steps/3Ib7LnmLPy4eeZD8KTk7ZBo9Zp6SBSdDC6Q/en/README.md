@@ -1,6 +1,6 @@
 # Enforcing file upload limits using Express in Node.js
 
-* Restricting file size, the total uploads a user can perform, the frequency of uploads within a specific period by a user, and also the download request rates are important security considerations for applications offering file upload and download features.
+* Restricting file size, the total uploads a user can perform, and the upload and download request rates are important security considerations for applications offering file upload and download features.
 * Below there are a few examples of how to implement these limits in a Node.js application using the `express` framework, `multer` middleware for handling file uploads and `express-rate-limit` package for basic upload/download rate limiting.
 
 ## Limiting file size
@@ -80,14 +80,14 @@
 
 ### Considerations when restricting per IP address
 
-* In most scenarios, the web application is not directly exposed to the end client, as it is often located behind a load balancer or a security mechanism like a Web Application Firewall (WAF).
+* In most scenarios, the web application is not directly exposed to the end client, as it is often located behind a load balancer or a security mechanism like a web application firewall (WAF).
 * This could lead to the source IP address of the HTTP packets received by the application being the intermediary's IP, rather than the end client's. In such cases, headers like `X-Forwarded-For` may need to be used to provide the application with the client's real IP address:
 
   ```javascript
   console.log(req.headers["x-forwarded-for"]);
   ```
 
-* In order to adjust for this, when running an Express app behind a reverse proxy, the `trust proxy` application setting may be used to expose information provided by the reverse proxy in the Express endpoints as `req.ip`:
+* In order to adjust for this, when running an Express app behind a reverse proxy, the `trust proxy` application setting may be used to expose information provided by the reverse proxy in the Express endpoints (i.e., as `req.ip`):
 
   ```javascript
   app.set("trust proxy", 1); // Trust the first hop away from the application and extract the next IP as client's IP address
@@ -102,6 +102,6 @@
 * The given application offers a basic file upload with Express without any security validation conducted on the server-side. The goal here is to open the code editor using the `Open Code Editor` button and edit the source code to introduce two security measures:
   * A file size limit of 1 KB. If a file uploaded exceeds this size, an HTTP response with a `400 Bad Request` status code should be returned.
   * Each IP address should be limited to 10 file uploads within a 30-second window. Exceeding this limit should result in an HTTP response with status code `429 Too Many Requests`, and the IP should remain blocked for 30 seconds.
-    * Be aware that the application is placed under multiple reverse proxy layers, as it runs within a Cloud Run container on GCP.
+    * Note that the application is placed under multiple reverse proxy layers, as it runs within a Cloud Run container on GCP.
 * In order to complete the exercise, the Express application located in `app.js` is where code modifications should be added to support these features.
   @@ExerciseBox@@
