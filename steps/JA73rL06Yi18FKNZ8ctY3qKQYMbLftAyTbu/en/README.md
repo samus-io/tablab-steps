@@ -26,7 +26,7 @@
 
 @@TagStart@@java
 
-## Non-compliant code in Java storing files on the same Linux server
+## Non-compliant code in Java Jakarta storing files on the same Linux server
 
 * The following code snippet in Java Jakarta stores files directly in the `uploads` directory within the webroot, and makes them publicly accessible via URLs (e.g., `https://domain.tbl/uploads/document.pdf`) without any internal mapping or sanitization:
 

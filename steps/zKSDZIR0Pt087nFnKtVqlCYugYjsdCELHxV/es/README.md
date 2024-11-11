@@ -35,7 +35,7 @@
 
 @@TagStart@@java
 
-### Código de incumplimiento en Java
+### Código de incumplimiento en Java Jakarta
 
 * Esta implementación en Java Jakarta gestiona las cargas de archivos identificando el tipo de archivo a través de la cabecera HTTP `Content-Type` recibida y seguidamente realiza una comprobación de seguridad en consecuencia que puede ser fácilmente eludida suplantando la cabecera `Content-Type` en la solicitud:
 
@@ -169,7 +169,7 @@
 
 @@TagStart@@java
 
-### Código de incumplimiento en Java usando `Apache Tika`
+### Código de incumplimiento en Java Jakarta usando `Apache Tika`
 
 * El siguiente fragmento de código utiliza la librería `Apache Tika`, la cual identifica el tipo de archivo a través del número mágico, y seguidamente realiza una comprobación de seguridad en consecuencia que puede ser fácilmente eludida a través de la manipulación del número mágico del archivo:
 

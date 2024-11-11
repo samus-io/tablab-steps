@@ -26,7 +26,7 @@
 
 @@TagStart@@java
 
-## Código de incumplimiento en Java almacenando archivos en el mismo servidor Linux
+## Código de incumplimiento en Java Jakarta almacenando archivos en el mismo servidor Linux
 
 * El siguiente fragmento de código en Java Jakarta almacena los archivos directamente en el directorio `uploads` dentro de la *webroot* y los hace accesibles al público a través de URLs (e.g., `https://domain.tbl/uploads/document.pdf`) sin ningún tipo de mapeo interno o saneamiento:
 

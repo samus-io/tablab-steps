@@ -35,7 +35,7 @@
 
 @@TagStart@@java
 
-### Non-compliant code in Java
+### Non-compliant code in Java Jakarta
 
 * This implementation in Java Jakarta handles file uploads identifying the file type via the received `Content-Type` HTTP header, and then performs a security check accordingly that can be easily bypassed by spoofing the `Content-Type` header in the request:
 
@@ -168,7 +168,7 @@
 
 @@TagStart@@java
 
-### Non-compliant code in Java using `Apache Tika`
+### Non-compliant code in Java Jakarta using `Apache Tika`
 
 * The code snippet below uses the `Apache Tika` library, which identifies the file type via magic number, and then proceeds with a security check accordingly that can be easily circumvented through the manipulation of the file's magic number:
 

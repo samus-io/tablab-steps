@@ -61,7 +61,7 @@
 
 @@TagStart@@java
 
-## Non-compliant code in Java
+## Non-compliant code in Java Jakarta
 
 * The code snippet below demonstrates an insecure file upload implementation in a Java Jakarta application, where the original file name received from the user is used without any validation, leading to risks such as file overwriting and file enumeration, among others:
 

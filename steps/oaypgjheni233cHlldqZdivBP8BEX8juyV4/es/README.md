@@ -15,7 +15,7 @@
 
 @@TagStart@@java
 
-## Código de incumplimiento en Java
+## Código de incumplimiento en Java Jakarta
 
 * El siguiente fragmento de código en Java Jakarta aplica una validación de extensión que puede eludirse mediante el uso de una extensión doble. Únicamente comprueba si aparece `.jpg`, `.jpeg` o `.png` en el nombre del archivo, lo cual es insuficiente:
 

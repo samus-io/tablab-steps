@@ -15,7 +15,7 @@
 
 @@TagStart@@java
 
-## Non-compliant code in Java
+## Non-compliant code in Java Jakarta
 
 * The given code snippet uses Java Jakarta for file uploads, but its extension validation is susceptible to a double extension bypass. It only checks for `.jpg`, `.jpeg`, `.png` in the file name, which is inadequate:
 

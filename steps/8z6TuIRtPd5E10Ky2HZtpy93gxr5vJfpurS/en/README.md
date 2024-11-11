@@ -11,7 +11,7 @@
 
 @@TagStart@@java
 
-## Non-compliant code in Java
+## Non-compliant code in Java Jakarta
 
 * Here's an example of a vulnerable implementation in Java Jakarta where the above security measures are not properly applied:
 

@@ -11,7 +11,7 @@
 
 @@TagStart@@java
 
-## Código de incumplimiento en Java
+## Código de incumplimiento en Java Jakarta
 
 * Se muestra seguidamente un ejemplo de implementación vulnerable en Java Jakarta en la que no se aplican correctamente las medidas de seguridad mencionadas:
 
