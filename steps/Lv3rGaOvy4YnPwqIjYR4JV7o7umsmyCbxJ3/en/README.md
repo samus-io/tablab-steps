@@ -12,12 +12,19 @@
 
 * The code snippet below lacks access control mechanisms, exposing the web application to broken access control and potential information disclosure:
 
-  ```javascript
-  const express = require("express");
-  const multer = require("multer");
-  const path = require("path");
-  const fs = require("fs");
+  <details>
+    <summary>Dependencies</summary>
 
+    ```javascript
+    const express = require("express");
+    const multer = require("multer");
+    const path = require("path");
+    const fs = require("fs");
+    ```
+
+  </details>
+
+  ```javascript
   const app = express();
 
   // Define the path to the folder where uploaded files will be stored

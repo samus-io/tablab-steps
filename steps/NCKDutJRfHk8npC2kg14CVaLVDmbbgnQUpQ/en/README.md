@@ -162,12 +162,19 @@
 
 * The code snippet below demonstrates an insecure file upload implementation in an `Express.js` application using `multer`, where the original file name received from the user is used without any validation, leading to risks such as file overwriting and file enumeration, among others:
 
-  ```javascript
-  const express = require("express");
-  const multer = require("multer");
-  const path = require("path");
-  const fs = require("fs");
+  <details>
+    <summary>Dependencies</summary>
 
+    ```javascript
+    const express = require("express");
+    const multer = require("multer");
+    const path = require("path");
+    const fs = require("fs");
+    ```
+
+  </details>
+
+  ```javascript
   const app = express();
 
   // Define the path to the folder where uploaded files will be stored
@@ -207,14 +214,9 @@
 
 * The following code snippet illustrates how to handle file uploads in Java Jakarta and storing files in a specific folder with randomly generated names via UUID, ensuring the file names are both unique and unpredictable:
 
-  <details>
-    <summary>Dependencies</summary>
-
-    ```java
-    import java.util.UUID;
-    ```
-
-  </details>
+  ```java
+  import java.util.UUID;
+  ```
 
   ```java
   @Override
@@ -248,14 +250,9 @@
 
 * The following code snippet illustrates how to handle file uploads using the `multer` middleware and storing files in a specific folder with randomly generated names via UUID, ensuring the file names are both unique and unpredictable:
 
-  <details>
-    <summary>Dependencies</summary>
-
-    ```javascript
-    const uuid = require("uuid");
-    ```
-
-  </details>
+  ```javascript
+  const uuid = require("uuid");
+  ```
 
   ```javascript
   ...

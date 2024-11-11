@@ -15,23 +15,28 @@
 
 * Se muestra seguidamente un ejemplo de implementación vulnerable en Java Jakarta en la que no se aplican correctamente las medidas de seguridad mencionadas:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletConfig;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
-  
-  import java.io.File;
-  import java.io.FileOutputStream;
-  import java.io.IOException;
-  import java.io.InputStream;
-  ```
+  <details>
+    <summary>Dependencias</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletConfig;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+    
+    import java.io.File;
+    import java.io.FileOutputStream;
+    import java.io.IOException;
+    import java.io.InputStream;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")
@@ -91,35 +96,44 @@
               }
           }
       }
-  
-      private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
-          // Prepare a plain text response to indicate successful file upload
-          response.setContentType("text/plain");
-          response.setCharacterEncoding("UTF-8");
-          response.setStatus(HttpServletResponse.SC_OK);
 
-          try (var out = response.getOutputStream()) {
-              out.println(message);
-          }
-      }
-  
-      private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
-          // Create a JSON object to send back a structured error response
-          JsonObject errorResponse = Json.createObjectBuilder()
-                  .add("message", message)
-                  .build();
-  
-          response.setContentType("application/json");
-          response.setCharacterEncoding("UTF-8");
-          response.setStatus(statusCode);
-  
-          // Write the JSON error message to the response output
-          try (var out = response.getOutputStream()) {
-              out.println(errorResponse.toString());
-          }
-      }
-  }
+      ...
   ```
+
+  <details>
+    <summary>Código contextual</summary>
+
+    ```java  
+        private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
+            // Prepare a plain text response to indicate successful file upload
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            try (var out = response.getOutputStream()) {
+                out.println(message);
+            }
+        }
+    
+        private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
+            // Create a JSON object to send back a structured error response
+            JsonObject errorResponse = Json.createObjectBuilder()
+                    .add("message", message)
+                    .build();
+    
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(statusCode);
+    
+            // Write the JSON error message to the response output
+            try (var out = response.getOutputStream()) {
+                out.println(errorResponse.toString());
+            }
+        }
+    }
+    ```
+
+  </details>
 
 @@TagEnd@@
 @@TagStart@@node.js
@@ -128,12 +142,19 @@
 
 * Se muestra seguidamente un ejemplo de implementación vulnerable usando `multer` y `Express` en la que no se aplican correctamente las medidas de seguridad mencionadas:
 
-  ```javascript
-  const express = require("express");
-  const multer = require("multer");
-  const path = require("path");
-  const fs = require("fs");
+  <details>
+    <summary>Dependencias</summary>
 
+    ```javascript
+    const express = require("express");
+    const multer = require("multer");
+    const path = require("path");
+    const fs = require("fs");
+    ```
+
+  </details>
+
+  ```javascript
   const app = express();
 
   // Define the path to the folder where uploaded files will be stored

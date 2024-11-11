@@ -12,12 +12,19 @@
 
 * El siguiente fragmento de código carece de mecanismos de control de acceso, lo que expone a la aplicación web a ser susceptible de vulnerabilidades de *broken access control* y a una potencial filtración de información:
 
-  ```javascript
-  const express = require("express");
-  const multer = require("multer");
-  const path = require("path");
-  const fs = require("fs");
+  <details>
+    <summary>Dependencias</summary>
 
+    ```javascript
+    const express = require("express");
+    const multer = require("multer");
+    const path = require("path");
+    const fs = require("fs");
+    ```
+
+  </details>
+
+  ```javascript
   const app = express();
 
   // Define the path to the folder where uploaded files will be stored

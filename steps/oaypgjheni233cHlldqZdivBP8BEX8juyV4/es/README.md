@@ -19,19 +19,24 @@
 
 * El siguiente fragmento de código en Java Jakarta aplica una validación de extensión que puede eludirse mediante el uso de una extensión doble. Únicamente comprueba si aparece `.jpg`, `.jpeg` o `.png` en el nombre del archivo, lo cual es insuficiente:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
-  import java.io.IOException;
-  import java.util.regex.Pattern;
-  ```
+  <details>
+    <summary>Dependencias</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+    import java.io.IOException;
+    import java.util.regex.Pattern;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")
@@ -78,10 +83,17 @@
 
 * El siguiente fragmento de código utiliza `multer` para cargar archivos, pero la validación de extensión aplicada puede eludirse mediante el uso de una extensión doble. Únicamente comprueba si aparece `.jpg`, `.jpeg` o `.png` en el nombre del archivo, lo cual es insuficiente:
 
-  ```javascript
-  const express = require("express");
-  const multer = require("multer");
+  <details>
+    <summary>Dependencias</summary>
 
+    ```javascript
+    const express = require("express");
+    const multer = require("multer");
+    ```
+
+  </details>
+
+  ```javascript
   const upload = multer({
     ...
   });
@@ -113,22 +125,27 @@
 
 * El fragmento de código que se muestra seguidamente protege la función de carga de archivos descodificando el nombre del archivo antes de la validación, aplicando una lista de extensiones permitidas y evitando los archivos sin extensión o con extensiones múltiples:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
+  <details>
+    <summary>Dependencias</summary>
 
-  import java.io.IOException;
-  import java.net.URLDecoder;
-  import java.nio.charset.StandardCharsets;
-  import java.util.Set;
-  ```
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+
+    import java.io.IOException;
+    import java.net.URLDecoder;
+    import java.nio.charset.StandardCharsets;
+    import java.util.Set;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")

@@ -39,20 +39,25 @@
 
 * Esta implementación en Java Jakarta gestiona las cargas de archivos identificando el tipo de archivo a través de la cabecera HTTP `Content-Type` recibida y seguidamente realiza una comprobación de seguridad en consecuencia que puede ser fácilmente eludida suplantando la cabecera `Content-Type` en la solicitud:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
+  <details>
+    <summary>Dependencias</summary>
 
-  import java.io.IOException;
-  import java.util.Set;
-  ```
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+
+    import java.io.IOException;
+    import java.util.Set;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")
@@ -168,21 +173,26 @@
 
 * El siguiente fragmento de código utiliza la librería `Apache Tika`, la cual identifica el tipo de archivo a través del número mágico, y seguidamente realiza una comprobación de seguridad en consecuencia que puede ser fácilmente eludida a través de la manipulación del número mágico del archivo:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
-  import org.apache.tika.Tika;
+  <details>
+    <summary>Dependencias</summary>
 
-  import java.io.IOException;
-  import java.util.Set;
-  ```
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+    import org.apache.tika.Tika;
+
+    import java.io.IOException;
+    import java.util.Set;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")

@@ -12,28 +12,33 @@
 
 * The code snippet below lacks access control mechanisms, exposing the web application to broken access control and potential information disclosure:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonArray;
-  import jakarta.json.JsonArrayBuilder;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletConfig;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
-  
-  import java.io.File;
-  import java.io.FileOutputStream;
-  import java.io.IOException;
-  import java.io.InputStream;
-  import java.io.OutputStream;
-  import java.util.Arrays;
-  import java.util.Optional;
-  ```
+  <details>
+    <summary>Dependencies</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonArray;
+    import jakarta.json.JsonArrayBuilder;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletConfig;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+    
+    import java.io.File;
+    import java.io.FileOutputStream;
+    import java.io.IOException;
+    import java.io.InputStream;
+    import java.io.OutputStream;
+    import java.util.Arrays;
+    import java.util.Optional;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")
@@ -93,35 +98,46 @@
               }
           }
       }
-  
-      private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
-          // Prepare a plain text response to indicate successful file upload
-          response.setContentType("text/plain");
-          response.setCharacterEncoding("UTF-8");
-          response.setStatus(HttpServletResponse.SC_OK);
 
-          try (var out = response.getOutputStream()) {
-              out.println(message);
-          }
-      }
-  
-      private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
-          // Create a JSON object to send back a structured error response
-          JsonObject errorResponse = Json.createObjectBuilder()
-                  .add("message", message)
-                  .build();
-  
-          response.setContentType("application/json");
-          response.setCharacterEncoding("UTF-8");
-          response.setStatus(statusCode);
-  
-          // Write the JSON error message to the response output
-          try (var out = response.getOutputStream()) {
-              out.println(errorResponse.toString());
-          }
-      }
-  }
+      ...
   ```
+
+  <details>
+    <summary>Contextual code</summary>
+
+    ```java
+        ...
+
+        private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
+            // Prepare a plain text response to indicate successful file upload
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            try (var out = response.getOutputStream()) {
+                out.println(message);
+            }
+        }
+    
+        private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
+            // Create a JSON object to send back a structured error response
+            JsonObject errorResponse = Json.createObjectBuilder()
+                    .add("message", message)
+                    .build();
+    
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(statusCode);
+    
+            // Write the JSON error message to the response output
+            try (var out = response.getOutputStream()) {
+                out.println(errorResponse.toString());
+            }
+        }
+    }
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/download/*")
@@ -213,17 +229,22 @@
 
 * The following code snippet uses a middleware to restrict file upload and file access to authenticated users exclusively:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.*;
-  import jakarta.servlet.annotation.WebFilter;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  
-  import java.io.IOException;
-  import java.io.OutputStream;
-  ```
+  <details>
+    <summary>Dependencies</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.*;
+    import jakarta.servlet.annotation.WebFilter;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    
+    import java.io.IOException;
+    import java.io.OutputStream;
+    ```
+
+  </details>
 
   ```java
   @WebFilter(urlPatterns = {"/upload", "/download/*"})

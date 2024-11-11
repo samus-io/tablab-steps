@@ -30,23 +30,28 @@
 
 * El siguiente fragmento de código en Java Jakarta almacena los archivos directamente en el directorio `uploads` dentro de la *webroot* y los hace accesibles al público a través de URLs (e.g., `https://domain.tbl/uploads/document.pdf`) sin ningún tipo de mapeo interno o saneamiento:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletConfig;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
-  
-  import java.io.File;
-  import java.io.FileOutputStream;
-  import java.io.IOException;
-  import java.io.InputStream;
-  ```
+  <details>
+    <summary>Dependencias</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletConfig;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+    
+    import java.io.File;
+    import java.io.FileOutputStream;
+    import java.io.IOException;
+    import java.io.InputStream;
+    ```
+
+  </details>
   
   ```java
   @WebServlet("/upload")
@@ -106,35 +111,44 @@
               }
           }
       }
-  
-      private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
-          // Prepare a plain text response to indicate successful file upload
-          response.setContentType("text/plain");
-          response.setCharacterEncoding("UTF-8");
-          response.setStatus(HttpServletResponse.SC_OK);
 
-          try (var out = response.getOutputStream()) {
-              out.println(message);
-          }
-      }
-  
-      private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
-          // Create a JSON object to send back a structured error response
-          JsonObject errorResponse = Json.createObjectBuilder()
-                  .add("message", message)
-                  .build();
-  
-          response.setContentType("application/json");
-          response.setCharacterEncoding("UTF-8");
-          response.setStatus(statusCode);
-  
-          // Write the JSON error message to the response output
-          try (var out = response.getOutputStream()) {
-              out.println(errorResponse.toString());
-          }
-      }
-  }
+      ...
   ```
+
+  <details>
+    <summary>Código contextual</summary>
+
+    ```java  
+        private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
+            // Prepare a plain text response to indicate successful file upload
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            try (var out = response.getOutputStream()) {
+                out.println(message);
+            }
+        }
+    
+        private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
+            // Create a JSON object to send back a structured error response
+            JsonObject errorResponse = Json.createObjectBuilder()
+                    .add("message", message)
+                    .build();
+    
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(statusCode);
+    
+            // Write the JSON error message to the response output
+            try (var out = response.getOutputStream()) {
+                out.println(errorResponse.toString());
+            }
+        }
+    }
+    ```
+
+  </details>
 
 @@TagEnd@@
 
@@ -144,12 +158,19 @@
 
 * El siguiente fragmento de código utiliza `multer` para manejar la subida de archivos, sin embargo, almacena los archivos directamente en el directorio `uploads` dentro de la raíz web, y los hace accesibles públicamente a través de URLs (e.g., `https://domain.tbl/uploads/document.pdf`) sin ningún tipo de mapeo interno o saneamiento:
 
-  ```javascript
-  const express = require("express");
-  const multer = require("multer");
-  const path = require("path");
-  const fs = require("fs");
+  <details>
+    <summary>Dependencias</summary>
 
+    ```javascript
+    const express = require("express");
+    const multer = require("multer");
+    const path = require("path");
+    const fs = require("fs");
+    ```
+
+  </details>
+
+  ```javascript
   const app = express();
 
   // Define the path to the folder where uploaded files will be stored
@@ -192,28 +213,33 @@
 
 * Manteniendo los archivos en memoria, almacenándolos fuera de *webroot* con los permisos adecuados e incorporando un sistema de mapeo para el acceso público, el siguiente código se adhiere a las mejores prácticas para el almacenamiento de archivos y permisos del sistema de ficheros:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletConfig;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
-  
-  import java.io.File;
-  import java.io.FileOutputStream;
-  import java.io.IOException;
-  import java.io.InputStream;
-  import java.security.SecureRandom;
-  import java.sql.Connection;
-  import java.sql.PreparedStatement;
-  import java.sql.SQLException;
-  import java.util.UUID;
-  ```
+  <details>
+    <summary>Dependencias</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletConfig;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+    
+    import java.io.File;
+    import java.io.FileOutputStream;
+    import java.io.IOException;
+    import java.io.InputStream;
+    import java.security.SecureRandom;
+    import java.sql.Connection;
+    import java.sql.PreparedStatement;
+    import java.sql.SQLException;
+    import java.util.UUID;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")
@@ -314,29 +340,34 @@
 
 * El código siguiente corresponde a la funcionalidad de descarga de archivos:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonArray;
-  import jakarta.json.JsonArrayBuilder;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletConfig;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  
-  import java.io.File;
-  import java.io.FileInputStream;
-  import java.io.IOException;
-  import java.io.OutputStream;
-  import java.sql.Connection;
-  import java.sql.PreparedStatement;
-  import java.sql.ResultSet;
-  import java.sql.SQLException;
-  import java.util.Arrays;
-  import java.util.Optional;
-  ```
+  <details>
+    <summary>Dependencias</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonArray;
+    import jakarta.json.JsonArrayBuilder;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletConfig;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    
+    import java.io.File;
+    import java.io.FileInputStream;
+    import java.io.IOException;
+    import java.io.OutputStream;
+    import java.sql.Connection;
+    import java.sql.PreparedStatement;
+    import java.sql.ResultSet;
+    import java.sql.SQLException;
+    import java.util.Arrays;
+    import java.util.Optional;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/download/*")

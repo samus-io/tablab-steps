@@ -19,19 +19,24 @@
 
 * The given code snippet uses Java Jakarta for file uploads, but its extension validation is susceptible to a double extension bypass. It only checks for `.jpg`, `.jpeg`, `.png` in the file name, which is inadequate:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
-  import java.io.IOException;
-  import java.util.regex.Pattern;
-  ```
+  <details>
+    <summary>Dependencies</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+    import java.io.IOException;
+    import java.util.regex.Pattern;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")
@@ -78,10 +83,17 @@
 
 * The given code snippet uses `multer` for file uploads, but its extension validation is susceptible to a double extension bypass. It only checks for `.jpg`, `.jpeg`, `.png` in the file name, which is inadequate:
 
-  ```javascript
-  const express = require("express");
-  const multer = require("multer");
+  <details>
+    <summary>Dependencies</summary>
 
+    ```javascript
+    const express = require("express");
+    const multer = require("multer");
+    ```
+
+  </details>
+
+  ```javascript
   const upload = multer({
     ...
   });
@@ -113,22 +125,27 @@
 
 * The code snippet below secures the file upload feature by decoding the file name before validation, applying an allow-list of allowed extensions, and preventing files with multiple or missing extensions:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
+  <details>
+    <summary>Dependencies</summary>
 
-  import java.io.IOException;
-  import java.net.URLDecoder;
-  import java.nio.charset.StandardCharsets;
-  import java.util.Set;
-  ```
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+
+    import java.io.IOException;
+    import java.net.URLDecoder;
+    import java.nio.charset.StandardCharsets;
+    import java.util.Set;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")

@@ -12,28 +12,33 @@
 
 * El siguiente fragmento de código carece de mecanismos de control de acceso, lo que expone a la aplicación web a ser susceptible de vulnerabilidades de *broken access control* y a una potencial filtración de información:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonArray;
-  import jakarta.json.JsonArrayBuilder;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.ServletConfig;
-  import jakarta.servlet.ServletException;
-  import jakarta.servlet.annotation.MultipartConfig;
-  import jakarta.servlet.annotation.WebServlet;
-  import jakarta.servlet.http.HttpServlet;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  import jakarta.servlet.http.Part;
-  
-  import java.io.File;
-  import java.io.FileOutputStream;
-  import java.io.IOException;
-  import java.io.InputStream;
-  import java.io.OutputStream;
-  import java.util.Arrays;
-  import java.util.Optional;
-  ```
+  <details>
+    <summary>Dependencias</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonArray;
+    import jakarta.json.JsonArrayBuilder;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.ServletConfig;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
+    import jakarta.servlet.annotation.WebServlet;
+    import jakarta.servlet.http.HttpServlet;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
+    
+    import java.io.File;
+    import java.io.FileOutputStream;
+    import java.io.IOException;
+    import java.io.InputStream;
+    import java.io.OutputStream;
+    import java.util.Arrays;
+    import java.util.Optional;
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/upload")
@@ -93,35 +98,46 @@
               }
           }
       }
-  
-      private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
-          // Prepare a plain text response to indicate successful file upload
-          response.setContentType("text/plain");
-          response.setCharacterEncoding("UTF-8");
-          response.setStatus(HttpServletResponse.SC_OK);
 
-          try (var out = response.getOutputStream()) {
-              out.println(message);
-          }
-      }
-  
-      private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
-          // Create a JSON object to send back a structured error response
-          JsonObject errorResponse = Json.createObjectBuilder()
-                  .add("message", message)
-                  .build();
-  
-          response.setContentType("application/json");
-          response.setCharacterEncoding("UTF-8");
-          response.setStatus(statusCode);
-  
-          // Write the JSON error message to the response output
-          try (var out = response.getOutputStream()) {
-              out.println(errorResponse.toString());
-          }
-      }
-  }
+      ...
   ```
+  
+  <details>
+    <summary>Código contextual</summary>
+
+    ```java
+        ...
+
+        private void sendSuccessResponse(HttpServletResponse response, String message) throws IOException {
+            // Prepare a plain text response to indicate successful file upload
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            try (var out = response.getOutputStream()) {
+                out.println(message);
+            }
+        }
+    
+        private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) throws IOException {
+            // Create a JSON object to send back a structured error response
+            JsonObject errorResponse = Json.createObjectBuilder()
+                    .add("message", message)
+                    .build();
+    
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(statusCode);
+    
+            // Write the JSON error message to the response output
+            try (var out = response.getOutputStream()) {
+                out.println(errorResponse.toString());
+            }
+        }
+    }
+    ```
+
+  </details>
 
   ```java
   @WebServlet("/download/*")
@@ -213,17 +229,22 @@
 
 * El siguiente fragmento de código utiliza un *middleware* para permitir la carga de archivos y el acceso a los mismos exclusivamente a usuarios autenticados:
 
-  ```java
-  import jakarta.json.Json;
-  import jakarta.json.JsonObject;
-  import jakarta.servlet.*;
-  import jakarta.servlet.annotation.WebFilter;
-  import jakarta.servlet.http.HttpServletRequest;
-  import jakarta.servlet.http.HttpServletResponse;
-  
-  import java.io.IOException;
-  import java.io.OutputStream;
-  ```
+  <details>
+    <summary>Dependencias</summary>
+
+    ```java
+    import jakarta.json.Json;
+    import jakarta.json.JsonObject;
+    import jakarta.servlet.*;
+    import jakarta.servlet.annotation.WebFilter;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    
+    import java.io.IOException;
+    import java.io.OutputStream;
+    ```
+
+  </details>
 
   ```java
   @WebFilter(urlPatterns = {"/upload", "/download/*"})
@@ -279,7 +300,7 @@
   * `johndoe` (rol: `moderator`, contraseña: `7j@H!3p%!&8l^S2`).
   * `alice99` (rol: `member`, contraseña: `u^#B&2y!F7@d$E9`).
 * El objetivo aquí es editar el código fuente para aplicar una política de control de acceso en el servidor, limitando la subida de archivos a los usuarios autenticados (aquellos con una sesión activa) y permitiendo únicamente a los usuarios con el rol `admin` o `moderator` la descarga de archivos. Las peticiones exitosas deberían devolver un estado `200 OK`, mientras que los intentos no autorizados deberían resultar en un estado `401 Unauthorized`.
-  * Más concretamente, las modificaciones de código deben realizarse en los archivos `AuthFilter.java` y `AuthPrivFilter.java`, ubicados en `/home/coder/app/src/main/java/io/ontablab/`.
+  * Más concretamente, las modificaciones de código deben realizarse en los archivos `AuthFilter.java` y `AuthPrivFilter.java`, situados en `/home/coder/app/src/main/java/io/ontablab/`.
 * Una vez realizados los cambios, se debe pulsar el botón `Verify Completion` para confirmar que se ha completado el ejercicio.
 
   @@ExerciseBox@@
