@@ -69,7 +69,7 @@
 * Files can be uploaded via JSON and scanned, but with certain limitations. When using JSON for file uploads, the property name holding the base64-encoded file in the JSON object must be manually set in the FortiWeb Cloud application and placed in the JSON object's root.
 * Using a property name other than the one specified in the FortiWeb Cloud application configuration will cause the file not to be scanned.
 
-  > :warning: FortiWeb Cloud's support for file uploads within a JSON object is currently limited to one file per request.
+  > :warning: FortiWeb Cloud's support for file uploads within a JSON object is currently limited to one file per HTTP request.
 
 * Below is an example of an HTTP request that sends a base64-encoded file within a JSON object and using the parameter name `file`:
 
@@ -129,7 +129,7 @@
 
 * The EICAR test file is a non-malicious computer file that was developed by the `European Institute for Computer Antivirus Research (EICAR)` to safely test antivirus and security systems.
 * It is intended to activate antivirus and security system responses as a real malware file would, but without any risk of actual harm.
-* The EICAR file contains a simple ASCII text file with a specific character sequence that antivirus programs recognize as a malicious file. The simplest version of the EICAR file content is as follows.:
+* The EICAR file contains a simple ASCII text file with a specific character sequence that antivirus programs recognize as a malicious file. The simplest version of the EICAR file content is as follows:
 
   ```text
   X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
@@ -140,10 +140,9 @@
 ### Testing FortiWeb Cloud scanning
 
 * As a security practice, once file upload functionality is in place, it's essential to verify if FortiWeb Cloud properly identifies and blocks potentially harmful files.
-* If FortiWeb Cloud is configured properly, it should intercept the EICAR file upload and prevent the server from receiving it, blocking the HTTP request. In such cases, FortiWeb will return an HTTP status code `403 Forbidden` response, indicating that the file has been blocked due to potential security risks, displaying the following content:
-* With proper FortiWeb Cloud configuration, it should intercept the EICAR file upload, blocking the HTTP request before it reaches the server. In this scenario, FortiWeb will return a `403 Forbidden` HTTP status code response, indicating the file was blocked due to potential security risks, with the following content shown:
+* With proper FortiWeb Cloud configuration, it should intercept the EICAR file upload, blocking the HTTP request before it reaches the server. In this scenario, FortiWeb will return a `403 Forbidden` HTTP status code response to the client, indicating the file was blocked due to potential security risks, with the following content shown:
 
-![FortiWeb block page][2]
+![FortiWeb Cloud EICAR file block page][2]
 
 [1]: https://www.eicar.org/download-anti-malware-testfile/
 [2]: /static/images/fortiweb-eicar-alert.png
