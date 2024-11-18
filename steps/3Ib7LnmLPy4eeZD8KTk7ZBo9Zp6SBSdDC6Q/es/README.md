@@ -97,6 +97,8 @@
   app.set("trust proxy", "loopback, 172.16.0.10"); // Trust 'loopback' and '172.16.0.10' proxies for getting client's IP address
   ```
 
+  > :warning: La cabecera `X-Forwarded-For` puede ser controlada por el usuario, lo que significa que puede incluir cualquier valor, como direcciones IP falsificadas o datos no válidos. En algún punto de la infraestructura, es necesario sanearla y descartar entradas irrelevantes.
+
 ## Ejercicio para practicar :writing_hand:
 
 * La aplicación dada ofrece una carga básica de archivos con Express sin ninguna validación de seguridad realizada en el lado del servidor. El objetivo aquí es abrir el editor de código usando el botón `Open Code Editor` y editar el código fuente para incorporar dos medidas de seguridad:

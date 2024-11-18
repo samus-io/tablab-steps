@@ -1,8 +1,8 @@
 # File content validation
 
-* When handling file uploads, it's essential to adopt a validation process to ensure the content is safe from malware, which could compromise the system or spread to users, hidden scripts that could result in code injection vulnerabilities on the server, crafted content aimed at exploiting parser flaws, or inappropriate and illegal data.
+* When handling file uploads, it's essential to adopt a validation process to ensure the content is safe from malware, which could compromise the system or spread to users, hidden scripts that could result in code injection vulnerabilities on the server, or crafted content aimed at exploiting parser flaws.
 * Based on the file type, specific security controls can be implemented, for instance, image rewriting techniques help eliminate malicious content injected into images, while certain validation libraries can be used to help legitimize content of Microsoft documents.
-* However, analyzing a file's content and structure, running files in a controlled sandbox, or applying rewriting techniques can be complex and time-consuming, making it preferable to rely on third-party platforms like VirusTotal or leverage other tools within the infrastructure, such as a Web Application Firewall, which may provide this feature.
+* However, analyzing a file's content and structure, running files in a controlled sandbox, or applying rewriting techniques can be complex and time-consuming, making it preferable to rely on third-party platforms like VirusTotal or leverage other tools within the infrastructure, such as a web application firewall, which may provide this feature.
   * This process may involve **signature-based scanning**, where files are compared against known malicious patterns, or **heuristic-based scanning**, which analyzes file behavior for suspicious activities.
 
 ## Analyzing files in a controlled sandbox environment

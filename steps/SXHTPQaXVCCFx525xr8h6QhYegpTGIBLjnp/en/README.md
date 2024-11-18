@@ -5,7 +5,7 @@
 * Authentication, authorization and access control are the terms involved in this process:
   * Authentication is the process of verifying the identity of a user or system.
   * Authorization is the process of specifying which actions or resources are allowed to a user or system.
-  * Access control refers to the mechanisms that enforce both authentication and authorization, determining who can access which resources and in what circumstances.
+  * Access control refers to the mechanisms that enforce both authentication and authorization, determining who can access which resources and under what circumstances.
 * Putting these concepts in place help prevent unauthorized file uploads, data breaches, and access to sensitive information.
 
 ## Non-compliant code in Java Jakarta
@@ -299,8 +299,8 @@
   ```
 
 * Additionally, any user registered to the application can freely use the upload and download features without restrictions once logged in, such as:
-  * `jackson01` (role: `admin`, password: `3YD8v=Smlv=!CAM(`).
-  * `johndoe` (role: `moderator`, password: `(JI+zM2k-qZdOzwz`).
+  * `jackson01` (role: `admin`, password: `3YD8v=Smlv=!CAMe`).
+  * `johndoe` (role: `moderator`, password: `pJI+zM2k-qZdOzwz`).
   * `alice99` (role: `member`, password: `W-KTJ_!3r*8HwRE^`).
 * The goal here is to edit the source code to enforce a server-side access control policy, limiting file uploads to authenticated users (those with an active session) and allowing only users with the `admin` or `moderator` role to download files. Successful requests should return a `200 OK` status, while unauthorized attempts should result in a `401 Unauthorized` status.
 * More precisely, the modifications should be made in the `AuthFilter.java` and `AuthPrivFilter.java` files, located in `/home/coder/app/src/main/java/io/ontablab/`.

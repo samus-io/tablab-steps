@@ -294,19 +294,6 @@
 
   ```java
   private static final Integer MAX_FILENAME_LENGTH = 100;
-  private static final String ALPHANUMERIC_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-  private String generateRandomString(Integer length) {
-      SecureRandom secureRandom = new SecureRandom();
-      StringBuilder stringBuilder = new StringBuilder(length);
-
-      for (int i = 0; i < length; i++) {
-          int index = secureRandom.nextInt(ALPHANUMERIC_CHARACTERS.length());
-          stringBuilder.append(ALPHANUMERIC_CHARACTERS.charAt(index));
-      }
-
-      return stringBuilder.toString();
-  }
 
   private Boolean isFilenameAllowed(String filename) {
       // Restrict to alphanumeric, hyphens, spaces and dots
@@ -347,6 +334,27 @@
       return randomString + "_" + canonicalizedFilename;
   }
   ```
+
+  <details>
+    <summary>Código contextual</summary>
+
+    ```java
+    private static final String ALPHANUMERIC_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    private String generateRandomString(Integer length) {
+        SecureRandom secureRandom = new SecureRandom();
+        StringBuilder stringBuilder = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = secureRandom.nextInt(ALPHANUMERIC_CHARACTERS.length());
+            stringBuilder.append(ALPHANUMERIC_CHARACTERS.charAt(index));
+        }
+
+        return stringBuilder.toString();
+    }
+    ```
+
+  </details>
 
   ```java
   @Override

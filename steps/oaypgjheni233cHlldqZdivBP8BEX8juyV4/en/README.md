@@ -11,13 +11,13 @@
 * **Disallow files with multiple extensions or missing extensions** to mitigate the risk of exploitation.
 * **Apply robust filtering**  when validating to avoid common pitfalls, such as regex patterns that can be bypassed.
 
-  > :warning: Be aware that frontend validation can be bypassed, making it insufficient; it should only be considered a tool for improving user experience.
+  > :warning: Be aware that validation on the client-side can be bypassed, making it insufficient; it should only be considered a tool for improving user experience.
 
 @@TagStart@@java
 
 ## Non-compliant code in Java Jakarta
 
-* The given code snippet uses Java Jakarta for file uploads, but its extension validation is susceptible to a double extension bypass. It only checks for `.jpg`, `.jpeg`, `.png` in the file name, which is inadequate:
+* The given code snippet handles file uploads, but its extension validation is susceptible to a double extension bypass. It only checks for `.jpg`, `.jpeg`, `.png` in the file name, which is inadequate:
 
   <details>
     <summary>Dependencies</summary>

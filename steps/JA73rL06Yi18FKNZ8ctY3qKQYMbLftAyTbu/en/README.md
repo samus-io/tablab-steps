@@ -1,7 +1,7 @@
 # File storage location and filesystem permissions when uploading files
 
-* Whenever possible, store uploaded files on a separate server or service dedicated exclusively to file storage. This approach provides complete segregation of duties between the application  handling user interactions and upload requests from the server managing file storage, thereby reducing the impact of potential vulnerabilities.
-  * If a separate storage server is not feasible and files need to be saved on the same server, ensure they are stored outside the webroot directory. This prevents direct access to the files through the web server, minimizing the risk of exploitation.
+* Whenever possible, save uploaded files on a storage service or a separate server exclusively dedicated to file storage. This approach provides complete segregation of duties between the application handling user interactions and upload requests from the server managing file storage, thereby reducing the impact of potential vulnerabilities.
+  * If a storage service or a separate server is not feasible and files need to be saved on the same server, ensure they are stored outside the webroot directory. This prevents direct access to the files through the web server, minimizing the risk of exploitation.
 * Ensuring proper file permissions, especially when storing files on the server, is also essential for reducing security risks.
 * Keeping uploaded files in memory or temporary storage during processing and only transferring them to permanent storage after passing validation checks is recommended, as it prevents malicious files from becoming accessible before being removed by validation.
 * If users require access to uploaded files, whether stored on the same server, a different server, or a storage service, it is advisable to avoid granting direct access. A secure approach is to implement a server-side handler that maps files to unique IDs, ensuring controlled access and mitigating the risk of unauthorized exposure to sensitive files.
@@ -9,7 +9,7 @@
 ## Restrict filesystem permissions
 
 * File storage permissions should be restricted to control user actions on uploaded files, typically permitting only read and write access for files like images or documents, while preventing execute permissions.
-  * If execution permissions are required, validating the file content before storage is recommended as a best practice to detect and block macros, hidden scripts, or any form of malware.
+  * In all circumstances, especially when execution is required, validating the file content before storage is recommended as a best practice to detect and block macros, hidden scripts, or any form of malware.
   * Additionally, if a file does not require read access, it should be stored with write permissions only, limiting the risk of unauthorized access.
 
 ## Using a handler when allowing public access

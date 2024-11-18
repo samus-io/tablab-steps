@@ -110,6 +110,8 @@
   }
   ```
 
+  > :warning: The `X-Forwarded-For` header is user-controlled, meaning it can include any values, such as spoofed IP addresses or invalid data. At some point in the infrastructure, it is necessary to sanitize it and discard irrelevant entries.
+
 ## Exercise to practice :writing_hand:
 
 * The given application offers a basic file upload without any security validation conducted on the server-side. The goal here is to open the code editor using the `Open Code Editor` button and edit the source code to introduce two security measures:

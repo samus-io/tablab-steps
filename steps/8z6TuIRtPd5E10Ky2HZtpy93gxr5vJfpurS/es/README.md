@@ -4,7 +4,7 @@
 
 ## Consideraciones de seguridad
 
-* Generalmente, emplear un servicio de almacenamiento dedicado, posiblemente de terceros, es la mejor opción desde el punto de vista de la seguridad. En cualquier caso, independientemente de la configuración adoptada, deberían existir las siguientes medidas:
+* Generalmente, emplear un servicio de almacenamiento dedicado, posiblemente de terceros, es la mejor opción desde el punto de vista de la seguridad. En cualquier caso, independientemente del enfoque adoptado, deberían existir las siguientes medidas:
   * **Limitar el tamaño** de cualquier archivo cargado para evitar un uso excesivo del espacio de almacenamiento y para proteger al sistema de archivos excesivamente grandes que podrían afectar a su rendimiento o provocar errores.
   * **Limitar el total de cargas que un usuario puede realizar** para proteger la capacidad de almacenamiento y minimizar el riesgo de un ataque de `Denegación de Servicio (DoS)` restringiendo el número de ficheros que un usuario puede subir. Esta medida ayuda a evitar a prevenir que el systema se sature con un exceso de archivos, lo cual podría consumir los recursos de almacenamiento.
   * **Limitar el número de solicitudes de carga y descarga** imponiendo restricciones al número de solicitudes de carga y descarga que un usuario puede realizar en un breve periodo de tiempo. Esto ayuda a evitar que un solo usuario sature el sistema con un gran número de solicitudes en un corto periodo de tiempo y garantiza un procesamiento fluido del tráfico legítimo.
@@ -13,7 +13,7 @@
 
 ## Código de incumplimiento en Java Jakarta
 
-* Se muestra seguidamente un ejemplo de implementación vulnerable en Java Jakarta en la que no se aplican correctamente las medidas de seguridad mencionadas:
+* Se muestra seguidamente un ejemplo de implementación vulnerable en Java Jakarta en la que no se aplican las medidas de seguridad mencionadas:
 
   <details>
     <summary>Dependencias</summary>
@@ -138,7 +138,7 @@
 
 ## Código de incumplimiento en Node.js usando `multer`
 
-* Se muestra seguidamente un ejemplo de implementación vulnerable usando `multer` y `Express` en la que no se aplican correctamente las medidas de seguridad mencionadas:
+* Se muestra seguidamente un ejemplo de implementación vulnerable usando `multer` y `Express` en la que no se aplican las medidas de seguridad mencionadas:
 
   <details>
     <summary>Dependencias</summary>

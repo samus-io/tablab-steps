@@ -61,8 +61,8 @@
 ### Using proven frameworks for handling file upload preprocessing
 
 * Implementing a secure file upload mechanism is a complex task that requires careful attention to numerous details and potential vulnerabilities and can be time-consuming. By using an established framework, the application can benefit from comprehensive and up-to-date security features, and ensure that the web application adheres to best practices.
-* These frameworks may offer a variety of built-in validation features, such as file name sanitization, file type checks, content validation, and more, designed to address a wide range of security requirements.
-* While the idea of manually building validation mechanisms may be tempting, leveraging established frameworks is often a better approach.
+* These frameworks or libraries may offer a variety of built-in validation features, such as file name sanitization, file type checks, content validation, and more, designed to address a wide range of security requirements.
+* While the idea of manually building validation mechanisms may be tempting, leveraging established frameworks or libraries is often a better approach.
 
 ## Quiz to consolidate :rocket:
 

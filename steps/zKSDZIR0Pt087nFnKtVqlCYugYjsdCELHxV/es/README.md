@@ -31,7 +31,7 @@
     * `Content-Type`: para especificar el tipo y subtipo de medio del contenido.
     * `Content-Disposition`: para indicar si el contenido puede mostrarse `inline` (valor por defecto), lo que significa como parte de una página web, o tratarse como un `attachment` para ser descargado en el almacenamiento local. En un cuerpo `multipart/form-data`, la cabecera HTTP `Content-Disposition` se encarga de proporcionar información sobre cada subparte.
 * La validación del tipo de archivo basada en el tipo MIME de la cabecera `Content-Type` no es fiable a nivel de seguridad, ya que puede ser fácilmente suplantada, a pesar de que ciertas librerías o paquetes pueden depender de este valor para determinar que el archivo coincide con el tipo esperado.
-* Sin embargo, puede seguir siendo útil para mejorar la experiencia del usuario ofreciendo una comprobación preliminar de los tipos de archivo incorrectos.
+  * Sin embargo, puede seguir siendo útil para mejorar la experiencia del usuario ofreciendo una comprobación preliminar de los tipos de archivo incorrectos.
 
 @@TagStart@@java
 
