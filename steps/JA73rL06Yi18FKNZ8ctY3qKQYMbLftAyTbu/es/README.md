@@ -1,6 +1,6 @@
 # Almacenamiento de archivos y permisos del sistema de ficheros al cargar archivos
 
-* Siempre que sea posible, se deben almacenar los archivos cargados en un servidor o servicio independiente dedicado exclusivamente al almacenamiento de archivos. Este enfoque proporciona una completa segregación de funciones entre la aplicación que gestiona las interacciones de los usuarios y las solicitudes de carga respecto al servidor que gestiona el almacenamiento de archivos, reduciendo así el impacto de posibles vulnerabilidades.
+* Siempre que sea posible, se deben almacenar los archivos cargados en un servicio de almacenamiento o en un servidor en un servidor dedicado exclusivamente al almacenamiento de archivos. Este enfoque proporciona una completa segregación de funciones entre la aplicación que gestiona las interacciones de los usuarios y las solicitudes de carga respecto al servidor que gestiona el almacenamiento de archivos, reduciendo así el impacto de posibles vulnerabilidades.
   * Si no es posible disponer de un sistema de almacenamiento independiente y es necesario guardar los archivos en el mismo servidor, se debe garantizar que se almacenan fuera del directorio *webroot*. De este modo se evita el acceso directo a los archivos a través del servidor web, minimizando el riesgo de explotación.
 * Garantizar los permisos adecuados para los archivos, especialmente cuando se almacenan en el servidor, también es esencial para reducir los riesgos de seguridad.
 * Se recomienda mantener los archivos cargados en memoria o en almacenamiento temporal durante el procesamiento y transferirlos al almacenamiento permanente únicamente después de pasar las comprobaciones de seguridad, ya que así se evita que los archivos maliciosos sean accesibles antes de ser eliminados por el proceso de validación.
@@ -9,7 +9,7 @@
 ## Restringir los permisos del sistema de ficheros
 
 * Los permisos del sistema de ficheros deben restringirse para controlar las acciones del usuario sobre los archivos subidos, normalmente permitiendo solo el acceso de lectura y escritura para archivos como imágenes o documentos e impidiendo los permisos de ejecución.
-  * Si se requieren permisos de ejecución, se recomienda validar el contenido del archivo antes de almacenarlo como mejor práctica para detectar y bloquear macros, scripts ocultos o cualquier forma de malware.
+  * En todos los casos, especialmente cuando se requieran permisos de ejecución, se recomienda validar el contenido del archivo antes de almacenarlo como mejor práctica para detectar y bloquear macros, scripts ocultos o cualquier forma de malware.
   * Adicionalmente, si un archivo no requiere acceso de lectura, debe almacenarse únicamente con permisos de escritura, lo que limita el riesgo de acceso no autorizado.
 
 ## Uso de un controlador al permitir acceso público

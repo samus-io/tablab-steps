@@ -299,9 +299,9 @@
   ```
 
 * Asimismo, cualquier usuario registrado en la aplicación puede utilizar libremente las funciones de carga y descarga sin restricciones una vez iniciada la sesión, como por ejemplo:
-  * `jackson01` (rol: `admin`, contraseña: `dX2%V5h|s5>C}]V`).
-  * `johndoe` (rol: `moderator`, contraseña: `7j@H!3p%!&8l^S2`).
-  * `alice99` (rol: `member`, contraseña: `u^#B&2y!F7@d$E9`).
+  * `jackson01` (rol: `admin`, contraseña: `3YD8v=Smlv=!CAMe`).
+  * `johndoe` (rol: `moderator`, contraseña: `pJI+zM2k-qZdOzwz`).
+  * `alice99` (rol: `member`, contraseña: `W-KTJ_!3r*8HwRE^`).
 * El objetivo aquí es editar el código fuente para aplicar una política de control de acceso en el servidor, limitando la subida de archivos a los usuarios autenticados (aquellos con una sesión activa) y permitiendo únicamente a los usuarios con el rol `admin` o `moderator` la descarga de archivos. Las peticiones exitosas deberían devolver un estado `200 OK`, mientras que los intentos no autorizados deberían resultar en un estado `401 Unauthorized`.
   * Más concretamente, las modificaciones de código deben realizarse en los archivos `AuthFilter.java` y `AuthPrivFilter.java`, situados en `/home/coder/app/src/main/java/io/ontablab/`.
 * Una vez realizados los cambios, se debe pulsar el botón `Verify Completion` para confirmar que se ha completado el ejercicio.

@@ -31,7 +31,7 @@
     * `Content-Type`: to specify the media type and subtype of the content.
     * `Content-Disposition`: to indicate if the content can be displayed `inline` (default value), meaning as part of a web page, or treated as an `attachment` to be downloaded to local storage. In a `multipart/form-data` body, the HTTP `Content-Disposition` header is responsible for providing information about each subpart.
 * File type validation based on the MIME type in the `Content-Type` header is unreliable for security purposes since it can be easily spoofed, even though certain libraries or packages may depend on this value to confirm that file matches the expected type.
-* However, it can still be useful to enhance the user experience by offering a preliminary check for incorrect file types.
+  * However, it can still be useful to enhance the user experience by offering a preliminary check for incorrect file types.
 
 @@TagStart@@java
 

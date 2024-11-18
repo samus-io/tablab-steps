@@ -51,7 +51,7 @@
   * Si esto no es posible, se deben almacenar los archivos fuera de la raíz web para evitar el acceso directo a través de URL.
   * En los casos en los que los archivos deban ser accesibles públicamente, se puede utilizar un sistema de mapeo interno para asignar nombres de archivo identificativos en la aplicación.
 * Los permisos en el almacenamiento de archivos deben ser limitados para controlar qué pueden hacer los usuarios con los archivos subidos, normalmente permitiendo solo acceso de lectura y escritura para archivos como imágenes o documentos, y bloqueando los permisos de ejecución.
-  * Cuando se requiera la ejecución, se aconseja escanear el archivo antes de almacenarlo como mejor práctica de seguridad para detectar y prevenir macros, scripts ocultos o cualquier forma de malware.
+  * En todos los casos, aunque especialmente cuando se requiera la ejecución, se aconseja escanear el archivo antes de almacenarlo como mejor práctica de seguridad para detectar y prevenir macros, scripts ocultos o cualquier forma de malware.
 
 ### Aplicación de autenticación y autorización
 
@@ -61,5 +61,10 @@
 ### Utilizar frameworks contrastados para gestionar el preprocesamiento de la carga de archivos
 
 * Implementar un mecanismo seguro de carga de archivos es una tarea compleja que requiere prestar especial atención a numerosos detalles y posibles vulnerabilidades, y que puede llevar mucho tiempo. Al utilizar un framework consolidado, la aplicación puede beneficiarse de funciones de seguridad completas y actualizadas, y garantizar que esta se adhiere a las mejores prácticas.
-* Estos frameworks pueden ofrecen una gran variedad de funciones de validación integradas, como la limpieza de nombres de archivo, la comprobación de tipos de archivo o la validación de contenido, diseñadas para responder a una amplia gama de requisitos de seguridad.
-* Aunque la idea de construir manualmente mecanismos de validación puede ser tentadora, aprovechar los frameworks establecidos suele representar un mejor enfoque.
+* Estos frameworks o librerías pueden ofrecen una gran variedad de funciones de validación integradas, como la limpieza de nombres de archivo, la comprobación de tipos de archivo o la validación de contenido, diseñadas para responder a una amplia gama de requisitos de seguridad.
+* Aunque la idea de construir manualmente mecanismos de validación puede ser tentadora, aprovechar los frameworks o las librerías establecidas suele representar un mejor enfoque.
+
+## Test para consolidar :rocket:
+
+* Completa el cuestionario eligiendo la respuesta correcta para cada pregunta.
+  @@ExerciseBox@@

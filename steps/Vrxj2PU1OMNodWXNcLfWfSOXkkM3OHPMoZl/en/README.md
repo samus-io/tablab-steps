@@ -51,7 +51,7 @@
   * If this isn't feasible, then store the files outside the webroot to prevent direct access via URL.
   * In cases where files need to be publicly accessible, use a handler to map file names inside the application.
 * Permissions on the file storage should be limited to control what users can do with uploaded files, typically allowing only read and write access for files such as images or documents, and blocking execute permissions.
-  * When execution is required, scanning the file prior to storage is advised as a best practice to detect and prevent macros, hidden scripts, or any form of malware.
+  * In all circumstances, especially when execution is required, scanning the file prior to storage is advised as a best practice to detect and prevent macros, hidden scripts, or any form of malware.
 
 ### Enforcing authentication and authorization
 
@@ -61,5 +61,10 @@
 ### Using proven frameworks for handling file upload preprocessing
 
 * Implementing a secure file upload mechanism is a complex task that requires careful attention to numerous details and potential vulnerabilities and can be time-consuming. By using an established framework, the application can benefit from comprehensive and up-to-date security features, and ensure that the web application adheres to best practices.
-* These frameworks may offer a variety of built-in validation features, such as file name sanitization, file type checks, content validation, and more, designed to address a wide range of security requirements.
-* While the idea of manually building validation mechanisms may be tempting, leveraging established frameworks is often a better approach.
+* These frameworks or libraries may offer a variety of built-in validation features, such as file name sanitization, file type checks, content validation, and more, designed to address a wide range of security requirements.
+* While the idea of manually building validation mechanisms may be tempting, leveraging established frameworks or libraries is often a better approach.
+
+## Quiz to consolidate :rocket:
+
+* Complete the questionnaire by choosing the correct answer for each question.
+  @@ExerciseBox@@

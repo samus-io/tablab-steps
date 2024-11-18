@@ -4,7 +4,7 @@
 
 ## Security considerations to be taken into account
 
-* Generally, employing a dedicated storage service, possibly third-party, is recommended from a security standpoint. In any case, regardless of the configuration adopted, the following measures should be in place:
+* Generally, employing a dedicated storage service, possibly third-party, is recommended from a security standpoint. In any case, regardless of the approach adopted, the following measures should be in place:
   * **Limit the file size** of each uploaded file to prevent excessive use of storage space and to protect the system from dealing with files that are too large, potentially affecting its performance or causing crashes.
   * **Limit the total uploads a user can perform** to protect storage capacity and minimize the risk of a `Denial of Service (DoS)` attack by restricting the number of files a user is allowed to upload. This measure helps to prevent the system from being flooded with excessive files, which could exhaust storage resources.
   * **Limit the number of uploads and download requests rates** by imposing restrictions on the number of upload and download requests a user can make in a short period. This helps prevent any single user from flooding the system with numerous requests within a short timeframe and ensure smooth processing of legitimate traffic.
@@ -13,7 +13,7 @@
 
 ## Non-compliant code in Java Jakarta
 
-* Here's an example of a vulnerable implementation in Java Jakarta where the above security measures are not properly applied:
+* Here's an example of a vulnerable implementation in Java Jakarta where the above security measures are missing:
 
   <details>
     <summary>Dependencies</summary>
@@ -138,7 +138,7 @@
 
 ## Non-compliant code in Node.js using `multer`
 
-* Here's an example of a vulnerable implementation where the above security measures are not properly applied using `multer` and `Express.js`:
+* Here's an example of a vulnerable implementation where the above security measures are missing using `multer` and `Express.js`:
 
   <details>
     <summary>Dependencies</summary>
