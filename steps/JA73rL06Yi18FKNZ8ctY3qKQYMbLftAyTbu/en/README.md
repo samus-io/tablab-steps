@@ -6,6 +6,8 @@
 * Keeping uploaded files in memory or temporary storage during processing and only transferring them to permanent storage after passing validation checks is recommended, as it prevents malicious files from becoming accessible before being removed by validation.
 * If users require access to uploaded files, whether stored on the same server, a different server, or a storage service, it is advisable to avoid granting direct access. A secure approach is to implement a server-side handler that maps files to unique IDs, ensuring controlled access and mitigating the risk of unauthorized exposure to sensitive files.
 
+![Storage server filesystem][1]
+
 ## Restrict filesystem permissions
 
 * File storage permissions should be restricted to control user actions on uploaded files, typically permitting only read and write access for files like images or documents, while preventing execute permissions.
@@ -668,3 +670,5 @@
   ```
 
 @@TagEnd@@
+
+[1]: /static/images/storage-server-filesystem.png

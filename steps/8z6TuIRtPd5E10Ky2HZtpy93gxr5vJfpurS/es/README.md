@@ -2,6 +2,8 @@
 
 * Cuando se implementan funcionalidades de carga y descarga de archivos en una aplicación, es crucial imponer ciertos límites para garantizar la seguridad y el rendimiento.
 
+![Upload and download limits when uploading files][1]
+
 ## Consideraciones de seguridad
 
 * Generalmente, emplear un servicio de almacenamiento dedicado, posiblemente de terceros, es la mejor opción desde el punto de vista de la seguridad. En cualquier caso, independientemente del enfoque adoptado, deberían existir las siguientes medidas:
@@ -200,3 +202,5 @@
   * En este código **no se impone ningún límite de tamaño de archivo**, lo que permite a los usuarios subir archivos excesivamente grandes, que pueden provocar caídas del servidor o un consumo significativo de almacenamiento.
   * **No se establecen límites al número total de archivos que un usuario puede cargar**, lo que permite cargas ilimitadas que pueden poner en peligro la capacidad de almacenamiento del servidor.
   * **No existe límite de la tasa de carga y descarga**, lo que permite a los usuarios enviar un gran volumen de solicitudes de carga y descarga al servidor, agotando potencialmente sus recursos, degradando el rendimiento general o incluso provocando una denegación de servicio (DoS).
+
+[1]: /static/images/speed-limit.png

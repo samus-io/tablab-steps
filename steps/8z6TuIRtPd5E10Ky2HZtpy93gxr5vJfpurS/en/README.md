@@ -2,6 +2,8 @@
 
 * When implementing file upload and download features in an application, it is crucial to impose certain limits to ensure security and performance.
 
+![Upload and download limits when uploading files][1]
+
 ## Security considerations to be taken into account
 
 * Generally, employing a dedicated storage service, possibly third-party, is recommended from a security standpoint. In any case, regardless of the approach adopted, the following measures should be in place:
@@ -200,3 +202,5 @@
   * There's **no file size limit** enforced in this code, allowing users to upload excessively large files, which can result in server crashes or significant storage consumption.
   * **No limits are set on the total number of files a user can upload**, permitting unlimited uploads, potentially endangering the server's storage capacity.
   * **No upload and download rate limit** exists, enabling users to send a high volume of upload and download requests to the server, potentially exhausting its resources, degrading overall performance, or even causing a denial of service (DoS).
+
+[1]: /static/images/speed-limit.png

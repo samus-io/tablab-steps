@@ -5,6 +5,8 @@
 * However, analyzing a file's content and structure, running files in a controlled sandbox, or applying rewriting techniques can be complex and time-consuming, making it preferable to rely on third-party platforms like VirusTotal or leverage other tools within the infrastructure, such as a web application firewall, which may provide this feature.
   * This process may involve **signature-based scanning**, where files are compared against known malicious patterns, or **heuristic-based scanning**, which analyzes file behavior for suspicious activities.
 
+![File malware scanning][1]
+
 ## Analyzing files in a controlled sandbox environment
 
 * A `sandbox` is a controlled and isolated environment used to run, analyze, and test potentially untrusted or malicious software without risking harm to the host system or network. This environment acts as a virtual testing ground where files can be observed safely.
@@ -25,3 +27,5 @@
 * Certain `Web Application Firewalls (WAFs)` incorporate specialized file malware detection features in their file upload protection or content scanning modules that could be leveraged to satisfy the file content validation requirements.
 * This feature's implementation typically demands a close integration between the WAF and the web application, as the firewall must be aware of all endpoint calls handling file uploads, along with the HTTP request parameters and the encoding selected by the client for transmission.
 * Cloud-based WAFs, as opposed to on-premises appliance-based WAFs, are more likely to provide this feature while offering a much simpler setup for implementation.
+
+[1]: /static/images/file-malware-scanning.png

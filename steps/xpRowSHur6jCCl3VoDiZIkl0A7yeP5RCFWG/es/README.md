@@ -5,6 +5,8 @@
 * Sin embargo, analizar el contenido y la estructura de un archivo, ejecutarlo en un entorno aislado controlado o aplicar técnicas de reescritura puede resultar complejo y requerir un tiempo considerable, por lo que es preferible recurrir a plataformas de terceros como VirusTotal o aprovechar otras herramientas de la infraestructura, como un cortafuegos de aplicaciones web que ofrezca esta función.
   * Este proceso puede implicar un **escaneado basado en firmas**, en el que los archivos se comparan con patrones maliciosos conocidos, o un **escaneado basado en heurística**, que analiza el comportamiento de los archivos en busca de actividades sospechosas.
 
+![File malware scanning][1]
+
 ## Análisis de archivos en un entorno controlado
 
 * Un `sandbox` o entorno de pruebas es un entorno controlado y aislado que se utiliza para ejecutar, analizar y probar *software* potencialmente no fiable o malicioso sin arriesgarse a dañar el sistema anfitrión o la red. Este entorno actúa como un campo de pruebas virtual donde se pueden examinar archivos de forma segura.
@@ -25,3 +27,5 @@
 * Ciertos `Web Application Firewalls (WAFs)` incorporan funciones especializadas de detección de *malware* de ficheros en sus módulos de protección de carga de archivos o de análisis de contenido que podrían aprovecharse para satisfacer los requisitos de validación del contenido de los ficheros.
 * La implementación de esta función suele exigir una estrecha integración entre el WAF y la aplicación web, ya que el cortafuegos debe conocer todas las llamadas a *endpoints* que gestionan la carga de archivos, junto con los parámetros de solicitud HTTP y la codificación seleccionada por el cliente para la transmisión.
 * Los WAF basados en la nube, a diferencia de los WAF basados en *appliances on-premises*, son más propensos a proporcionar esta característica nativamente a la vez que ofrecen una configuración mucho más sencilla para su implementación.
+
+[1]: /static/images/file-malware-scanning.png

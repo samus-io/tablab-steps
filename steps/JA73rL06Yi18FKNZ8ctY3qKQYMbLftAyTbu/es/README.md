@@ -6,6 +6,8 @@
 * Se recomienda mantener los archivos cargados en memoria o en almacenamiento temporal durante el procesamiento y transferirlos al almacenamiento permanente únicamente después de pasar las comprobaciones de seguridad, ya que así se evita que los archivos maliciosos sean accesibles antes de ser eliminados por el proceso de validación.
 * Si los usuarios necesitan acceder a los archivos cargados, ya estén almacenados en el mismo servidor, en otro servidor o en un servicio de almacenamiento, es aconsejable evitar conceder acceso directo. Un enfoque seguro consiste en implementar un gestor en el lado del servidor que asigne archivos a identificadores únicos, garantizando un acceso controlado y mitigando el riesgo de exposición no autorizada a archivos sensibles.
 
+![Storage server filesystem][1]
+
 ## Restringir los permisos del sistema de ficheros
 
 * Los permisos del sistema de ficheros deben restringirse para controlar las acciones del usuario sobre los archivos subidos, normalmente permitiendo solo el acceso de lectura y escritura para archivos como imágenes o documentos e impidiendo los permisos de ejecución.
@@ -668,3 +670,5 @@
   ```
 
 @@TagEnd@@
+
+[1]: /static/images/storage-server-filesystem.png
