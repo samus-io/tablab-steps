@@ -14,7 +14,7 @@
     }
     ```
 
-  1. Next, define the SQL query with placeholders (`@`) for the parameters to be passed later, such as `category` and `rating` in this case:
+  1. Next, the SQL query should include placeholders (`@`) for parameters to be added later,  such as `category` and `rating` in this case:
 
     ```csharp
     string query = "SELECT id, name, price, category, stock, rating FROM products WHERE category = @Category AND rating >= @Rating";
@@ -48,7 +48,7 @@
     }
     ```
 
-## Compliant code in C# using prepared statements
+## Compliant code using prepared statements
 
 * The complete code snippet below illustrates the use of prepared statements for retrieving products based on `category` and `rating`:
 

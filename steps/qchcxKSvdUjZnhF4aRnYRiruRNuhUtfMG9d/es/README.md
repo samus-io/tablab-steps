@@ -48,7 +48,7 @@
     }
     ```
 
-## Código de cumplimiento en C# usando sentencias preparadas
+## Código de cumplimiento usando sentencias preparadas
 
 * El fragmento de código completo que se muestra a continuación ilustra el uso de sentencias preparadas para recuperar productos basándose en `category` y `rating`:
 
