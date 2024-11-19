@@ -2,7 +2,9 @@
 
 * `Jakarta Persistence API (JPA)` is a standard technology that provides a specification for managing the relational data in applications using Java platforms.
 * As an `Object-Relational Mapping (ORM)`, Jakarta Persistence API provides a way to map objects in Java (known as entities) to database tables. A persistence context manages the entities, which includes handling their life cycle, managing relational mappings, and performing database operations.
+
   > :older_man: ORM libraries avoid the need to write SQL code, since the ORM library generates prepared SQL statements directly from object-oriented code.
+
 * These operations are typically carried out through the `EntityManager` interface, which acts as the primary point of interaction for database transactions.
 
 ## Example of Jakarta Persistence API usage
@@ -48,11 +50,12 @@
   ```
 
   * In this example, the `category` and `rating` variables are concatenated with the SQL query, avoiding the prepared statements and query parameterization.
+
   > :warning: There are other Jakarta Persistence API methods that can be vulnerable to SQL injection, but as long as the strings are not concatenated, the application will not be vulnerable to SQL injection.
 
 ### Security considerations
 
-* To safeguard against SQL Injection attacks when using JPA, it's crucial to refrain from concatenating strings directly within SQL queries. This is because Jakarta Persistence API's built-in methods, when used correctly, inherently prevent SQL Injection vulnerabilities.
+* To safeguard against SQL injection attacks when using JPA, it's crucial to refrain from concatenating strings directly within SQL queries. This is because Jakarta Persistence API's built-in methods, when used correctly, inherently prevent SQL injection vulnerabilities.
   * Therefore, using these methods as intended ensures that your queries are secure from such attacks.
 * Using parameterized queries instead of concatenating strings can prevent SQL injections:
 
@@ -69,8 +72,8 @@
 ## Exercise to practice :writing_hand:
 
 * The following login form is susceptible to SQL injection due to directly appending user input to the database query.
-* The objective here is to edit the source code opening the code editor through the `Open Code Editor` button, and implement correctly the JPA queries to eliminate the vulnerability.
-* More precisely, the code to be modified resides in the static method `loginWithCredentials` within the `Auth` class, located in `src/main/java/io/ontablab/Auth.java`.
+* The goal here is to edit the source code opening the code editor through the `Open Code Editor` button, and implement correctly the JPA queries to eliminate the vulnerability.
+  * More precisely, the code to be modified resides in the static method `loginWithCredentials` within the `Auth` class, located in `src/main/java/io/ontablab/Auth.java`.
+* After implementing a correct solution, test it by filling out the form and entering a payload in the password field that could have previously exploited the vulnerability, such as `" OR 1=1 OR "1"="1`, and verify that no longer works. Finally, press the `Verify Completion` button to confirm that the exercise has been completed.
 * Will you be able to prevent the SQL injection flaw by implementing a safe query? :slightly_smiling_face::muscle:
-* Once you believe you've implemented a correct solution, test it by introducing a payload that previously exploited the vulnerability, such as `" OR 1=1 OR "1"="1`, and verify that no longer works.
   @@ExerciseBox@@

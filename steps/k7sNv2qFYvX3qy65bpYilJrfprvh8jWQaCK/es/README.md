@@ -2,7 +2,9 @@
 
 * `Jakarta Persistence API (JPA)` es un estándar de tecnología que proporciona especificaciones para la gestión de datos relacionales en aplicaciones que utilizan plataformas Java.
 * A modo de `Object-Relational Mapping (ORM)`, Jakarta Persistence API proporciona una forma de mapear objetos en Java (conocidos como entidades) a tablas de bases de datos. Un contexto de persistencia gestiona las entidades, lo que incluye el manejo de su ciclo de vida, la gestión de mapeos relacionales y la realización de operaciones de base de datos.
+
   > :older_man: Las librerías ORM evitan la necesidad de escribir código SQL, ya que la librería ORM genera sentencias SQL preparadas directamente a partir de código orientado a objetos.
+
 * Estas operaciones se llevan a cabo típicamente a través de la interfaz `EntityManager`, que actúa como el principal punto de interacción para las transacciones de base de datos.
 
 ## Ejemplo de Jakarta Persistence API
@@ -48,6 +50,7 @@
   ```
   
   * En este ejemplo, las variables `category` y `rating` se concatenan con la consulta SQL, evitando las sentencias preparadas y la parametrización de consultas.
+
   > :warning: Existen otros métodos de Jakarta Persistence API que pueden ser vulnerables a inyección SQL, pero mientras no se concatenen *strings*, la aplicación no será vulnerable a inyecciones SQL.
 
 ### Consideraciones de seguridad
@@ -68,9 +71,9 @@
 
 ## Ejercicio para practicar :writing_hand:
 
-* El siguiente formulario de inicio de sesión es susceptible a inyecciones SQL debido a que se agrega directamente la entrada del usuario a la consulta de la base de datos.
-* El objetivo aquí es editar el código fuente abriendo el editor de código mediante el botón `Open Code Editor` e implementar correctamente las consultas de la JPA para eliminar la vulnerabilidad.
-* Más precisamente, el código a modificar se encuentra en el método estático `loginWithCredentials` de la clase `Auth`, ubicada en `src/main/java/io/ontablab/Auth.java`.
+* El siguiente formulario de inicio de sesión es susceptible a inyecciones SQL debido a que agrega directamente la entrada del usuario a la consulta de la base de datos.
+* El objetivo aquí es editar el código fuente abriendo el editor de código a través del botón `Open Code Editor` e implementar correctamente las consultas JPA para eliminar la vulnerabilidad.
+  * Más concretamente, el código a modificar se encuentra en el método estático `loginWithCredentials` dentro de la clase `Auth`, ubicada en `src/main/java/io/ontablab/Auth.java`.
+* Después de implementar una solución correcta, prueba rellenando el formulario e introduciendo una carga útil en el campo de contraseña que podría haber explotado previamente la vulnerabilidad, como `" OR 1=1 OR "1"="1`, comprobando que ya no funciona. Por último, pulsa el botón `Verify Completion` para confirmar que el ejercicio se ha completado.
 * ¿Serás capaz de prevenir la vulnerabilidad de inyección SQL implementando una consulta segura? :slightly_smiling_face::muscle:
-* Una vez creas que has implementado una solución correcta, prueba introduciendo una carga útil que previamente explotaba la vulnerabilidad, como puede ser `" OR 1=1 OR "1"="1`, y verifica que ya no funciona.
   @@ExerciseBox@@
