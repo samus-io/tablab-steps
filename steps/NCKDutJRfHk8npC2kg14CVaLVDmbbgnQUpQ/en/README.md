@@ -415,12 +415,13 @@
         return;
       }
 
-      const trimmedFilename = decodedFilename.replace(/^[.\s]+|[.\s]+$/g, ""); // Remove enclosing periods and spaces
+      const croppedFilename = decodedFilename.replace(/^[.\s]+|[.\s]+$/g, ""); // Remove outer periods and spaces
+      const sanitizedFilename = sanitizeFilename(croppedFilename);
+      const trimmedFilename = sanitizedFilename.replace(/^[.\s]+|[.\s]+$/g, ""); // Remove enclosing periods and spaces
       const lowerCaseFilename = trimmedFilename.toLowerCase();
       const canonicalizedFilename = lowerCaseFilename.replace(/\s+/g, "-"); // Replace spaces with hyphens
-      const sanitizedFilename = sanitizeFilename(canonicalizedFilename);
 
-      if (!sanitizedFilename) {
+      if (!canonicalizedFilename) {
         error.message = "Invalid file name";
         cb(error);
         return;
@@ -428,7 +429,7 @@
 
       // Ensure no file name collisions
       const randomString = generateRandomString();
-      const filename = `${randomString}_${sanitizedFilename}`;
+      const filename = `${randomString}_${canonicalizedFilename}`;
 
       cb(null, filename);
     }
