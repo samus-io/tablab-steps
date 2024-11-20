@@ -3,6 +3,8 @@
 * File name sanitization is a crucial process aimed at ensuring that file names are safe and compatible with the system on which they will be used.
 * This involves validating and potentially modifying the original names of the files received to prevent security threats or operational failures that could compromise system integrity.
 
+![File name sanitization][2]
+
 ## Security measures checklist
 
 * Whenever possible, use unique and random file names when storing the files (e.g., adopting UUID). If business logic constraints prevent this approach, then:
@@ -462,3 +464,4 @@
 @@TagEnd@@
 
 [1]: https://www.ascii-code.com/
+[2]: /static/images/file-name-sanitization.png

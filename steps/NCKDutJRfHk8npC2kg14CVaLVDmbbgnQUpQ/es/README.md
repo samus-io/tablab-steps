@@ -3,6 +3,8 @@
 * El saneamiento de nombres de archivo es un proceso esencial destinado a garantizar que los nombres de archivo sean seguros y compatibles con el sistema en el que se van a utilizar.
 * Consiste en validar y potencialmente modificar los nombres originales de los archivos recibidos para prevenir amenazas de seguridad o fallos operativos que puedan comprometer la integridad del sistema.
 
+![File name sanitization][2]
+
 ## Lista de control de las medidas de seguridad
 
 * Siempre que sea posible, se deben utilizar nombres de archivo únicos y aleatorios al almacenar los ficheros (e.g., adoptando UUID). Si las restricciones de lógica de la organización impiden este enfoque, entonces se recomienda:
@@ -464,3 +466,4 @@
 @@TagEnd@@
 
 [1]: https://www.ascii-code.com/
+[2]: /static/images/file-name-sanitization.png
