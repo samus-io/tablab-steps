@@ -8,36 +8,36 @@
 * Considerando un escenario que requiera la ejecución de una consulta SQL para recuperar productos filtrados por `category` y `rating`, se pueden seguir los siguientes pasos para conseguirlo con sentencias preparadas:
   1. El objeto `Connection` dentro de una sentencia `try-with-resources` puede ser empleado para establecer una conexión. Este enfoque gestiona el ciclo de vida de la conexión de forma automática, reduciendo el riesgo de fuga de recursos, especialmente cuando se producen excepciones:
 
-    ```java
-    try (Connection conn = DriverManager.getConnection(URL)) {
-      // SQL query
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
-    }
-    ```
+      ```java
+      try (Connection conn = DriverManager.getConnection(URL)) {
+        // SQL query
+      } catch (SQLException e) {
+          throw new RuntimeException(e);
+      }
+      ```
 
   1. Seguidamente, es necesario definir la consulta SQL con marcadores de posición (`?`) para los parámetros que se introducirán posteriormente, como `category` y `rating` en este caso:
 
-    ```java
-    String query = "SELECT id, name, price, category, stock, rating FROM products WHERE category = ? AND rating >= ?";
-    ```
+      ```java
+      String query = "SELECT id, name, price, category, stock, rating FROM products WHERE category = ? AND rating >= ?";
+      ```
 
   1. Tras definir la consulta SQL, debe crearse un objeto `PreparedStatement` que contenga la consulta y los parámetros deben pasarse utilizando los métodos `setString` y `setDouble` de `PreparedStatement`:
 
-    ```java
-    PreparedStatement ps = conn.prepareStatement(query);
-  
-    ps.setString(1, category);
-    ps.setDouble(2, rating);
-    ```
+      ```java
+      PreparedStatement ps = conn.prepareStatement(query);
+    
+      ps.setString(1, category);
+      ps.setDouble(2, rating);
+      ```
 
-    > :older_man: Los métodos para asignar valores de parámetros, tales como `setString`, `setDouble`, etc., deben usar tipos que sean compatibles con el tipo SQL especificado para el parámetro de entrada. Por ejemplo, si el parámetro está definido como un tipo SQL `INTEGER`, entonces se debe emplear el método `setInt`.
+      > :older_man: Los métodos para asignar valores de parámetros, tales como `setString`, `setDouble`, etc., deben usar tipos que sean compatibles con el tipo SQL especificado para el parámetro de entrada. Por ejemplo, si el parámetro está definido como un tipo SQL `INTEGER`, entonces se debe emplear el método `setInt`.
 
   1. Una vez introducidos los parámetros, se puede ejecutar la consulta SQL:
 
-    ```java
-    ResultSet rs = ps.executeQuery();
-    ```
+      ```java
+      ResultSet rs = ps.executeQuery();
+      ```
 
 ## Código de cumplimiento usando sentencias preparadas
 

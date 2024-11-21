@@ -8,36 +8,36 @@
 * Considering a scenario requiring the execution of an SQL query to retrieve products filtered by `category` and `rating`, the following steps can be used to achieve this with prepared statements:
   1. The `Connection` object within a `try-with-resources` statement can be employed to establish a connection. This approach manages the connection lifecycle automatically, reducing the risk of resource leaks, particularly during exceptions:
 
-    ```java
-    try (Connection conn = DriverManager.getConnection(URL)) {
-      // SQL query
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
-    }
-    ```
+      ```java
+      try (Connection conn = DriverManager.getConnection(URL)) {
+        // SQL query
+      } catch (SQLException e) {
+          throw new RuntimeException(e);
+      }
+      ```
 
   1. Next, the SQL query should include placeholders (`?`) for parameters to be added later,  such as `category` and `rating` in this case:
 
-    ```java
-    String query = "SELECT id, name, price, category, stock, rating FROM products WHERE category = ? AND rating >= ?";
-    ```
+      ```java
+      String query = "SELECT id, name, price, category, stock, rating FROM products WHERE category = ? AND rating >= ?";
+      ```
 
   1. After defining the SQL query, a `PreparedStatement` object should be created to hold the query, and the parameters should be passed using `setString` and `setDouble` methods of `PreparedStatement`:
 
-    ```java
-    PreparedStatement ps = conn.prepareStatement(query);
+      ```java
+      PreparedStatement ps = conn.prepareStatement(query);
 
-    ps.setString(1, category);
-    ps.setDouble(2, rating);
-    ```
+      ps.setString(1, category);
+      ps.setDouble(2, rating);
+      ```
 
-    > :older_man: The setter methods (such as `setString`, `setDouble`, etc.) for assigning parameter values must use types that are compatible with the SQL type specified for the input parameter. For example, if the parameter is defined as an SQL type `INTEGER`, then the `setInt` method should be employed.
+      > :older_man: The setter methods (such as `setString`, `setDouble`, etc.) for assigning parameter values must use types that are compatible with the SQL type specified for the input parameter. For example, if the parameter is defined as an SQL type `INTEGER`, then the `setInt` method should be employed.
 
   1. Once the parameters are set, the SQL query can be executed:
 
-    ```java
-    ResultSet rs = ps.executeQuery();
-    ```
+      ```java
+      ResultSet rs = ps.executeQuery();
+      ```
 
 ## Compliant code using prepared statements
 
