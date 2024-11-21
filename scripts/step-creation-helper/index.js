@@ -18,14 +18,10 @@ const main = () => {
   fs.mkdir(nanoid)
     .then(() => {
       return Promise.all([
-        fs.mkdir(`${nanoid}/es`),
         fs.mkdir(`${nanoid}/en`),
       ]);
     })
     .then(() => {
-      fs.writeFile(`${nanoid}/es/README.md`, ``);
-      fs.writeFile(`${nanoid}/en/README.md`, `# TODO\n`);
-
       const properties = {
         numExercises: 0,
         estimatedCompletionTime: 0,
@@ -34,6 +30,7 @@ const main = () => {
       };
 
       fs.writeFile(`${nanoid}/properties.json`, JSON.stringify(properties, null, 2));
+      fs.writeFile(`${nanoid}/en/README.md`, `# TODO\n`);
     })
     .catch((err) => {
       console.error(err);
