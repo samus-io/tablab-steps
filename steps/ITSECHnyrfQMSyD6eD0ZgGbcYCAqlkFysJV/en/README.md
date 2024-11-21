@@ -78,7 +78,7 @@
 ## Exercise to practice :writing_hand:
 
 * The following login form is susceptible to SQL injection due to directly appending user input to the SQL query.
-* The objective here is to edit the source code opening the code editor through the `Open Code Editor` button, and enabling the use of prepared statements to eliminate the vulnerability.
+* The objective here is to edit the source code opening the code editor through the `Open Code Editor` button, and enabling the use of prepared statements via JDBC to eliminate the vulnerability.
   * More precisely, the code to be modified resides in the static method `loginWithCredentials` within the `Auth` class, located in `src/main/java/io/ontablab/Auth.java`.
 * After implementing a correct solution, test it by filling out the form and entering a payload in the password field that could have previously exploited the vulnerability, such as `" OR 1=1;-- `, and verify that no longer works. Finally, press the `Verify Completion` button to confirm that the exercise has been completed.
 * Will you be able to prevent the SQL injection flaw by implementing prepared statements? :slightly_smiling_face::muscle:

@@ -10,7 +10,7 @@
 
 ## Código de incumplimiento en Java Jakarta
 
-* El siguiente fragmento de código carece de mecanismos de control de acceso, lo que expone a la aplicación web a ser susceptible de vulnerabilidades de *broken access control* y a una potencial filtración de información:
+* El siguiente fragmento de código carece de mecanismos de control de acceso, lo que expone a la aplicación web a ser susceptible de vulnerabilidades de *broken access control* y a una potencial filtración de información, ya que permite que cualquiera cargue o descargue archivos, incluidos los cargados por otro usuario:
 
   <details>
     <summary>Dependencias</summary>
