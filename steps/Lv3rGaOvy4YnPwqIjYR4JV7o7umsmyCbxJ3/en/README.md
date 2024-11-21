@@ -10,7 +10,7 @@
 
 ## Non-compliant code in Node.js using `multer`
 
-* The code snippet below lacks access control mechanisms, exposing the web application to broken access control and potential information disclosure, as it allows anyone to upload or download files, including those that were uploaded by another user:
+* The code snippet below lacks access control mechanisms, exposing the web application to broken access control and potential information disclosure, as it allows anyone to upload or download files:
 
   <details>
     <summary>Dependencies</summary>
