@@ -7,46 +7,46 @@
 * Considering a scenario requiring the execution of an SQL query to retrieve products filtered by `category` and `rating`, the following steps can be used to achieve this with prepared statements:
   1. The `SqliteConnection` object within a `using` statement can be employed to establish a connection. This approach manages the connection lifecycle automatically, reducing the risk of resource leaks, particularly during exceptions:
 
-    ```csharp
-    using (SqliteConnection connection = new SqliteConnection("Data Source=/path/to/database")) {
-        connection.Open();
-        // SQL query
-    }
-    ```
+      ```csharp
+      using (SqliteConnection connection = new SqliteConnection("Data Source=/path/to/database")) {
+          connection.Open();
+          // SQL query
+      }
+      ```
 
   1. Next, the SQL query should include placeholders (`@`) for parameters to be added later,  such as `category` and `rating` in this case:
 
-    ```csharp
-    string query = "SELECT id, name, price, category, stock, rating FROM products WHERE category = @Category AND rating >= @Rating";
-    ```
+      ```csharp
+      string query = "SELECT id, name, price, category, stock, rating FROM products WHERE category = @Category AND rating >= @Rating";
+      ```
 
   1. After defining the SQL query, a `SqliteCommand` object should be created to hold the query, and the parameters should be passed using the `AddWithValue` method:
 
-    ```csharp
-    using (SqliteCommand command = new SqliteCommand(query, connection)) {
-        command.Parameters.AddWithValue("@Category", category);
-        command.Parameters.AddWithValue("@Rating", rating);
+      ```csharp
+      using (SqliteCommand command = new SqliteCommand(query, connection)) {
+          command.Parameters.AddWithValue("@Category", category);
+          command.Parameters.AddWithValue("@Rating", rating);
 
-        // Query execution
-    }
-    ```
+          // Query execution
+      }
+      ```
 
   1. Once the parameters are set, the SQL query can be executed:
 
-    ```csharp
-    SqliteDataReader reader = command.ExecuteReader();
+      ```csharp
+      SqliteDataReader reader = command.ExecuteReader();
 
-    // Read the SQL query result
-    ```
+      // Read the SQL query result
+      ```
 
   1. In certain situations, determining whether the result contains any rows or none is sufficient. This can be done using the `ExecuteScalar` method:
 
-    ```csharp
-    var result = command.ExecuteScalar();
-    if (result == null) {
-      // No rows returned
-    }
-    ```
+      ```csharp
+      var result = command.ExecuteScalar();
+      if (result == null) {
+        // No rows returned
+      }
+      ```
 
 ## Compliant code using prepared statements
 
