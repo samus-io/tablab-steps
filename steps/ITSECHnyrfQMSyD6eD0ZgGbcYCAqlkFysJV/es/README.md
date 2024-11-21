@@ -78,7 +78,7 @@
 ## Ejercicio para practicar :writing_hand:
 
 * El siguiente formulario de inicio de sesión es susceptible a inyecciones SQL debido a que agrega directamente la entrada del usuario a la consulta SQL.
-* El objetivo aquí es editar el código fuente abriendo el editor de código a través del botón `Open Code Editor` y habilitando el uso de sentencias preparadas para eliminar la vulnerabilidad.
+* El objetivo aquí es editar el código fuente abriendo el editor de código a través del botón `Open Code Editor` y habilitando el uso de sentencias preparadas vía JDBC para eliminar la vulnerabilidad.
   * Más concretamente, el código a modificar se encuentra en el método `loginWithCredentials` dentro de la clase `Auth`, localizada en `src/main/java/io/ontablab/Auth.java`.
 * Después de implementar una solución correcta, prueba rellenando el formulario e introduciendo una carga útil en el campo de contraseña que podría haber explotado previamente la vulnerabilidad, como `" OR 1=1;-- `, comprobando que ya no funciona. Por último, pulsa el botón `Verify Completion` para confirmar que el ejercicio se ha completado.
 * ¿Serás capaz de prevenir la vulnerabilidad de inyección SQL implementando el uso de sentencias preparadas? :slightly_smiling_face::muscle:
