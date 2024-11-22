@@ -41,6 +41,10 @@
   Connection: keep-alive
   
   -----------------------------41762806061171117218568726803
+  Content-Disposition: form-data; name="email"
+
+  johndoe@domain.tbl
+  -----------------------------41762806061171117218568726803
   Content-Disposition: form-data; name="file"; filename="landscape.png"
   Content-Type: image/png
   
@@ -83,7 +87,7 @@
   Connection: keep-alive
   
   {
-    "file": "<base64-encoded-file-data>"
+    "file": "WDVPIVAlQEFQWzRcUFpYNTQoUF4pN0NDKTd9JEVJQ0FSLVNUQU5EQVJELUFOVElWSVJVUy1URVNULUZJTEUhJEgrSCo="
   }
   ```
 
