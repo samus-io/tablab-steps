@@ -9,7 +9,7 @@
 1. Intentar subir un archivo inesperado manipulando el número mágico.
 1. Intentar encontrar un método para renombrar un archivo ya cargado con el fin de cambiar su extensión.
 1. Intentar cargar un archivo inesperado con un nombre de archivo manipulado para aprovechar vulnerabilidades de path traversal, inyección SQL, XSS o inyección de comandos.
-1. Intentar cargar los archivos de configuración del servidor.
+1. Intentar cargar archivos de configuración del servidor.
 1. Intentar provocar una divulgación de información para revelar cualquier dato sensible que pueda conducir a vectores de ataque alternativos.
 1. Intentar subir un archivo ejecutable que ejecutará código malicioso cuando la víctima lo abra accidentalmente.
 
@@ -27,7 +27,7 @@
 
 #### Enviando un fichero con doble extensión mediante `curl`
 
-* El siguiente comando `curl` puede ser utilizado para enviar un archivo `php` malicioso con doble extensión al endpoint `/upload`:
+* El siguiente comando `curl` puede ser utilizado para enviar un archivo `php` malicioso con doble extensión al *endpoint* `/upload`:
 
   ```bash
   curl -F "file=@malicious.php;filename=image.png.php" https://domain.tbl/upload
@@ -39,7 +39,7 @@
 ### Eludiendo la comprobación de la cabecera `Content-Type`
 
 * Los usuarios malintencionados pueden manipular la cabecera `Content-Type` en las peticiones HTTP para eludir las validaciones que se basan en esta cabecera para determinar el tipo de archivo.
-* La cabecera `Content-Type` de una petición HTTP puede modificarse para representar cualquier tipo de archivo permitido por la aplicación, independientemente de si el archivo es dañino (e.g., se puede definir `image/jpeg` para un script ejecutable).
+* La cabecera `Content-Type` de una petición HTTP puede modificarse para representar cualquier tipo de archivo permitido por la aplicación, independientemente de si el archivo es dañino (e.g., se puede definir `image/jpeg` para un *script* ejecutable).
 
 #### Manipulación de la cabecera `Content-Type` con `curl`
 
@@ -104,7 +104,7 @@
 
 ### Usando nombres de archivo manipulados para eludir comprobaciones o explotar vulnerabilidades existentes
 
-* Los límites de los nombres de archivo pueden explotarse utilizando nombres de archivo largos para truncar las extensiones seguras. Por ejemplo, en Linux, donde la longitud máxima de los nombres de archivo es de 255 bytes, un nombre como `aaaa.php.png` (siendo `aaaa` una cadena larga) podría eludir las comprobaciones en determinadas situaciones.
+* Los límites de los nombres de archivo pueden explotarse utilizando nombres de archivo largos para truncar las extensiones seguras. Por ejemplo, en Linux, donde la longitud máxima de los nombres de archivo es de 255 *bytes*, un nombre como `aaaa.php.png` (siendo `aaaa` una cadena más larga) podría eludir las comprobaciones en determinadas situaciones.
 * Los nombres de archivo también pueden utilizarse para explotar vulnerabilidades relacionadas con la forma en que la aplicación procesa y gestiona el nombre de archivo. Por ejemplo, un nombre de archivo como `sleep(20)-- -.jpg` podría desencadenar una inyección SQL, `<svg onload=alert("XSS")>` podría conducir a XSS, y `; sleep 20;` podría dar lugar a una inyección de comandos.
 
 #### Explotación de vulnerabilidades path traversal
@@ -133,8 +133,14 @@
 
 * El siguiente formulario de carga de archivos es vulnerable a `Remote Code Execution (RCE)`, lo que significa que es posible subir un archivo que puede ser utilizado para ejecutar código arbitrario en el servidor.
 * Al acceder al editor de código mediante el botón `Open Code Editor`, está disponible una línea de comandos junto con un archivo llamado `webshell.php`, ubicado en `/home/coder/app/webshell.php`, que podría permitir la ejecución de código arbitrario en el servidor si se logra cargar.
-* El objetivo aquí es utilizar la línea de comandos proporcionada en el editor de código para cargar el archivo `webshell.php`. Sin embargo, existe una débil medida de seguridad que restringe la subida de archivos a las extensiones `.jpg`, `.jpeg` y `.png`, la cual debe ser eludida para subir el archivo `webshell.php`.
-* Tras evadir la medida de seguridad y subir con éxito el archivo, se debe usar para ejecutar el comando `validate` con el fin de completar el ejercicio:
+* El objetivo aquí es utilizar la línea de comandos proporcionada en el editor de código para cargar el archivo `webshell.php` a través de una petición HTTP POST al *endpoint* `/upload`. Sin embargo, existe una débil medida de seguridad que restringe la subida de archivos a las extensiones `.jpg`, `.jpeg` y `.png`, la cual debe ser eludida para subir el archivo `webshell.php`, tal y como se muestra a continuación:
+
+  ```bash
+  coder@localhost:~/app$ curl -F "file=@webshell.php" $APP_URL/upload
+  { "message" : "File type not allowed" }
+  ```
+
+* Solamente después de eludir la medida de seguridad mediante alguna de las técnicas mostradas más arriba y subir con éxito el archivo al servidor, es momento de usar el archivo `webshell.php` para ejecutar arbitráriamente el comando `validate` con el fin de completar el ejercicio:
 
   ```bash
   curl $APP_URL/uploads/<webshell_file>?cmd=validate
