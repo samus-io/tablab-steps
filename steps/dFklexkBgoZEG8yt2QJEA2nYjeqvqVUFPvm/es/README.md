@@ -1,13 +1,13 @@
 # Introducción a la carga insegura de archivos
 
-* La carga insegura de archivos hace referencia a una vulnerabilidad de seguridad que se produce cuando una aplicación permite a los usuarios cargar archivos sin verificar correctamente sus propiedades, como el nombre, el tipo, el contenido o el tamaño del archivo, lo que supone un riesgo potencial para el sistema.
-* Cuando estas comprobaciones no se aplican correctamente, una simple función de carga de archivos podría ser explotada para cargar archivos maliciosos, incluyendo scripts del lado del servidor que pueden permitir a los atacantes ejecutar código arbitrario en el propio servidor o incluso en los dispositivos de los usuarios o empleados cuando estos acceden y abren estos archivos.
+* La carga insegura de archivos hace referencia a las vulnerabilidades de seguridad que se producen cuando una aplicación permite a los usuarios cargar archivos sin verificar correctamente sus propiedades, como el nombre, el tipo, el contenido o el tamaño del archivo, lo que supone un riesgo potencial para el sistema.
+* Cuando estas comprobaciones no se aplican correctamente, una simple función de carga de archivos podría ser explotada para cargar archivos maliciosos, incluyendo *scripts* del lado del servidor que pueden permitir a los atacantes ejecutar código arbitrario en el propio servidor o incluso en los dispositivos de los usuarios o empleados cuando estos acceden y abren estos archivos.
 
 ![Insecure file upload overview][1]
 
 ## Qué se podría conseguir con una subida de archivos insegura
 
-* Los usuarios malintencionados pueden cargar malware que puede ejecutarse en el servidor o en los dispositivos de los usuarios, dando lugar al robo de datos, acceso no autorizado o compromiso total del sistema.
+* Los usuarios malintencionados pueden cargar *malware* que puede ejecutarse en el servidor o en los dispositivos de los usuarios, dando lugar al robo de datos, acceso no autorizado o compromiso total del sistema.
 * Los archivos subidos ejecutados o interpretados por el servidor pueden permitir la ejecución de código arbitrario, dando a los atacantes el control sobre el servidor.
 * Los archivos cargados con scripts maliciosos pueden ser servidos a los usuarios durante la interacción con la aplicación, dando lugar a ataques XSS.
 * No sanear correctamente los nombres de archivo puede exponer el sistema a vulnerabilidades de inyección de comandos o SQL.
@@ -28,7 +28,7 @@
 ### Cross-Site Scripting (XSS)
 
 * Los archivos subidos pueden contener código JavaScript que se ejecuta en el contexto del navegador del usuario. Esto es especialmente peligroso con tipos de archivos como HTML, SVG o, en algunos casos, imágenes que puedan tener HTML incrustado.
-* Los archivos que contienen scripts maliciosos incrustados que ejecutan código JavaScript en los navegadores de los usuarios pueden robar las sesiones del usuario, acceder a cualquier dato al que pueda acceder el usuario, realizar keylogging, desfigurar virtualmente el sitio web, redirigir a los usuarios a sitios web maliciosos o incluso tomar el control del navegador o instalar malware aprovechando vulnerabilidades del propio navegador web.
+* Los archivos que contienen *scripts* maliciosos incrustados que ejecutan código JavaScript en los navegadores de los usuarios pueden robar las sesiones del usuario, acceder a cualquier dato al que pueda acceder el usuario, realizar *keylogging*, desfigurar virtualmente el sitio web, redirigir a los usuarios a sitios web maliciosos o incluso tomar el control del navegador o instalar *malware* aprovechando vulnerabilidades del propio navegador web.
 
 ### Inyección SQL (SQLi)
 
@@ -55,14 +55,14 @@
 
 ### Extensión de archivo
 
-* Permitir la carga de **archivos ejecutables** (e.g., `.exe`, `.elf`) puede conducir a la ejecución directa de malware en el servidor o en los dispositivos cliente.
+* Permitir la carga de **archivos ejecutables** (e.g., `.exe`, `.elf`) puede conducir a la ejecución directa de *malware* en el servidor o en los dispositivos cliente.
 * **Los archivos de código fuente** (e.g., `.js`, `.php`, `.py`) pueden ser interpretados por el servidor cuando se cargan en el mismo y dar lugar a la ejecución de código.
-* **Los archivos comprimidos** (e.g., `.zip`, `.rar`, `.tar`) pueden contener múltiples archivos maliciosos o exploits dirigidos a las herramientas de descompresión.
+* **Los archivos comprimidos** (e.g., `.zip`, `.rar`, `.tar`) pueden contener múltiples archivos maliciosos o *exploits* dirigidos a las herramientas de descompresión.
 
 ### Contenido del archivo
 
-* Archivos como PDF o documentos de Office pueden contener **scripts o macros incrustadas** que realizan acciones maliciosas al ser abiertos por un usuario, como la descarga de malware o el robo de datos.
-* **Los archivos binarios** (e.g., ejecutables, DLLs) pueden explotar vulnerabilidades en el software de procesamiento de archivos, potencialmente conduciendo a la ejecución remota de código.
+* Archivos como PDF o documentos de Office pueden contener **scripts o macros incrustadas** que realizan acciones maliciosas al ser abiertos por un usuario, como la descarga de *malware* o el robo de datos.
+* **Los archivos binarios** (e.g., ejecutables, DLLs) pueden explotar vulnerabilidades en el *software* de procesamiento de archivos, potencialmente conduciendo a la ejecución remota de código.
 * Algunos archivos pueden contener **cargas útiles ofuscadas** dentro de documentos aparentemente inofensivos mediante técnicas de ofuscación, lo que dificulta su detección durante el escaneado.
 * Los archivos cargados pueden utilizarse para **phishing**, camuflados como documentos legítimos pero diseñados para engañar a los usuarios para que revelen información sensible, como credenciales de inicio de sesión, a través de contenidos engañosos.
 * **Los archivos multimedia** (e.g., imágenes, vídeos) pueden ser manipulados para explotar vulnerabilidades en las bibliotecas de procesamiento multimedia, permitiendo a los atacantes ejecutar código o causar una denegación de servicio (DoS) cuando estos archivos son visualizados o procesados.
@@ -87,7 +87,7 @@ Los archivos de gran tamaño también pueden hacer que las **copias de seguridad
 * Una gestión adecuada del almacenamiento de los archivos cargados puede reducir significativamente el riesgo de divulgación de información y la explotación de vulnerabilidades en una aplicación web.
 * Para mejorar la seguridad, se deben tener en cuenta las siguientes buenas prácticas a la hora de decidir dónde y cómo almacenar los archivos subidos por los usuarios:
   * Siempre que sea posible, se deben almacenar los archivos cargados en un servicio exclusivo o servidor separado de la aplicación web principal. De esta forma se reduce el riesgo de que un atacante acceda a datos confidenciales o aproveche otras vulnerabilidades del servidor de aplicaciones.
-  * Si no es posible almacenar los archivos en un servicio o servidor independiente, es necesario asegurarse de que los archivos cargados se almacenan fuera del directorio webroot. Esto impide el acceso directo a los archivos a través del servidor web.
+  * Si no es posible almacenar los archivos en un servicio o servidor independiente, es necesario asegurarse de que los archivos cargados se almacenan fuera del directorio *webroot*. Esto impide el acceso directo a los archivos a través del servidor web.
   * Si la aplicación necesita mostrar archivos subidos a los usuarios, hay que evitar permitir el acceso directo a estos archivos a través del servidor web. En su lugar, se debe implementar un gestor del lado del servidor que sirva los archivos. Este gestor puede asignar internamente los archivos a un ID único, que luego se utiliza para acceder al archivo. Este enfoque proporciona una capa adicional de seguridad al evitar que los atacantes accedan directamente a las rutas de los archivos.
 
 ### Límites de carga y descarga

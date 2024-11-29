@@ -133,8 +133,14 @@
 
 * The following file upload form is vulnerable to `Remote Code Execution (RCE)`, meaning it's possible to upload a file that can be used to execute arbitrary code on the server.
 * When accessing the code editor via the `Open Code Editor` button, a command line is available along with a file named `webshell.php`, located in `/home/coder/app/webshell.php`, that could allow arbitrary code execution on the server if it gets uploaded.
-* The goal here is to use the command line provided in the code editor to upload the `webshell.php` file. However, there is a weak security measure in place that restricts file uploads to `.jpg`, `.jpeg`, and `.png` extensions, which needs to be bypassed to upload the `webshell.php` file.
-* After circumventing the security measures and successfully uploading the file, use it to execute the `validate` command to complete the exercise:
+* The goal here is to use the command line provided in the code editor to upload the `webshell.php` file via an HTTP POST request to the `/upload` endpoint. However, there is a weak security measure in place that restricts file uploads to `.jpg`, `.jpeg`, and `.png` extensions, which needs to be bypassed to upload the `webshell.php` file, as shown below:
+
+  ```bash
+  coder@localhost:~/app$ curl -F "file=@webshell.php" $APP_URL/upload
+  { "message" : "File type not allowed" }
+  ```
+
+* Only after circumventing the security measure by one of the techniques shown above and successfully uploading the file to the server, it's time to use the `webshell.php` file to arbitrarily execute the `validate` command in order to complete the exercise:
 
   ```bash
   curl $APP_URL/uploads/<webshell_file>?cmd=validate

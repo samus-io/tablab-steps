@@ -137,10 +137,10 @@
   ```
 
 * Asimismo, cualquier usuario registrado en la aplicación puede utilizar libremente las funciones de carga y descarga sin restricciones una vez iniciada la sesión, como por ejemplo:
-  * `jackson01` (rol: `admin`, contraseña: `3YD8v=Smlv=!CAMe`).
-  * `johndoe` (rol: `moderator`, contraseña: `pJI+zM2k-qZdOzwz`).
-  * `alice99` (rol: `member`, contraseña: `W-KTJ_!3r*8HwRE^`).
-* El objetivo aquí es editar el código fuente para aplicar una política de control de acceso en el servidor, limitando la subida de archivos a los usuarios autenticados (aquellos con una sesión activa) y permitiendo únicamente a los usuarios con el rol `admin` o `moderator` la descarga de archivos. Las peticiones exitosas deberían devolver un estado `200 OK`, mientras que los intentos no autorizados deberían resultar en un estado `401 Unauthorized`.
+  * Nombre de usuario: `jackson01`, contraseña: `3YD8v=Smlv=!CAMe`, rol: `admin`.
+  * Nombre de usuario: `johndoe`, contraseña: `pJI+zM2k-qZdOzwz`, rol: `moderator`.
+  * Nombre de usuario: `alice99`, contraseña: `W-KTJ_!3r*8HwRE^`, rol: `member`.
+* El objetivo aquí es editar el código fuente para aplicar una política de control de acceso en el servidor, limitando la **subida de archivos a los usuarios autenticados** (aquellos con una sesión activa) y permitiendo únicamente a los **usuarios con el rol `admin` o `moderator` la descarga de archivos**. Las peticiones exitosas deberían devolver un estado `200 OK`, mientras que los intentos no autorizados deberían resultar en un estado `401 Unauthorized`.
   * Más concretamente, las modificaciones de código deben realizarse en el archivo `app.js`, ubicado en `/home/coder/app/`.
 * Una vez realizados los cambios, se debe pulsar el botón `Verify Completion` para confirmar que se ha completado el ejercicio.
 
