@@ -217,7 +217,8 @@
 
           // Get MIME type via the magic number and compare it with allowed MIME types
           Tika tika = new Tika();
-          String mimetype = tika.detect(filePart.getInputStream());
+          InputStream fileContent = filePart.getInputStream();
+          String mimetype = tika.detect(fileContent);
 
           if (!ALLOWED_TYPES.contains(mimetype)) {
               JsonObject model = Json.createObjectBuilder().add("message", "Unexpected file type").build();
