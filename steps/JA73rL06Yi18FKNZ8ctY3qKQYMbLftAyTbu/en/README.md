@@ -26,6 +26,11 @@
 * Once a file is uploaded and stored, the file receives a unique ID, and the connection between this ID and the file name is saved in a database or equivalent system.
 * When a file is requested by a user (e.g., getting `https://example.tbl/uploads/12345`), the handler processes the request, searches the unique ID `12345` in the mapping system, retrieves the associated file, and serves it to the user.
 
+## Advantages of using third-party storage services over a dedicated server
+
+* Selecting a third-party storage service is often favored over deploying a separate server exclusively for file storage due to several advantages, primarily related to scalability, security, cost-effectiveness, and ease of management.
+* These services typically come with robust, industry-standard security features, including encryption (both at rest and in transit), secure APIs, role-based access control (RBAC), automated updates, built-in redundancy, detailed audit logs, and compliance with various regulations like GDPR, HIPAA, or SOC2.
+
 @@TagStart@@java
 
 ## Non-compliant code in Java Jakarta storing files on the same Linux server
