@@ -1,4 +1,4 @@
-# Prepared statements in Ruby on Rails 8
+# Prepared statements in Ruby on Rails 8.0
 
 * Prepared statements provide an efficient and secure method for managing SQL queries against a database, playing a crucial role in developing robust and secure enterprise applications written in Ruby on Rails.
 
