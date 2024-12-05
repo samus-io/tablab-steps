@@ -1,4 +1,4 @@
-# Prepared Statements in .NET 8.0 with SQLite
+# Prepared statements in .NET 8.0 with SQLite
 
 * Prepared statements provide an efficient and secure method for managing SQL queries against a database, playing a crucial role in developing robust and secure enterprise applications in `.NET`.
 

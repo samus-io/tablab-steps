@@ -2,7 +2,7 @@
 
 * Prepared statements provide an efficient and secure method for managing SQL queries against a database, playing a crucial role in developing robust and secure enterprise applications written in Ruby on Rails.
 
-## How prepared statements works
+## How prepared statements work
 
 * Considering a scenario requiring the execution of an SQL query to retrieve products filtered by `category` and `rating`, the following basic steps can be used to achieve this with prepared statements:
   1. Start by creating the SQL query with parameter placeholders (`?`), as seen with `category` and `rating` in this case:
