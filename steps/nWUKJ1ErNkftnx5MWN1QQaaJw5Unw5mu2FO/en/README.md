@@ -17,7 +17,7 @@
       $result = DB::select($query, [$category, $rating]);
       ```
 
-    > :older_man: A facade is a structural design pattern in Laravel that offers a simple, static interface to interact with underlying classes or services. It acts as a wrapper to simplify accessing methods from various classes within the service container.
+      > :older_man: A facade is a structural design pattern in Laravel that offers a simple, static interface to interact with underlying classes or services. It acts as a wrapper to simplify accessing methods from various classes within the service container.
 
 ## Compliant code using prepared statements
 
