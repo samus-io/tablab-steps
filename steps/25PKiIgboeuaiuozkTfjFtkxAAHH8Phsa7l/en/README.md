@@ -1,27 +1,27 @@
-# Prepared statements in Ruby on Rails 8
+# Prepared statements in Ruby on Rails 8.0
 
-* Prepared statements provide an efficient and secure method for managing SQL queries against a database, playing a crucial role in developing robust and secure enterprise applications in `Ruby on Rails`.
+* Prepared statements provide an efficient and secure method for managing SQL queries against a database, playing a crucial role in developing robust and secure enterprise applications written in Ruby on Rails.
 
 ## How prepared statements works
 
-* Considering a scenario requiring the execution of an SQL query to retrieve products filtered by `category` and `rating`, the following steps can be used to achieve this with prepared statements:
-  1. The first Step is to create the SQL query with placeholders (`?`) for parameters to be added later,  such as `category` and `rating` in this case:
+* Considering a scenario requiring the execution of an SQL query to retrieve products filtered by `category` and `rating`, the following basic steps can be used to achieve this with prepared statements:
+  1. Start by creating the SQL query with parameter placeholders (`?`), as seen with `category` and `rating` in this case:
   
      ```rb
      query = "SELECT id, name, price, category, stock, rating FROM products WHERE category = ? AND rating >= ?"
      ```
-     
-  1. After defining the SQL statement, create an array of variables to pass to the statement parameters. The variables have to be in the same order as the parameters, so that the first parameter will be passed the value of the first position of the array:
+
+  1. After defining the SQL query, prepare an ordered array of variables to pass to the parameters, ensuring the first parameter corresponds to the first array element:
 
      ```rb
      params = [category, rating]
      ```
-     
+
   1. Once the parameters are set, the SQL query can be executed:
-    
-    ```rb
-    result = ActiveRecord::Base.connection.exec_query(query, "SQL", params)
-    ```
+
+     ```rb
+     result = ActiveRecord::Base.connection.exec_query(query, "SQL", params)
+     ```
 
 ## Compliant code using prepared statements
 
@@ -34,7 +34,7 @@
     
     result = ActiveRecord::Base.connection.exec_query(query, "SQL", params)
     
-    // Read the SQL query result
+    # Read the SQL query result
   end
   ```
 

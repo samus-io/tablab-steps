@@ -26,6 +26,11 @@
 * Una vez cargado y almacenado un archivo, este recibe un identificador único, y la conexión entre este identificador y el nombre del archivo se almacena en una base de datos o sistema equivalente.
 * Cuando un usuario solicita un archivo (por ejemplo, solicitando `https://example.tbl/uploads/12345`), el gestor procesa la solicitud, busca el ID único `12345` en el sistema de mapeo, recupera el archivo asociado y se lo entrega al usuario.
 
+## Ventajas de recurrir a servicios de almacenamiento de terceros frente a un servidor dedicado
+
+* La selección de un servicio de almacenamiento de terceros suele ser preferible al despliegue de un servidor dedicado exclusivamente al almacenamiento de archivos debido a varias ventajas, principalmente vinculadas con la escalabilidad, la seguridad, la relación coste-efectividad y la facilidad de gestión.
+* Estos servicios suelen incluir características de protección robustas y conformes a los estándares del sector, como cifrado (tanto en reposo como en tránsito), API seguras, control de acceso basado en funciones (RBAC), actualizaciones automáticas, redundancia de datos, registros de auditoría detallados y cumplimiento de diversas normativas como GDPR, HIPAA o SOC2.
+
 @@TagStart@@java
 
 ## Código de incumplimiento en Java Jakarta almacenando archivos en el mismo servidor Linux

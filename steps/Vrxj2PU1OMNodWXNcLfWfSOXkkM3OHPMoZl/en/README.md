@@ -56,11 +56,11 @@
 ### Enforcing authentication and authorization
 
 * File upload capabilities should be protected with authentication and authorization whenever possible, ensuring that only authorized users can access them.
-* If granting read permissions on uploaded files to corporate users is required, it is advised to implement authorization controls to restrict access to authorized users, instead of relying solely on superficial parameters like internal IPs.
+* If granting read permissions on uploaded files to corporate users is required, it is advised to implement authorization controls to restrict access to authorized users based on their identity and session, instead of relying solely on superficial parameters like internal IPs.
 
 ### Using proven frameworks for handling file upload preprocessing
 
-* Implementing a secure file upload mechanism is a complex task that requires careful attention to numerous details and potential vulnerabilities and can be time-consuming. By using an established framework, the application can benefit from comprehensive and up-to-date security features, and ensure that the web application adheres to best practices.
+* Implementing a secure file upload mechanism is a complex task that requires careful attention to numerous details and potential vulnerabilities, requiring a significant amount of time. By using an established framework, the application can benefit from comprehensive and up-to-date security features, and ensure that the web application adheres to best practices.
 * These frameworks or libraries may offer a variety of built-in validation features, such as file name sanitization, file type checks, content validation, and more, designed to address a wide range of security requirements.
 * While the idea of manually building validation mechanisms may be tempting, leveraging established frameworks or libraries is often a better approach.
 

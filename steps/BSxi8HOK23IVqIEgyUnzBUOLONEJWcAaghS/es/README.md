@@ -133,20 +133,27 @@
 
 * El siguiente formulario de carga de archivos es vulnerable a `Remote Code Execution (RCE)`, lo que significa que es posible subir un archivo que puede ser utilizado para ejecutar código arbitrario en el servidor.
 * Al acceder al editor de código mediante el botón `Open Code Editor`, está disponible una línea de comandos junto con un archivo llamado `webshell.php`, ubicado en `/home/coder/app/webshell.php`, que podría permitir la ejecución de código arbitrario en el servidor si se logra cargar.
-* El objetivo aquí es utilizar la línea de comandos proporcionada en el editor de código para cargar el archivo `webshell.php` a través de una petición HTTP POST al *endpoint* `/upload`. Sin embargo, existe una débil medida de seguridad que restringe la subida de archivos a las extensiones `.jpg`, `.jpeg` y `.png`, la cual debe ser eludida para subir el archivo `webshell.php`, tal y como se muestra a continuación:
+* El objetivo aquí es **utilizar la línea de comandos proporcionada en el editor de código** para cargar, usando `curl`, el archivo `webshell.php` a través de una petición HTTP POST al *endpoint* `/upload`:
+
+  ```bash
+  curl -F "file=@webshell.php" $APP_URL/upload
+  ```
+
+* Sin embargo, existe una débil medida de seguridad que restringe la subida de archivos a las extensiones `.jpg`, `.jpeg` y `.png`, tal y como se muestra a continuación, la cual debe ser eludida para subir el archivo `webshell.php`:
 
   ```bash
   coder@localhost:~/app$ curl -F "file=@webshell.php" $APP_URL/upload
   { "message" : "File type not allowed" }
   ```
 
-* Solamente después de eludir la medida de seguridad mediante alguna de las técnicas mostradas más arriba y subir con éxito el archivo al servidor, es momento de usar el archivo `webshell.php` para ejecutar arbitráriamente el comando `validate` con el fin de completar el ejercicio:
+* Solamente después de eludir esta medida de seguridad mediante alguna de las técnicas mostradas más arriba y subir con éxito el archivo al servidor, que es tu tarea, es momento de usar el archivo `webshell.php` para ejecutar arbitráriamente el comando `validate` con el fin de completar el ejercicio:
 
   ```bash
   curl $APP_URL/uploads/<webshell_file>?cmd=validate
   ```
 
   * Además de `validate`, será posible ejecutar cualquier comando soportado como `whoami`, `ls` o `pwd` al igual que en un terminal común.
+  * Destacar que `/upload` es el *endpoint* para subir archivos, mientras que `/uploads/` es el directorio donde se almacenan los archivos subidos.
 * ¿Serás capaz de eludir la medida de seguridad y ejecutar el comando `validate` a través del archivo `webshell.php` para completar el ejercicio?
   @@ExerciseBox@@
 

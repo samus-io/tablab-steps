@@ -23,7 +23,7 @@
 ### Saneamiento de nombres de archivo
 
 * Al almacenar archivos, la aplicación debe generar un nombre aleatorio en lugar de confiar en el nombre de archivo proporcionado por el usuario. Si el nombre original es necesario para la aplicación, se debe garantizar que no contenga caracteres especiales mediante validación de lista de permitidos para prevenir vulnerabilidades como *path traversal*.
-* La mejor opción es sustituir el nombre de archivo proporcionado por el usuario por una cadena coherente y generada aleatoriamente por la aplicación web, por ejemplo, utilizando el formato UUID para evitar colisiones que podrían dar lugar a la sobreescritura de archivos existentes.
+* La mejor opción es sustituir el nombre de archivo proporcionado por el usuario por una cadena coherente y generada aleatoriamente por la propia aplicación web, por ejemplo, utilizando el formato UUID para evitar colisiones que podrían dar lugar a la sobreescritura de archivos existentes.
 * Si la aplicación web necesita conservar el nombre de archivo original del usuario, entonces se recomienda implementar las siguientes medidas de seguridad:
   * Restringir los caracteres permitidos (e.g., permitir solo caracteres alfanuméricos), y excluir caracteres especiales de la lista (excepto `-`, `_` o `.`).
   * Establecer una longitud máxima (e.g., 200 caracteres).
@@ -41,7 +41,7 @@
 ### Validación del contenido del archivo
 
 * Los archivos cargados pueden incluir contenido malicioso, inapropiado o ilegal.
-* El análisis del contenido de los archivos suele ser lento y complejo debido a la diversidad de tipos de archivos y a la posible presencia de malware incrustado. Por este motivo, la mejor solución es recurrir a frameworks o servicios de terceros.
+* El análisis del contenido de los archivos suele ser lento y complejo debido a la diversidad de tipos de archivos y a la posible presencia de malware incrustado. Por este motivo, la mejor solución es recurrir a *frameworks* o servicios de terceros.
 * Adicionalmente, algunos cortafuegos de aplicaciones web (WAF) incluyen herramientas para comprobar si los archivos contienen malware cuando se suben a través de formularios web.
 
 ### Almacenamiento de archivos y permisos del sistema de ficheros
@@ -55,14 +55,14 @@
 
 ### Aplicación de autenticación y autorización
 
-* Las funciones de carga de archivos deben protegerse con autenticación y autorización siempre que sea viable, garantizando que únicamente los usuarios autorizados puedan acceder a las mismas.
-* Si es necesario conceder permisos de lectura sobre los archivos cargados a los usuarios corporativos, se aconseja implementar controles de autorización para restringir el acceso solamente a los usuarios autorizados, en lugar de basarse simplemente en parámetros superficiales como las IP internas.
+* Las funciones de carga de archivos deben protegerse con autenticación y autorización siempre que sea viable, garantizando que solamente los usuarios autorizados puedan acceder a las mismas.
+* Si es necesario conceder permisos de lectura sobre los archivos cargados a los usuarios corporativos, se aconseja implementar controles de autorización para restringir el acceso únicamente a los usuarios autorizados básandose en su identidad y sesión, en lugar de simplemente en parámetros superficiales como las IP internas.
 
-### Utilizar frameworks contrastados para gestionar el preprocesamiento de la carga de archivos
+### Utilizar *frameworks* contrastados para gestionar el preprocesamiento de la carga de archivos
 
-* Implementar un mecanismo seguro de carga de archivos es una tarea compleja que requiere prestar especial atención a numerosos detalles y posibles vulnerabilidades, y que puede llevar mucho tiempo. Al utilizar un framework consolidado, la aplicación puede beneficiarse de funciones de seguridad completas y actualizadas, y garantizar que esta se adhiere a las mejores prácticas.
-* Estos frameworks o librerías pueden ofrecen una gran variedad de funciones de validación integradas, como la limpieza de nombres de archivo, la comprobación de tipos de archivo o la validación de contenido, diseñadas para responder a una amplia gama de requisitos de seguridad.
-* Aunque la idea de construir manualmente mecanismos de validación puede ser tentadora, aprovechar los frameworks o las librerías establecidas suele representar un mejor enfoque.
+* Implementar un mecanismo seguro de carga de archivos es una tarea compleja que requiere prestar especial atención a numerosos detalles y posibles vulnerabilidades, lo que requiere una cantidad significativa de tiempo. Al utilizar un *framework* consolidado, la aplicación puede beneficiarse de funciones de seguridad completas y actualizadas, y garantizar que esta se adhiere a las mejores prácticas.
+* Estos *frameworks* o librerías pueden ofrecen una gran variedad de funciones de validación integradas, como la limpieza de nombres de archivo, la comprobación de tipos de archivo o la validación de contenido, diseñadas para responder a una amplia gama de requisitos de seguridad.
+* Aunque la idea de construir manualmente mecanismos de validación puede ser tentadora, aprovechar los *frameworks* o las librerías establecidas suele representar un mejor enfoque.
 
 ## Test para consolidar :rocket:
 
