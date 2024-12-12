@@ -6,7 +6,7 @@
   GET /user/profile?id=123
   ```
 
-  By simply modifying the id parameter, an attacker can attempt to access another user's profile:
+  By simply modifying the `id` parameter, an attacker can attempt to access another user's profile:
 
   ```http
   GET /user/profile?id=124
@@ -16,7 +16,8 @@
 
 ## IDOR via username
 
-* Web applications often use usernames or other unique textual identifiers instead of numeric IDs to reference user profiles. In such cases, an attacker can manipulate the username sent to the application to attempt accessing another user's information:
+* Web applications often use usernames or other unique textual identifiers instead of numeric IDs to reference user profiles.
+* In such cases, an attacker can manipulate the username sent to the application to attempt accessing another user's information:
 * For example, a legitimate request to retrieve the profile of the currently authenticated user might look like this:
 
   ```http
@@ -37,7 +38,7 @@
   GET /invoices/123.pdf
   ```
 
-* An attacker can modify the file name to access another user's invoice:
+* An attacker can modify the file name in the request to access another user's invoice:
 
   ```http
   GET /invoices/124.pdf
@@ -45,7 +46,8 @@
 
 ## IDOR via resource path manipulation
 
-* In some web applications, files are dynamically retrieved based on parameters rather than being served as static files. This approach can introduce an IDOR vulnerability if proper authorization checks are not in place.
+* In some web applications, files are dynamically retrieved based on parameters rather than being served as static files.
+* This approach can introduce an IDOR vulnerability if proper authorization checks are not in place.
 * Considering the following request where a user retrieves an invoice by specifying its ID:
 
   ```http
@@ -70,7 +72,7 @@
   Cookie: user_id=123
   ```
 
-* If the application relies solely on this cookie to retrieve user-specific data without verifying the user's identity or permissions, an attacker can modify the user_id value to access another user's data:
+* If the application solely relies on the cookie value without verifying the user's identity or permissions, an attacker can modify the `user_id` value to access another user's data:
 
   ```http
   GET /user/profile
@@ -81,7 +83,7 @@
 
 * Parameter pollution can amplify IDOR vulnerabilities by injecting multiple values into a single parameter, exploiting the application's ambiguous handling of such parameters.
 
-* An example of an IDOR using parameter pollution can be the following:
+* For example, an attacker might craft a request with duplicate parameters:
 
   ```http
   GET /user/profile?id=123&id=124
@@ -93,7 +95,7 @@
 
 ## IDOR via method-based explotation
 
-* Applications may implement differing access controls for different HTTP methods, leading to bypass vulnerabilities.
+* Applications may implement different access controls for different HTTP methods, leading to bypass vulnerabilities.
 * Modifying the request to use a different HTTP method, such as POST, might bypass access controls:
 
   ```http
@@ -121,7 +123,7 @@
   }
   ```
 
-* Try to send different data types to break the web application logic, such as:
+* An attacker might send various unexpected values to break the web application logic, such as:
 
   ```json
   {
