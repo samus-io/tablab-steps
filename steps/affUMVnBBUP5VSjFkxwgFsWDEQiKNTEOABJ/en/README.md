@@ -170,3 +170,10 @@
   * Application metadata or API responses.
   * Search engines (like Google and Bing)
 * If UUIDs are exposed and access control is insufficient, attackers can still manipulate them to access unauthorized resources.
+
+## Exercise to practice :writing_hand:
+
+* The following web application contains an IDOR vulnerability that enables authenticated users to view other users' personal information (username and address).
+* The exercise task involves logging into the application with `johndoe`'s credentials (username: `johndoe`, password: `Zw+?YmIZlrZF`) and leveraging the IDOR vulnerability to gain access to the `admin` user's address information.
+
+  @@ExerciseBox@@
