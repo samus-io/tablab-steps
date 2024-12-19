@@ -31,11 +31,83 @@ def generate_random_password(length=12):
     return password
 
 
+# Function to generate a random address
+def generate_random_address():
+    streets = [
+        "Ash Ln",
+        "Aspen St",
+        "Birch Dr",
+        "Cedar Rd",
+        "Chestnut Ct",
+        "Dogwood Rd",
+        "Elm Blvd",
+        "Fir St",
+        "Hickory Rd",
+        "Juniper Ave",
+        "Magnolia Blvd",
+        "Main St",
+        "Maple Ave",
+        "Oak St",
+        "Pine Ln",
+        "Poplar Ave",
+        "Redwood Dr",
+        "Spruce Ct",
+        "Sycamore Ln",
+        "Willow St",
+    ]
+    cities = [
+        "Bridgeport",
+        "Brookfield",
+        "Cedarwood",
+        "Centerville",
+        "Clearwater",
+        "Elmwood",
+        "Fairview",
+        "Georgetown",
+        "Greenwood",
+        "Hillview",
+        "Kingswood",
+        "Lakeside",
+        "Maplewood",
+        "Meadowbrook",
+        "Riverside",
+        "Silverlake",
+        "Springfield",
+        "Sunnydale",
+        "Westfield",
+        "Woodland",
+    ]
+    states = [
+        "AZ",
+        "CA",
+        "CO",
+        "FL",
+        "GA",
+        "IL",
+        "MI",
+        "MN",
+        "MO",
+        "NC",
+        "NV",
+        "NY",
+        "OH",
+        "OR",
+        "PA",
+        "SC",
+        "TX",
+        "VA",
+        "WA",
+        "WI",
+    ]
+
+    return f"{random.randint(100, 999)} {random.choice(streets)}, {random.choice(cities)}, {random.choice(states)}"
+
+
 # List of usernames
 usernames = [
-    "jackson01",
-    "alice99",
     "johndoe",
+    "alice",
+    "jackson01",
     "charlie2023",
     "dianak",
     "eve12",
@@ -121,11 +193,14 @@ usernames = [
 ]
 
 # Generate user credentials with random passwords
-user_credentials = [{"username": username, "password": generate_random_password()} for username in usernames]
+user_credentials = [
+    {"username": username, "password": generate_random_password(), "address": generate_random_address()}
+    for username in usernames
+]
 
 # Generate SQL INSERT statements
 sql_statements = [
-    f'INSERT INTO User (username, password) VALUES ("{user["username"]}", "{user["password"]}");'
+    f'INSERT INTO User (username, password, address) VALUES ("{user["username"]}", "{user["password"]}", "{user["address"]}");'
     for user in user_credentials
 ]
 
