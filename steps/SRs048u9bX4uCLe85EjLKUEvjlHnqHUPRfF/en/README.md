@@ -10,7 +10,15 @@
     https://victim.tbl/email/change?email=attacker@attacker.tbl
     ```
 
-* If the victim clicks the link while authenticated to victim.tbl, their browser automatically sends the GET request to the vulnerable endpoint.
+* If the victim clicks the link while authenticated to `victim.tbl`, their browser automatically sends the GET request to the vulnerable endpoint.
+* Another way to exploit CSRF via the GET method is by embedding the malicious link in an image tag (`<img>`).
+* When the victim visits a malicious website, the browser automatically renders the HTML and sends the GET request to the vulnerable endpoint without any user interaction:
+
+    ```html
+    <img src="https://victim.tbl/email/change?email=attacker@attacker.tbl">
+    ```
+
+* This request, which includes the victim's authenticated session cookies, triggers the state-changing operation, changing the user's email address to `attacker@attacker.tbl`, without the victim's knowledge or consent.
 * Once the email is changed, the attacker can reset the victim's password using the new email address, thereby gaining full control of the account.
 
 ## CSRF via POST method
