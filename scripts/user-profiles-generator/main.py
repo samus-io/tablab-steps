@@ -31,6 +31,33 @@ def generate_random_password(length=12):
     return password
 
 
+# Function to generate a random email based on username
+def generate_random_email(username):
+    """
+    Generate a random email for a given username in the format username@<company_name>.tbl.
+
+    Args:
+        username (str): The username to base the email on.
+
+    Returns:
+        str: A randomly generated email address.
+    """
+    companies = [
+        "skybyte",
+        "techware",
+        "infinitum",
+        "netgen",
+        "cloudsync",
+        "datapulse",
+        "circuitflow",
+        "bytefusion",
+        "nextify",
+        "streamfly",
+    ]
+    company = random.choice(companies)
+    return f"{username}@{company}.tbl"
+
+
 # Function to generate a random address
 def generate_random_address():
     streets = [
@@ -192,15 +219,20 @@ usernames = [
     "lori29",
 ]
 
-# Generate user credentials with random passwords
+# Generate user credentials with random passwords and emails
 user_credentials = [
-    {"username": username, "password": generate_random_password(), "address": generate_random_address()}
+    {
+        "username": username,
+        "password": generate_random_password(),
+        "email": generate_random_email(username),
+        "address": generate_random_address(),
+    }
     for username in usernames
 ]
 
 # Generate SQL INSERT statements
 sql_statements = [
-    f'INSERT INTO User (username, password, address) VALUES ("{user["username"]}", "{user["password"]}", "{user["address"]}");'
+    f'INSERT INTO User (username, password, email, address) VALUES ("{user["username"]}", "{user["password"]}", "{user["email"]}", "{user["address"]}");'
     for user in user_credentials
 ]
 
