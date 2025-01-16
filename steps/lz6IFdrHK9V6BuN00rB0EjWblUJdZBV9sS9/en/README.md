@@ -1,4 +1,4 @@
-# Enforcing CSRF protections in Jakarta EE 10
+# Preventing CSRF using double-submit cookie pattern in Node.js 20
 
 * TODO
 

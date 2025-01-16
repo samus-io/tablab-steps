@@ -1,4 +1,4 @@
-# Enforcing CSRF protections in Node.js 20
+# Preventing CSRF using synchronizer token pattern in Node.js 20
 
 * TODO
 
