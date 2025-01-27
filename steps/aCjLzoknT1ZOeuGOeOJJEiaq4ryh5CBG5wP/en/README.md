@@ -18,7 +18,7 @@
 * In this scenario, the object reference acts as an identifier in back-end database queries, and simply modifying its value allows the viewing or manipulation of other unauthorized records.
 * For attackers, understanding the structure of identifiers is crucial, as the absence of this knowledge may force them into time-consuming enumeration tasks to discern a predictable pattern.
 
-#### URL tampering
+#### Via URL tampering
 
 * The simplest method to exploit an IDOR vulnerability is through URL tampering, which usually needs very minimal or no technical expertise. In this case, a malicious user simply modifies the object reference value visible in the browser's address bar.
 * Original request example with a numerical identifier:
@@ -47,7 +47,7 @@
 
 * In general, URL tampering might involve incrementing or decrementing numerical IDs, substituting alternative strings, or attempting to guess hidden URLs.
 
-#### Body manipulation
+#### Via body manipulation
 
 * In this context, malicious user alter the object reference within the HTTP request body, rather than the URL. This typically occurs in applications using POST or PUT methods, where data is sent within the request body.
 * Original request example with a numerical identifier:
@@ -72,7 +72,7 @@
 
 * Modifying hidden form values and other form parameters is the most common example of such scenarios.
 
-#### HTTP headers manipulation
+#### Via HTTP headers manipulation
 
 * This might include altering the object reference within a cookie before it is sent back to the server or decoding and modifying headers that may contain object references, such as changing a user ID found in the `Authorization` header.
 * For instance, certain web applications might store a user ID within a cookie when a user logs in. Original cookie example with a numerical identifier:
@@ -87,12 +87,12 @@
   Cookie: userId=124; HttpOnly; Secure
   ```
 
-#### Other manipulations
+#### Via other manipulations
 
 * APIs can be susceptible to IDOR vulnerabilities when malicious users manipulate API endpoints to access or modify data or perform unauthorized actions. This is often seen in RESTful APIs where resource identifiers are manipulated, such as enforcing the use of a deprecated version over the current one.
 * Database-based applications can also be susceptible to IDOR vulnerabilities when malicious actors can alter SQL queries or database parameters to access, modify or delete records that they are not authorized to access, which can lead to data leakage or manipulation.
 
-### Leveraging direct references tied to files
+### Leveraging direct references tied to static files
 
 * Resource path manipulation stands out as a distinct form of IDOR vulnerability, as it enables direct access to file system resources rather than database records. In this particular scenario, a malicious user can view files within the application's scope without proper permission by visiting a specific URL.
 * Original URL example with a specific file path:
