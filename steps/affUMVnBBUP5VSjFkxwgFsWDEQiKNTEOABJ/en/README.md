@@ -156,6 +156,40 @@
 * For example, a GET request might enforce access controls, but a corresponding POST request may lack these checks, creating a potential security gap. This behavior is often caused by misconfigured access control rules or incorrect assumptions about how requests are handled.
 * Consider a scenario where an application provides endpoints to access user profiles. While a GET request enforces access controls, a POST request for the same resource lacks proper validation:
 
+@@TagStart@@java
+
+  ```java
+  @RestController
+  @RequestMapping("/api/users")
+  public class UserProfileController {
+
+      @GetMapping("/{userId}/profile")
+      public ResponseEntity<?> getUserProfile(@PathVariable String userId, HttpSession session) {
+          if (verifyAccess(session, userId)) {
+              Object profile = getProfile(userId);
+              return ResponseEntity.ok(profile);
+          } else {
+              return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized");
+          }
+      }
+
+      @PostMapping("/{userId}/profile")
+      public ResponseEntity<?> updateUserProfile(@PathVariable String userId, @RequestBody Map<String, String> body) {
+          String name = body.get("name");
+          String email = body.get("email");
+
+          Object profile = getProfile(userId); // No access control checks here
+
+          // Perform additional actions if allowed
+
+          return ResponseEntity.ok(profile);
+      }
+  }
+  ```
+
+@@TagEnd@@
+@@TagStart@@node.js
+
   ```javascript
   app.get("/api/users/:userId/profile", (req, res) => {
     const { userId } = req.params;
@@ -177,11 +211,13 @@
 
     const profile = getProfile(userId); // No access control checks here
 
-    // Perform additional actions
+    // Perform additional actions if allowed
 
     res.send(profile);
   });
   ```
+
+@@TagEnd@@
 
   In this scenario, while the GET endpoint enforces robust access control using the `verifyAccess` function to restrict profile data access to authorized users, the POST endpoint lacks such checks, allowing unauthorized access and processing of profile data.
 

@@ -12,7 +12,7 @@
     -H 'Content-Type: application/x-www-form-urlencoded' \
     --data-urlencode 'username=johndoe' \
     --data-urlencode 'password=VcW;seD8qYEn' \
-    $APP_URL/login | sed -n -e '/^HTTP\/[0-9.]* [0-9]*/p' -e '/^set-cookie:.*sessionId=/Ip'
+    $APP_URL/login
   ```
 
   Tras obtener una respuesta, se puede recuperar una cookie llamada `sessionId`. Si la respuesta indica éxito con un código de estado HTTP `200 OK`, esta cookie puede utilizarse para interactuar con *endpoints* limitados a usuarios autenticados.
@@ -24,7 +24,7 @@
       -H 'Content-Type: application/json' \
       -d '{ "username": "johndoe", "newPassword": "123456" }' \
       -b 'sessionId=<session_cookie_value>' \
-      $APP_URL/change-password | sed -n '/^HTTP\/[0-9.]* [0-9]*/p'
+      $APP_URL/change-password
     ```
 
   Debido a una vulnerabilidad IDOR, proporcionar una referencia directa a otro nombre de usuario existente en la base de datos, como `jackson01`, `jennifer`, `alice99`, o `dianak`, provocaría el cambio de su contraseña y permitiría el inicio de sesión con las nuevas credenciales. Te animamos a que lo pruebes por ti mismo.
