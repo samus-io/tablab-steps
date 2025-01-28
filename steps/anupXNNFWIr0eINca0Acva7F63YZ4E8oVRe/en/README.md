@@ -1,37 +1,37 @@
 # Best practices to prevent IDOR vulnerabilities
 
-* Preventing Insecure Direct Object References (IDOR) requires robust access control mechanisms and secure coding practices throughout the application.
-* While enforcing proper access control is the cornerstone of mitigating IDOR risks, several additional best practices can help eliminate scenarios where these vulnerabilities might arise.
+* Preventing `Insecure Direct Object References (IDOR)` involves utilizing the defense-in-depth principle alongside enforcing robust access control measures.
+
+## Security measures checklist
+
+* [ ] Perform input validation to confirm that data from users adheres to the expected formats and constraints.
+* [ ] Enforce access control checks for every object or data users attempt to access, using the recommended structural approach for the chosen web framework.
+* [ ] Use UUIDs or equivalent long random values for primary keys to significantly reduce the likelihood of attackers guessing valid entries. If necessary, introduce a column containing random strings to replace or enhance numeric identifiers in the database table.
+* [ ] Minimize the exposure of identifiers in URLs and POST bodies by determining the authenticated user through session data.
+* [ ] Restrict object lookups by primary keys to datasets that are accessible to the user.
 
 ## Perform input validation
 
-* Input validation acts as the first line of defense by ensuring that user-supplied data conforms to expected formats and constraints.
-* By validating parameters early, malicious or malformed requests can be rejected, preventing exploitation of unintended behaviors.
-* Input validation ensures that all incoming data meets predefined criteria before proceeding with the application's logic. For instance:
-  * Check that numeric parameters are indeed numbers and within an acceptable range.
-  * Verify that string inputs do not contain unexpected characters or exceed length restrictions.
-* By validating inputs early, malicious requests can be promptly rejected, returning a generic error message to avoid exposing internal logic or details.
+* Input validation acts as the first line of defense by ensuring that user-supplied data aligns with predefined criteria before it's processed or stored.
+* Validating parameters early ensures malicious or malformed requests are rejected, preventing exploitation of unintended behaviors while supporting non-descriptive error messages to avoid exposing internal logic or details.
 
 ## Enforce access control
 
-* Access control is the most effective measure to prevent IDOR vulnerabilities. Ensure that every request is checked against the user's permissions before accessing or modifying any resource.
-* Implement role-based access control (RBAC) or attribute-based access control (ABAC) to define granular permissions for each user role.
-* Design backend logic to verify the ownership or permission level of the requesting user for every resource they attempt to access.
+* Implementing access control is the most reliable way to prevent IDOR vulnerabilities, ensuring that each request is verified against user permissions before accessing or altering resources.
+* This involves structuring backend logic to validate the permission level of the requesting user for each resource they try to access, utilizing common strategies such as Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC), or Relationship-Based Access Control (ReBAC).
 
-## Least privilege principle
+### Principle of least privilege
 
-* The least privilege principle is a fundamental security concept that ensures users, applications, and systems have access only to the resources and permissions necessary to perform their specific tasks.
-* By limiting access rights, the principle reduces the attack surface and minimizes the potential impact of security vulnerabilities.
-* Ensure users only have access to the minimum set of resources necessary for their role.
+* The `Principle of Least Privilege (POLP)` is a fundamental security concept that ensures users, applications, and systems have access only to the resources and permissions necessary to perform their specific tasks.
+* Limiting access rights reduces the attack surface and minimizes the potential impact of existing security vulnerabilities.
 
 ## Avoid direct object references
 
-* Exposing sensitive identifiers in URLs or POST bodies can make it easier for attackers to manipulate them and exploit vulnerabilities like IDOR. Whenever possible, applications should minimize the exposure of such identifiers and rely on alternative methods to determine user context.
-* Instead of including identifiers in user-controlled inputs (e.g., query parameters or POST bodies), rely on session data stored securely on the server to determine the identity of the currently authenticated user.
-* For example, use the session token or cookie to retrieve the user's context directly from the server-side session store.
+* Exposing sensitive identifiers in URLs or POST bodies can make it easier for attackers to manipulate them and exploit IDOR vulnerabilities. Whenever possible, applications should minimize the exposure of such identifiers and rely on alternative methods to determine user context.
+* Rather than including identifiers in user-controlled inputs like query parameters or POST bodies, use session data stored securely on the server to determine the authenticated user's identity, leveraging the session token or cookie to access their context directly from the session store.
 
-## Usage of UUIDs or random identifiers
+## Employ randomly generated identifiers
 
-* Using complex and randomly generated identifiers instead of sequential numeric ones provides an additional layer of security by reducing the risk of attackers predicting or manipulating them.
-* Unlike numeric IDs (e.g., 1, 2, 3), which are sequential and easy to guess, UUIDs or random strings are much harder for attackers to predict.
-* This practice does not replace access control but helps mitigate the risk of exploitation when identifiers are exposed.
+* The adoption of UUIDs or randomly generated strings decreases the chances of attackers successfully guessing identifiers, providing a notable security benefit compared to sequential numeric IDs.
+* This approach does not act as a replacement for access control but complements it by reducing the exploitation risks linked to exposed identifiers.
+* Encryption of identifiers is discouraged because maintaining secure encryption practices can be challenging.
