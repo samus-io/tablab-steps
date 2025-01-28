@@ -22,7 +22,7 @@
   GET /user/profile?id=124
   ```
 
-## What could be achieved with an IDOR
+## What could be achieved by exploiting an IDOR vulnerability
 
 * Exposed object references revealing direct database IDs can result in **unauthorized access to records containing sensitive data**, such as users' personal information (e.g., financial details, medical records, or private messages). This could lead to data breaches, identity theft, or misuse of private information.
 * Unvalidated user ID values, command names, or API keys may be exploited to **execute unauthorized operations**, including resetting other users' passwords and taking over accounts, performing admin actions to add users or upgrade privileges, or accessing restricted APIs.
