@@ -34,3 +34,8 @@
 * The adoption of UUIDs or randomly generated strings decreases the chances of attackers successfully guessing identifiers, providing a notable security benefit compared to sequential numeric IDs.
 * This approach does not act as a replacement for access control but complements it by reducing the exploitation risks linked to exposed identifiers.
 * Encryption of identifiers is discouraged, since maintaining secure encryption practices can be challenging.
+
+## Quiz to consolidate :rocket:
+
+* Complete the questionnaire by choosing the correct answer for each question.
+  @@ExerciseBox@@
