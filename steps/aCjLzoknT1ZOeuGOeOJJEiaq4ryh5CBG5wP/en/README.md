@@ -53,7 +53,7 @@
   POST /user/change-email
   {
     "userId": "123",
-    "newEmail": "johndoe@trusted.tbl"
+    "newEmail": "attacker@attacker.tbl"
   }
   ```
 
@@ -128,7 +128,7 @@
   ```
 
 * While the IDOR impact is typically limited to unauthorized access to files within the application's intended scope, an LFI vulnerability allows access to arbitrary files on the server, often outside the application's managed directory when combined with `Path traversal` attacks, such as sensitive system files or application configuration files.
-* This way, a malicious user could gain access to sensitive file system resources such as the `/etc/passwd` file by manipulating the user input parameter (in this case, simply changing the URL) to navigate to that resource instead of `photo124.jpg`:
+* This way, through the successful exploitation of a path traversal attack, a malicious user could gain access to sensitive file system resources such as the `/etc/passwd` file by manipulating the user input parameter (in this case, simply changing the URL) to navigate to that resource instead of `photo124.jpg`:
 
   ```url
   GET /download?file=../../../etc/passwd

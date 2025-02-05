@@ -16,7 +16,7 @@
   ```
 
   After obtaining a response, a cookie named `JSESSIONID` can be retrieved. If the response indicates success with an HTTP `200 OK` status code, this cookie can be used to interact with endpoints limited to authenticated users.
-  Malicious users will be able then send a `PUT` request to the `/change-password` endpoint, providing the new password value for the specified username and including the `JSESSIONID` cookie obtained earlier:
+  Malicious users will be able then to send a `PUT` request to the `/change-password` endpoint, providing the new password value for the specified username and including the `JSESSIONID` cookie obtained earlier:
 
   ```bash
   curl -s -i -X PUT \

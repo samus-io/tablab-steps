@@ -6,7 +6,7 @@
 * Analyze API endpoints and web requests for parameters that reference objects (e.g., `id=123`, `user=johndoe`). Pay special attention to predictable patterns in these parameters, such as sequential or easily guessable values.
 * Test whether modifying these parameters allows access to other users' resources without proper authorization. Tools like proxies (e.g., Burp Suite or OWASP ZAP) can assist in intercepting and modifying requests for manual testing.
 * Check for variations in response behavior when parameter values are altered. Unauthorized access may return sensitive information, error messages, or subtle changes in response times that indicate potential access control issues.
-* Additionally, review access control policies implemented on the server side to ensure they verify the requesting user's permissions for each resource.
+* Additionally, as part of in-depth research, leverage a vulnerability scanner for automatic detection, inspect source code if accessible to review access control policies on the server side ensuring they validate user permissions for each resource, and perform SAST to uncover security risks.
 
 ## Exploiting basic IDORs
 
@@ -45,7 +45,7 @@
 
 ### Via direct reference to static files
 
-* Static files stored on the server can lead to IDOR vulnerabilities. For example, an application may store user-uploaded files in a shared directory without implementing proper access controls:
+* Static files stored on the server can also be susceptible to IDOR vulnerabilities. For example, an application may store user-uploaded files in a shared directory without implementing proper access controls:
 
   ```http
   GET /uploads/123.pdf
@@ -62,7 +62,7 @@
 ### Via resource path manipulation
 
 * Some web applications retrieve files dynamically based on parameters instead of serving them as static files. This method can also result in an IDOR vulnerability if proper authorization checks are not in place.
-* For example, a user might request an invoice by specifying its ID in the query string:
+* For instance, a user might request an invoice by specifying its ID in the query string:
 
   ```http
   GET /invoices?id=123.pdf
@@ -293,7 +293,7 @@
 
 * Second-order IDOR vulnerabilities function similarly to traditional IDORs but involve an additional layer of complexity. In these cases, the application uses user-provided input to indirectly reference a data object. The input is first kept in memory or stored and later retrieved to interact with the data object, potentially bypassing access controls during the second step.
 * These vulnerabilities can be more challenging to identify, as the exploitation requires understanding how the application processes and uses stored data at different stages.
-* In the following example, the application allows users to request the deletion of their account. The user provides the `userId` through an external API request:
+* In the following example, the application allows users to request the deletion of their account. The user provides a crafted `userId` through an external API request:
 
   ```http
   POST /api/users/actions/delete
