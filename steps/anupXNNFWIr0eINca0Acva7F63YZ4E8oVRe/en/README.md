@@ -9,6 +9,7 @@
 * [ ] Use UUIDs or equivalent long random values for primary keys to significantly reduce the likelihood of attackers guessing valid entries. If necessary, introduce a column containing random strings to replace or enhance numeric identifiers in the database table.
 * [ ] Minimize the exposure of identifiers in URLs and POST bodies by determining the authenticated user through session data.
 * [ ] Restrict object lookups by primary keys to datasets that are accessible to the user.
+* [ ] Log and monitor access attempts to aid in detecting and preventing potential IDOR exploitation and unauthorized access.
 
 ## Perform input validation
 
