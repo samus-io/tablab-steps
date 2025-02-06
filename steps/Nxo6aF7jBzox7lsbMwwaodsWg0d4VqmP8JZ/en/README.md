@@ -10,7 +10,7 @@
   * [ ] In both cases, use JavaScript to insert the CSRF token into a custom HTTP request (e.g., `x-csrf-token`) header instead of placing it in a hidden form field, as requests with custom headers are inherently restricted by the `Same-Origin Policy (SOP)`.
 * [ ] Set the `SameSite` attribute for session cookies to `Lax` or `Strict` mode.
 * [ ] Avoid using GET for state-changing operations, as it may enable CSRF under the `SameSite=Lax` cookie configuration and expose CSRF tokens through browser history, log files, network utilities that log HTTP request headers, the `Referer` header when linking to external sites.
-* [ ] Review CORS configuration to ensure it does not allow cross-origin requests from any origin (`Access-Control-Allow-Origin: *`) while permitting credentialed requests (`Access-Control-Allow-Credentials: true`), as this would enable cross-origin JavaScript to access HTTP responses from an authenticated session.
+* [ ] Review CORS configuration to ensure it does not allow cross-origin requests while dynamically reflecting the origin (`Access-Control-Allow-Origin: https://attacker.com`) and permitting credentialed requests (`Access-Control-Allow-Credentials: true`), as this would enable cross-origin JavaScript to access HTTP responses from an authenticated session.
 
 ## Request for authentication before critical state-changing operations
 
