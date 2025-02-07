@@ -160,3 +160,8 @@
   * URLs containing CSRF tokens may be logged by web servers, proxies, or analytics tools. Moreover, if a user follows a link or visits an insecure page, the token might be leaked via the `Referer` header.
   * The presence of CSRF tokens in URLs may allow attackers to intercept or recover them, enabling them to bypass CSRF protection.
 * However, in specific cases, such as when an application sends a confirmation email with an activation link after user sign-in to activate the user's account, using the GET method for state-changing operations provides a seamless and user-friendly experience.
+
+## Quiz to consolidate :rocket:
+
+* Complete the questionnaire by choosing the correct answer for each question.
+  @@ExerciseBox@@
