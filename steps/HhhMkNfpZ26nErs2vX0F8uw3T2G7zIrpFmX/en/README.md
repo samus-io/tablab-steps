@@ -99,7 +99,7 @@
 
   * The definition of all properties and an extended explanation can be found in [Owasp.CsrfGuard.properties][2].
 
-### Steps for implementing the library
+### Steps to integrate the library
 
 * To successfully implement OWASP CSRFGuard, the following sections must be properly configured:
   1. To enable CSRFGuard functionality, the necessary dependencies must be specified in `pom.xml`.
