@@ -30,7 +30,7 @@
 * When a user performs an action on a web application (e.g., submitting a email change form), the server generates a distinct, random token that is delivered to the frontend application in the user's browser, functioning as a shared secret between the application and the user's browser.
 * As part of form submission, the frontend application ensures that the token is attached to the HTTP request, allowing the server to validate it. If the token is missing, incorrect, or manipulated, the request is rejected to prevent unauthorized actions.
 * Anti-CSRF tokens must adhere to the following criteria to ensure effective protection against CSRF attacks:
-  * Nonce (a number used once and then discarded): each token must be unique for every user's session or per request to ensure they cannot be reused.
+  * Nonce (a number used once and then discarded): each token must be unique for every user's session to ensure they cannot be reused.
   * Unpredictable: tokens must be generated randomly, making them impossible to guess.
   * Session-tied: each token must be uniquely generated for a session and remain valid only within that session.
   * Strictly validated: the server must validate the token before executing the associated action.

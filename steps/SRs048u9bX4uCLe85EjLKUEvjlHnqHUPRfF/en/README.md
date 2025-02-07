@@ -65,7 +65,7 @@
 * Unlike traditional CSRF attacks that focus on unauthorized state changes, this variant manipulates user authentication, potentially leading to account hijacking, data exposure, or session-based tracking.
 * The attack follows these steps:
   1. The attacker pre-creates an account (e.g., `attacker@attacker.tbl`) on the targeted vulnerable website.
-  1. The attacker constructs a malicious webpage designed to force victims into logging into this account:
+  1. The attacker constructs a malicious webpage designed to force victims to log in to this account:
 
       ```html
       <form action="https://vulnerable.tbl/login" method="POST">

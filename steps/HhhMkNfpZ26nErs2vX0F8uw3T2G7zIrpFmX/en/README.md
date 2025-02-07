@@ -1,80 +1,64 @@
 # Preventing CSRF using synchronizer token pattern in Jakarta EE 10 with OWASP CSRFGuard
 
-## How synchronizer token pattern works
+* The synchronizer token pattern has been the most widely used method for anti-CSRF protection.
+* When implementing CSRF tokens, adherence to the following security principles is essential:
+  * Nonce (a number used once and then discarded): each token must be unique for every user's session to ensure they cannot be reused.
+  * Unpredictable: tokens must be generated randomly, making them impossible to guess.
+  * Session-tied: each token must be uniquely generated for a session and remain valid only within that session.
+  * Strictly validated: the server must validate the token before executing the associated action.
 
-* When implementing CSRF tokens must adhere to the following security principles:
-    * Nonce (number used once).
-    * Unpredictable.
-    * Session-tied.
-    * Strictly validated.
-* A unique CSRF token must be generated for each session and stored securely in the server-side session. The following method demonstrates how to generate and store the token:
+## How the synchronizer token pattern works
 
-    ```java
-    public void setCSRFToken(HttpServletRequest request) {
-        // Generate a cryptographically secure token
-        String token = UUID.randomUUID().toString();
-        request.getSession(true).setAttribute(CSRF_SESSION_KEY, token);
-    }
-    ```
+* A unique CSRF token must be generated per session and securely stored on the server. The method below illustrates a simple way to generate and store the token:
 
-* This token will later be used to validate incoming requests and confirm that they originate from a legitimate user.
-* For CSRF protection to be effective, the generated token must be embedded in the frontend. This ensures that subsequent `POST`, `PUT`, or `DELETE` requests can include the token for server-side validation.
-* One way to achieve this is by generating the CSRF token in the server-side logic and embedding it within the response, such as in a `JSP` page:
+  ```java
+  public void setCSRFToken(HttpServletRequest request) {
+      // Generate a cryptographically secure token
+      String token = UUID.randomUUID().toString();
+      request.getSession(true).setAttribute(CSRF_SESSION_KEY, token);
+  }
+  ```
 
-    ```java
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Generate and store the CSRF token in the session
-        setCSRFToken(request);
-        request.getRequestDispatcher("/WEB-INF/views/pages/csrf-protected.jsp").forward(request, response);
-    }
-    ```
+  * To validate incoming requests and confirm their legitimacy, the token must be sent to the frontend application. This enables `POST`, `PUT`, or `DELETE` requests to include the token for server-side validation.
+* As a common example, in `Server-Side Rendering (SSR)` applications, such as those using `(Java Server Pages) JSP`, the easiest way to pass a CSRF token to the front-end is by embedding it directly in the server-rendered HTML response:
 
-* Before processing state-changing requests, the server must retrieve the session-stored CSRF token and compare it to the token submitted by the client. The following method retrieves and removes the token from the session for validation:
+  ```java
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      // Generate and store the CSRF token in the session
+      setCSRFToken(request);
+      request.getRequestDispatcher("/WEB-INF/views/pages/csrf-protected.jsp").forward(request, response);
+  }
+  ```
 
-    ```java
-    public String getCSRFToken(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+* Before handling state-changing requests, the server must retrieve the CSRF token from the session and compare it with the client's submitted token. The following method serves as a simple demonstration, which rejects requests if the token is missing or invalid:
 
-        if (session != null) {
-            Object csrfSession = session.getAttribute(CSRF_SESSION_KEY);
+  ```java
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      // Get the CSRF token from the request
+      String requestCsrfToken = request.getParameter("csrf-token");
 
-            if (csrfSession instanceof String) {
-                // Remove token after retrieval (one-time use)
-                session.removeAttribute(CSRF_SESSION_KEY);
-                return (String) csrfSession;
-            }
-        }
-        return null;
-    }
-    ```
+      // Get the CSRF token stored in the session
+      HttpSession session = request.getSession(false);
+      String sessionCsrfToken = (String) session.getAttribute(CSRF_SESSION_KEY);
 
-* When handling state-changing requests, the server must validate the CSRF token. If the token is missing or invalid, the request must be rejected to prevent CSRF attacks:
+      // Validate the CSRF token
+      if (requestCsrfToken == null || !sessionCsrfToken.equals(requestCsrfToken)) {
+          response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid CSRF token.");
+          return;
+      }
 
-    ```java
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String clientCsrfToken = request.getParameter("csrf-token");
-
-        // Retrieve the CSRF token stored in the session
-        String sessionCsrfToken = getCSRFToken(request);
-
-        if (sessionCsrfToken == null || !sessionCsrfToken.equals(clientCsrfToken)){
-            System.out.println("Invalid CSRF Token");
-            return;
-        }
-
-        System.out.println("Valid CSRF Token");
-    }
-    ```
+      // CSRF token is valid, then process the request
+  }
+  ```
 
 ## OWASP CSRFGuard
 
-* The [OWASP CSRFGuard][1] library is a security framework designed to protect Java EE web applications against Cross-Site Request Forgery (CSRF) attacks.
-* It achieves this by implementing a variant of the synchronizer token pattern, which ensures that every state-changing HTTP request includes a unique and valid CSRF token.
-* This mechanism prevents unauthorized actions from being executed on behalf of an authenticated user.
+* The [OWASP CSRFGuard][1] library is a security framework designed to protect Java EE web applications against `Cross-Site Request Forgery (CSRF)` attacks.
+* The library enforces the synchronizer token pattern, requiring every state-changing HTTP request to include a unique and valid CSRF token, which prevents unauthorized actions from being executed on behalf of an authenticated user.
 
-### How OWASP CSRFGuard Works
+### How the OWASP CSRFGuard works
 
 * OWASP CSRFGuard is built as a JavaEE filter, meaning it intercepts incoming HTTP requests before they reach the application's core logic.
 * It verifies whether the request contains a valid CSRF token and blocks it if the validation fails.
@@ -88,45 +72,44 @@
 
 * The OWASP CSRFGuard library provides a wide range of configuration options to allow fine-grained control over CSRF protection mechanisms.
 * To configure CSRFGuard, properties must be defined in the file `src/main/webapp/WEB-INF/csrfguard.properties`.
-* The following are some common properties used to define the behaviour of CSRFGuard:
+* The configuration of CSRFGuard requires defining properties in the `src/main/webapp/WEB-INF/csrfguard.properties` file.
+* Below are common properties that define the behavior of CSRFGuard:
 
-|Property|Description|
-|:--:|:--:|
-|`org.owasp.csrfguard.Enabled`|Determines whether CSRFGuard is active (`true` or `false`).|
-|`org.owasp.csrfguard.TokenName`|Specifies the name of the CSRF token parameter included in requests. The default value is `OWASP-CSRFTOKEN`.|
-|`org.owasp.csrfguard.Rotate`|Defines whether the CSRF token should be regenerated after each successful validation. However, this functionality generally causes navigation problems in applications, specifically, the `Back` button in the browser will often cease to function properly.|
-|`org.owasp.csrfguard.UnprotectedMethods`|Lists HTTP methods that should be excluded from CSRF protection (e.g., `GET`, `OPTIONS`, etc.).|
-|`org.owasp.csrfguard.ValidateWhenNoSessionExists`|Determines whether CSRFGuard should enforce token validation even when no session exists. Only set this to false if the web application is not susceptible to CSRF if the user has no session.|
-|`org.owasp.csrfguard.Ajax`|Enables CSRF protection for AJAX requests automatically including the CSRF token in all requests.|
-|`org.owasp.csrfguard.JavascriptServlet.injectIntoForms`|Defines whether CSRF tokens should be injected as hidden fields into HTML forms.|
-|`org.owasp.csrfguard.JavascriptServlet.injectGetForms`|Determines whether CSRF tokens should be injected into forms that use the `GET` method. Developers who ensure that their server-side controllers handle state-changing actions exclusively via POST requests should disable this property.|
-|`org.owasp.csrfguard.JavascriptServlet.injectFormAttributes`|Specifies whether CSRF tokens should be injected into the `action` attribute of forms.|
-|`org.owasp.csrfguard.JavascriptServlet.injectIntoAttributes`|Defines whether CSRF tokens should be injected into `src` and `href` attributes of HTML elements. If server-side controllers handle state-changing actions exclusively via POST requests, then its recommended to disable this property.|
-|`org.owasp.csrfguard.JavascriptServlet.injectIntoDynamicNodes`|Enables automatic injection of CSRF tokens into dynamically created HTML elements. If set to `true`, a `MutationObserver` monitors the DOM and injects tokens when necessary. |
-|`org.owasp.csrfguard.action.Error`|Configures an action to return an error when a CSRF violation occurs. This can be used to block the request and respond with an error message.|
-|`org.owasp.csrfguard.action.Code`|Specifies the HTTP status code to return when a CSRF violation occurs (e.g., 403, 401, etc).|
-|`org.owasp.csrfguard.action.Rotate`||
-|`org.owasp.csrfguard.action.Log`|When enabled, details about the violation are logged. The default behavior is `true`.|
-|`org.owasp.csrfguard.action.Log.Message`|Defines the log message format for CSRF violation attempts. Variables such as `%user%`, `%request_uri%`, and `%remote_ip%` can be used. |
-|`org.owasp.csrfguard.Logging`|Enables or disables logging of CSRFGuard activities, including violations. The default value is `true`.|
-|`org.owasp.csrfguard.LogLevel`|Specifies the logging level for CSRFGuard messages. The possible values are `DEBUG`, `INFO`, `WARN` and `ERROR`. |
-|`org.owasp.csrfguard.configuration.provider.factory`|Defines the configuration provider that CSRFGuard should use to load properties.|
-|`org.owasp.csrfguard.LogicalSessionExtractor`|Determines how CSRFGuard identifies a user’s session. Defaults to `org.owasp.csrfguard.session.SessionTokenKeyExtractor`, which relies on `HttpSession`. Custom implementations can be used for stateless architectures.|
+  |Property|Description|
+  |:--:|:--:|
+  |`org.owasp.csrfguard.Enabled`|Determines whether CSRFGuard is active (`true` or `false`).|
+  |`org.owasp.csrfguard.TokenName`|Specifies the name of the CSRF token parameter included in requests. The default value is `OWASP-sessionCsrfToken`.|
+  |`org.owasp.csrfguard.Rotate`|Defines whether the CSRF token should be regenerated after each successful validation. However, this functionality may cause navigation problems in applications, specifically, the `Back` button in the browser will often cease to function properly.|
+  |`org.owasp.csrfguard.UnprotectedMethods`|Lists HTTP methods that should be excluded from CSRF protection (e.g., `GET`, `HEAD`, `OPTIONS`, `TRACE`).|
+  |`org.owasp.csrfguard.ValidateWhenNoSessionExists`|Determines whether CSRFGuard should enforce token validation even when no session exists. Only set this to `false` if the web application is not susceptible to CSRF if the user has no session.|
+  |`org.owasp.csrfguard.Ajax`|Enables CSRF protection for AJAX requests automatically including the CSRF token in all requests.|
+  |`org.owasp.csrfguard.JavascriptServlet.injectIntoForms`|Defines whether CSRF tokens should be injected as hidden fields into HTML forms.|
+  |`org.owasp.csrfguard.JavascriptServlet.injectGetForms`|Determines whether CSRF tokens should be injected into forms that use the `GET` method. Developers who ensure that their server-side controllers handle state-changing actions exclusively via POST requests should disable this property.|
+  |`org.owasp.csrfguard.JavascriptServlet.injectFormAttributes`|Specifies whether CSRF tokens should be injected into the `action` attribute of forms.|
+  |`org.owasp.csrfguard.JavascriptServlet.injectIntoAttributes`|Defines whether CSRF tokens should be injected into `src` and `href` attributes of HTML elements. If server-side controllers handle state-changing actions exclusively via POST requests, then its recommended to disable this property.|
+  |`org.owasp.csrfguard.JavascriptServlet.injectIntoDynamicNodes`|Enables automatic injection of CSRF tokens into dynamically created HTML elements. If set to `true`, a `MutationObserver` monitors the DOM and injects tokens when necessary.|
+  |`org.owasp.csrfguard.action.Error`|Configures an action to return an error when a CSRF violation occurs. This can be used to block the request and respond with an error message.|
+  |`org.owasp.csrfguard.action.Code`|Specifies the HTTP status code to return when a CSRF violation occurs (e.g., 403, 401, etc).|
+  |`org.owasp.csrfguard.action.Log`|When enabled, details about the violation are logged. The default behavior is `true`.|
+  |`org.owasp.csrfguard.action.Log.Message`|Defines the log message format for CSRF violation attempts. Variables such as `%user%`, `%request_uri%`, and `%remote_ip%` can be used.|
+  |`org.owasp.csrfguard.Logging`|Enables or disables logging of CSRFGuard activities, including violations. The default value is `true`.|
+  |`org.owasp.csrfguard.LogLevel`|Specifies the logging level for CSRFGuard messages. The possible values are `DEBUG`, `INFO`, `WARN` and `ERROR`.|
+  |`org.owasp.csrfguard.configuration.provider.factory`|Defines the configuration provider that CSRFGuard should use to load properties.|
+  |`org.owasp.csrfguard.LogicalSessionExtractor`|Determines how CSRFGuard identifies a user's session. Defaults to `org.owasp.csrfguard.session.SessionTokenKeyExtractor`, which relies on `HttpSession`. Custom implementations can be used for stateless architectures.|
 
-* The definition of all properties and an extended explanation can be found in [Owasp.CsrfGuard.properties][2].
+  * The definition of all properties and an extended explanation can be found in [Owasp.CsrfGuard.properties][2].
 
-### Implementing CSRFGuard
+### Steps for implementing the library
 
-* To successfully implement OWASP CSRFGuard, the following components must be properly configured:
-    * Necessary dependencies must be added to `pom.xml` to integrate CSRFGuard into the application.
-    * The `web.xml` file needs to be configured to register the CSRFGuard filter, servlet, and listeners for request validation.
-    * The `csrfguard.properties` file contains essential settings that define token behavior, logging, and protection mechanisms.
-    * The `csrfguard.js` script must be included on the frontend to automatically inject and validate CSRF tokens in form submissions and AJAX requests.
+* To successfully implement OWASP CSRFGuard, the following sections must be properly configured:
+  1. To enable CSRFGuard functionality, the necessary dependencies must be specified in `pom.xml`.
+  1. The `web.xml` file needs to be configured to register the CSRFGuard filter, servlet, and listeners for request validation.
+  1. The `csrfguard.properties` file should contain essential settings that define token behavior, logging, and protection mechanisms.
+  1. The `csrfguard.js` script must be requested from the frontend application to automatically handle CSRF token injection and validation in form submissions and AJAX requests.
 
-#### Dependencies
+#### 1. Add dependencies
 
-* To integrate OWASP CSRFGuard into a JavaEE application, the necessary dependencies must be included in the `pom.xml` file.
-* These dependencies provide the core CSRF protection functionalities, session-based token management, and JSP tag support for CSRF token injection:
+* The following dependencies provide the core CSRF protection functionalities, session-based token management, and JSP tag support for CSRF token injection:
   
   ```xml
   <dependency>
@@ -148,13 +131,12 @@
   </dependency>
   ```
 
-#### Define filters and listeners
+#### 2. Set filters and listeners
 
-* To enable OWASP CSRFGuard in a JavaEE application, JavaEE Filters and listeners must be configured in the `web.xml` file.
-* These components ensure that every HTTP request is validated against a CSRF token and that the necessary JavaScript functionality is injected into the application:
+* In a JavaEE application, OWASP CSRFGuard is enabled by setting up JavaEE filters and listeners in `web.xml`, which enforce CSRF token validation and inject necessary JavaScript functionality:
   
   ```xml
-  <!-- CSRFGuard Filter-->
+  <!-- CSRFGuard filter-->
   <filter>
       <filter-name>CSRFGuard</filter-name>
       <filter-class>org.owasp.csrfguard.CsrfGuardFilter</filter-class>
@@ -194,85 +176,84 @@
   </context-param>
   ```
 
-#### CSRFGuard properties
+#### 3. Define CSRFGuard properties
 
-* The CSRFGuard behavior must be defined in the `csrfguard.properties` file. This configuration file allows fine-grained control over how CSRF protection is applied within an application.
-* This section enables CSRFGuard, defines the name of the CSRF token, and configures how tokens behave across requests. It also specifies which HTTP methods are exempt from protection and whether CSRF validation should apply when no session exists:
+* The `csrfguard.properties` file manages CSRFGuard behavior, providing fine-grained control over CSRF protection within the application.
+* Begin by specifying the CSRF token name and configuring its behavior across requests. Additionally, define exempt HTTP methods and determine whether CSRF validation applies when no session exists:
 
-    ```properties
-    # If CSRFGuard filter is enabled
-    org.owasp.csrfguard.Enabled = true
+  ```properties
+  # If CSRFGuard filter is enabled
+  org.owasp.csrfguard.Enabled = true
 
-    # Token name
-    org.owasp.csrfguard.TokenName = X-CSRF-TOKEN
+  # Token name
+  org.owasp.csrfguard.TokenName = csrf-token
 
-    # Token rotation on every request
-    org.owasp.csrfguard.Rotate = false
+  # Token rotation on every request
+  org.owasp.csrfguard.Rotate = false
 
-    # Unprotected methods
-    org.owasp.csrfguard.UnprotectedMethods = GET
+  # Unprotected methods
+  org.owasp.csrfguard.UnprotectedMethods = GET
 
-    ## Only set this to false if the web application is not susceptible to CSRF if the user has no session
-    org.owasp.csrfguard.ValidateWhenNoSessionExists = true
+  ## Only set this to false if the web application is not susceptible to CSRF if the user has no session
+  org.owasp.csrfguard.ValidateWhenNoSessionExists = true
 
-    # Ajax and XMLHttpRequest support
-    org.owasp.csrfguard.Ajax = false
-    ```
+  # Ajax and XMLHttpRequest support
+  org.owasp.csrfguard.Ajax = false
+  ```
 
-* This part defines how CSRF tokens are injected into forms and requests through CSRFGuard's JavaScript handler. It allows CSRFGuard to modify form submissions and dynamic content to include the necessary security tokens automatically:
+* Then define how CSRF tokens are injected into forms and requests through CSRFGuard's JavaScript handler, allowing CSRFGuard to modify form submissions and dynamic content to include the necessary security tokens automatically:
 
-    ```properties
-    # Javascript servlet settings
+  ```properties
+  # Javascript servlet settings
 
-    ## Inject CSRF token as hidden field into HTML forms
-    org.owasp.csrfguard.JavascriptServlet.injectIntoForms = true
-    org.owasp.csrfguard.JavascriptServlet.injectGetForms = false
+  ## Inject CSRF token as hidden field into HTML forms
+  org.owasp.csrfguard.JavascriptServlet.injectIntoForms = true
+  org.owasp.csrfguard.JavascriptServlet.injectGetForms = false
 
-    ## Inject the token in the action form
-    org.owasp.csrfguard.JavascriptServlet.injectFormAttributes = false
+  ## Inject the token in the action form
+  org.owasp.csrfguard.JavascriptServlet.injectFormAttributes = false
 
-    ## Inject the CSRF prevention token in the query string of src and href attributes
-    org.owasp.csrfguard.JavascriptServlet.injectIntoAttributes = false
+  ## Inject the CSRF prevention token in the query string of src and href attributes
+  org.owasp.csrfguard.JavascriptServlet.injectIntoAttributes = false
 
-    ## Inject in new DOM elements
-    org.owasp.csrfguard.JavascriptServlet.injectIntoDynamicNodes = true
-    ```
+  ## Inject in new DOM elements
+  org.owasp.csrfguard.JavascriptServlet.injectIntoDynamicNodes = true
+  ```
 
-* These properties defines how CSRF violations are managed, including logging and response codes. When a request fails CSRF validation, CSRFGuard can log the event, return an error response, or take other actions. Additionally, logging configurations determine the level of detail stored in logs:
+* Next, configure how CSRF violations are handled, including logging and response codes. When a request fails CSRF validation, CSRFGuard can log the event, return an error, or take other actions. Logging settings also define the level of detail stored.
 
-    ```properties
-    # Error handling
-    org.owasp.csrfguard.action.Error = org.owasp.csrfguard.action.Error
-    org.owasp.csrfguard.action.Error.Code = 403
-    org.owasp.csrfguard.action.Rotate = org.owasp.csrfguard.action.Rotate
-    org.owasp.csrfguard.action.Log = org.owasp.csrfguard.action.Log
-    org.owasp.csrfguard.action.Log.Message = Potential CSRF (user:%user%, ip:%remote_ip%, method:%request_method%, uri:%request_uri%, error:%exception_message%)
+  ```properties
+  # Error handling
+  org.owasp.csrfguard.action.Error = org.owasp.csrfguard.action.Error
+  org.owasp.csrfguard.action.Error.Code = 403
+  org.owasp.csrfguard.action.Rotate = org.owasp.csrfguard.action.Rotate
+  org.owasp.csrfguard.action.Log = org.owasp.csrfguard.action.Log
+  org.owasp.csrfguard.action.Log.Message = Potential CSRF (user:%user%, ip:%remote_ip%, method:%request_method%, uri:%request_uri%, error:%exception_message%)
 
-    # Logging
-    org.owasp.csrfguard.Logging = true
-    org.owasp.csrfguard.LogLevel = INFO
-    ```
+  # Logging
+  org.owasp.csrfguard.Logging = true
+  org.owasp.csrfguard.LogLevel = INFO
+  ```
 
-* The following properties controls advanced CSRFGuard settings, such as the configuration provider factory and session token management. These settings affect how CSRFGuard loads its properties and manages session-bound tokens:
+* The last set of properties manages advanced CSRFGuard settings, including session token handling and configuration provider factory, affecting how CSRFGuard loads properties and manages session-bound tokens:
 
-    ```properties
-    # Other configuration
-    org.owasp.csrfguard.configuration.provider.factory = org.owasp.csrfguard.config.overlay.ConfigurationAutodetectProviderFactory
-    org.owasp.csrfguard.LogicalSessionExtractor = org.owasp.csrfguard.session.SessionTokenKeyExtractor
-    ```
+  ```properties
+  # Other configurations
+  org.owasp.csrfguard.configuration.provider.factory = org.owasp.csrfguard.config.overlay.ConfigurationAutodetectProviderFactory
+  org.owasp.csrfguard.LogicalSessionExtractor = org.owasp.csrfguard.session.SessionTokenKeyExtractor
+  ```
 
-* The configuration of CSRFGuard may vary depending on how the application handles user interactions.
-* For Single Page Applications (SPA), which rely primarily on AJAX requests, CSRF tokens are usually sent in request headers rather than being injected into HTML forms.
-* Therefore, form token injection is typically disabled, and dynamic DOM elements may require special handling to ensure proper token propagation.
-* For Multi-Page Applications (MPA), where interactions are handled through traditional HTML forms, CSRF tokens must be injected into form elements to be submitted with each request. This requires enabling token injection for forms.
+* Note that CSRFGuard settings may vary depending on the application's approach to handling user interactions.
+  * In `Server-Side Rendering (SSR)` applications using traditional HTML forms, CSRF tokens must be embedded in form elements for submission with each request, requiring token injection to be enabled.
+  * On the other hand, since `Single Page Applications (SPA)` primarily use AJAX requests, CSRF tokens are usually sent in request headers instead of HTML forms, leading to form token injection being typically disabled.
 
-#### Automatic CSRF token handling with `csrfguard.js`
+#### 4. Handle automatic CSRF token injection with `csrfguard.js` script
 
-* To enable automatic CSRF token handling on the client side, the following JavaScript file must be included in the frontend:
+* Including the following JavaScript file in the frontend is required to enable automatic CSRF token management on the client side:
 
-```html
-<script src="/csrfguard.js"></script>
-```
+  ```html
+  <script src="/csrfguard.js"></script>
+  ```
 
 * The `csrfguard.js` script ensures that every request from the browser includes a valid CSRF token by intercepting AJAX requests and modifying form submissions.
 * It automatically adds the token as a request header for `XMLHttpRequest` and `fetch` API calls while injecting hidden fields into forms if enabled in the configuration.
@@ -282,16 +263,14 @@
 
 * The application below is vulnerable to CSRF attacks, as there is no protection that prevents a malicious site forcing a logged-in user to send a request to change their email to any arbitrary address.
 * To demonstrate this scenario, log in to the application with valid credentials (i.e., username `johndoe` and password `faBk;bhj7>QL`). Once logged in, check the current email address in the user's profile page, and then visit the attacker website tab in the simulated browser, which includes certain code that tries to change the user's email. Afterwards, confirm the email modification by reviewing the profile again.
-* The purpose of this exercise is to edit the source code using the `Open Code Editor` button to implement a CSRF protection based on the synchronizer token pattern via the OWASP CSRFGuard library.
-* In order to complete the exercise, the file located in `src/main/webapp/WEB-INF/classes/csrfguard.properties` is where code modifications should be added to support these features.
-* The web application is a Single Page Application (SPA) with the following security requirements:
-    * The CSRF token should be named `X-CSRF-TOKEN` to maintain consistency across requests.
-    * The `GET` method does not require CSRF protection, as it is only used for retrieving data without modifying the application state.
-    * CSRF validation is unnecessary when no user session exists, ensuring efficient handling of unauthenticated requests.
-    * All client-side interactions occur via AJAX requests.
-    * Any request failing CSRF validation must result in an immediate `403 Forbidden` response to prevent unauthorized actions.
-* Since CSRFGuard relies on a JavaScript library (`csrfguard.js`) to automatically append CSRF tokens to frontend requests, it is essential to reload the browser after modifying the configuration.
-* This ensures that any updates to the CSRFGuard settings, such as token injection rules or AJAX handling, take effect. Without a reload, the browser may continue using outdated configurations, potentially leading to failed CSRF validations or missing tokens in requests.
+* The purpose of this exercise is to edit the `csrfguard.properties` file using the code editor accessed via the `Open Code Editor` button to enforce CSRF protection while employing the synchronizer token pattern with the OWASP CSRFGuard library. The file is found at `src/main/webapp/WEB-INF/classes/csrfguard.properties`, and the configured properties should align with these required features:
+  * The CSRF token should be named `X-CSRF-TOKEN` to maintain consistency across requests.
+  * The `GET` HTTP method does not require CSRF protection, as it is only used for retrieving data without modifying the application state.
+  * CSRF validation is unnecessary when no user session exists, ensuring efficient handling of unauthenticated requests.
+  * All client-side interactions occur via AJAX requests.
+  * To prevent unauthorized actions, any request that does not meet CSRF validation criteria must return a `403 Forbidden` response.
+* It's important to note that since CSRFGuard depends on the `csrfguard.js` script to automatically append CSRF tokens to client-side requests, reloading the frontend web application on the browser after applying any configuration is required.
+  * This ensures that any updates to the CSRFGuard settings, such as token injection rules or AJAX handling, take effect. Without a reload, the browser may continue using outdated configurations, potentially leading to failed CSRF validations or missing tokens in requests.
 
   @@ExerciseBox@@
 
