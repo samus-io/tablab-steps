@@ -1,5 +1,7 @@
 # Finding and exploiting CSRF vulnerabilities
 
+* Finding and exploiting `Cross-Site Request Forgery (CSRF)` vulnerabilities involves identifying unprotected state-changing actions and leveraging weak request validation to execute unauthorized operations on behalf of authenticated users.
+
 ## Finding CSRF vulnerabilities
 
 1. **Identify state-changing actions** within the web application that alter user data or perform important operations, such as modifying personal details, processing purchases, transferring funds, or executing any API requests that update server-side resources. These actions are potential targets for CSRF attacks.

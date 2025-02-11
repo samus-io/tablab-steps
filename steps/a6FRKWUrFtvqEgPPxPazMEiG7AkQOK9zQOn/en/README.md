@@ -4,7 +4,7 @@
 
   ![IDOR overview][1]
 
-* IDOR vulnerabilities commonly result in horizontal privilege escalation, allowing access to other users' data at the same privilege level. However, they can also lead to vertical privilege escalation, granting elevated privileges such as administrative access.
+* IDOR vulnerabilities commonly result in **horizontal privilege escalation**, allowing access to other users' data at the same privilege level. However, they can also lead to **vertical privilege escalation**, granting elevated privileges such as administrative access.
 * Direct references to resources in web applications and APIs are common sources of IDOR vulnerabilities, while compiled libraries are less susceptible, as they usually enforce strict access controls.
 
 ## How it works

@@ -1,6 +1,6 @@
 # Types of IDOR
 
-* Malicious actors exploit IDOR vulnerabilities in web applications by abusing insufficient access controls and insecure handling of object references, often associated with:
+* Malicious actors exploit `Insecure Direct Object Reference (IDOR)` vulnerabilities in web applications by abusing insufficient access controls and insecure handling of object references, often associated with:
   * Database keys.
   * Query parameters.
   * User or session IDs.

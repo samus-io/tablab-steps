@@ -1,5 +1,7 @@
 # Finding and exploiting IDOR vulnerabilities
 
+* Finding and exploiting `Insecure Direct Object References (IDOR)` involves identifying weak or missing access controls in web applications that allow unauthorized users to manipulate object references and gain access to restricted data or functionality.
+
 ## Finding IDORs
 
 * Identifying IDOR vulnerabilities requires careful analysis of how web applications handle object references and access controls. Start by inspecting all user-controllable input parameters, such as IDs, usernames, or file paths, to determine if they directly map to internal resources.
