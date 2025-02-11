@@ -1,67 +1,62 @@
 # What is Broken Access Control (BAC)?
 
-## What is Access Control?
+## What is access control?
 
-* It refers to the process of determining whether the users are allowed to perform an action they are intended to within an application.
-* It involves defining and enforcing rules that govern who can access certain resources and what operations they can perform on those resources.
-* For example, consider a blogging platform where one can define user roles like admin (allowed for all actions) or readers (allowed with reading only).
+* Access control is a fundamental security mechanism that determines which users can perform specific actions within an application or system. It ensures that only authorized individuals can access sensitive data or perform operations, thereby protecting resources from misuse and unauthorized access.
+* It involves defining and enforcing rules that decides who can access certain resources and what operations they can perform on those resources.
 
-## Introduction about Broken Access Control
+## What is broken access control?
 
-* Broken Access Control refers to security vulnerabilities that allow unauthorized users to access restricted resources or perform privileged actions within an application.
-* It occurs when access control mechanisms, such as authentication, authorization, or session management, are improperly implemented, configured, or enforced.
-* It is ranked as one of the top security vulnerabilities in web applications by the OWASP Top 10 list.
+* Broken access control refers to vulnerabilities in an application that allow unauthorized users to gain access to resources or perform actions that should be restricted.
+* This flaw arises when the mechanisms designed to enforce user permissions are improperly implemented, misconfigured, or inconsistently applied.
+* As a result, users might be able to bypass security measures and access sensitive data or functions.
+* Broken access control is recognized as a significant security risk and is ranked as one of the top security vulnerabilities in web applications by the OWASP Top 10 list.
 
-## Examples of Broken Access Control
+## Examples of broken access control
 
-### Platform data leak
+### Administrative access to non-admin users
 
-* A platform inadvertently allows users to access data from other users by manipulating URL parameters. Users could access private photos, personal messages, or profile details that are not intended to be publicly accessible.
-* Let's say User A can access User B's Account Info using the following URL:
-
-  ```bash
-    https://example.org/accountInfo?accountNo=<B's Account Number> 
-  ```
-
-* If any user is able to access other user's info just by adding the parameter, then it is a flaw.
-
-### Administrative access to non-admin
-
-* Let's consider the following two URLs:
+* A common example of broken access control involves administrative functionalities that are accessible to non-admin users. For instance, consider the following URL:
 
   ```bash
-  https://example.org/getInfo
-  https://example.org/admin/getAppInfo
+  https://example.tbl/admin/getUsers
   ```
 
-* If non-admin users are able to access both the URLs, then it is a flaw in the system. Because the admin related URLs should be only accessible to Admins.
+* If a user without administrative privileges is able to access to the URL, it indicates a flaw in the system's access control.
+* Administrative endpoints, should be exclusively accessible to administrators. When such endpoints are not properly secured, unauthorized users might access sensitive administrative functions or information.
 
-## Impact of Broken Access Control
+### Leakage of Personally Identifiable Information (PII)
 
-* **Unauthorized Access to restricted resources**:
-  * Attackers can access sensitive functionalities or data intended for specific users, roles, or capabilities.
-  * This can lead to unauthorized viewing, modification, or deletion of critical information.
+* Consider an online shopping platform where customers register to make purchases. During registration, the platform collects various details from each customer, such as full name, address, phone number and payment information.
+* Each of these pieces of information qualifies as PII because they can be used to uniquely identify or locate a specific individual. The combination of these data creates a comprehensive profile that is sensitive in nature. If this information is exposed or misused, it can lead to privacy breaches, identity theft, or financial fraud.
+* In the following URL, the web application uses the `id` parameter to determine which user's account information should be retrieved and displayed:
 
-* **Increased risk of data breaches**:
-  * Bypassing access control checks allows attackers to exploit vulnerabilities and exfiltrate sensitive data.
-  * Data breaches can result in financial losses, legal liabilities, and damage to brand reputation.
+  ```
+    https://example.tbl/accountInfo?id=<userId>
+  ```
 
-* **Privacy violations and data manipulation**:
-  * Insecure direct object references enable attackers to view or edit other user's accounts or data.
-  * This compromises user privacy and integrity of data, leading to loss of trust and credibility.
+* The core issue here is that the application is relying solely on the URL parameter to fetch the data without confirming that the requesting user is authorized to view that particular account.
 
-* **Security risks in API access controls**:
-  * Missing access controls in API endpoints (`POST`, `PUT`, `DELETE`) enable attackers to perform unauthorized actions.
-  * This can result in data manipulation, service disruptions, and compromise of system integrity.
+## What could be achieved with broken access control
 
-* **Elevation of privileges**:
-  * Elevation of privilege allows attackers to escalate their privileges and perform actions beyond their authorized scope.
-  * This can lead to unauthorized access to sensitive functionalities or administrative capabilities.
+### Unauthorized access to restricted resources
 
-* **Tampering with Access Tokens and Metadata**:
-  * Manipulating access tokens or metadata allows attackers to bypass access controls and elevate their privileges.
-  * This undermines the integrity and security of authentication mechanisms, leading to unauthorized access.
+* When access control measures fail, attackers can access to restricted resources (data or functionalities) that should be available only to authorized users. This means that sensitive functionalities or critical information might be exposed to individuals who should not have the permission to view or modify them.
 
-* **Force Browsing and unauthenticated access**:
-  * Force browsing allows attackers to access authenticated or privileged pages without proper authentication.
-  * This exposes sensitive functionalities or data to unauthorized users, increasing the risk of security breaches.
+### Privilege escalation
+
+* An attacker with limited access might exploit vulnerabilities to perform actions reserved for administrators or other higher-privileged users.
+* With elevated privileges, attackers can change user settings, modify or delete data, or even create new user accounts with full permissions.
+
+### Data integrity and availability issues
+
+* Unauthorized modifications can lead to corrupted data or altered business processes, undermining the integrity of the system.
+* In some cases, attackers might use broken access control to perform actions that disrupt services (e.g., by deleting critical resources), affecting the availability of the application.
+
+### Compliance and legal risks
+
+* Breaches resulting from broken access control can lead to non-compliance with data protection regulations (like GDPR or HIPAA), potentially resulting in fines and legal liabilities.
+
+### Potential for further exploitation
+
+* Once attackers exploit a broken access control, they can use it as a stepping stone to more sophisticated attacks, as the application's exposure surface has increased, giving attackers more opportunities to find more vulnerabilities.
