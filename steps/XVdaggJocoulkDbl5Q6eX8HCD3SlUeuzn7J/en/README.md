@@ -2,6 +2,8 @@
 
 * Under specific circumstances, CSRF prevention techniques can occasionally be circumvented when specific conditions apply, emphasizing the importance of recognizing these weaknesses when implementing security measures.
 
+![Bypassing][1]
+
 ## Bypassing anti-CSRF tokens
 
 ### When CSRF token is not tied to the user session
@@ -212,3 +214,5 @@
   * Similarly, if `POST` method is not permitted in `Access-Control-Allow-Methods: POST`, the web application's CORS policy will cause the browser to block preflighted cross-origin POST requests.
 
     > :older_man: There is a slight difference between including the token in the request body and placing it in a custom HTTP header, as requests with custom headers are inherently restricted by the `Same-Origin Policy (SOP)`, which represents an additional protection layer.
+
+[1]: /static/images/bypassing.png

@@ -10,6 +10,8 @@
   * **Vertical privilege escalation**, when accessing or modifying data belonging to higher-privilege accounts or restricted resources.
 * Exploiting IDOR vulnerabilities generally involves a similar approach, with slight differences in the nature of object references and the ways attackers access or manipulate them.
 
+![Types of IDOR][1]
+
 ## Leveraging direct references tied to identifiers
 
 * In this scenario, the object reference acts as an identifier in back-end database queries, and simply modifying its value allows the viewing or manipulation of other unauthorized records.
@@ -133,3 +135,5 @@
   ```url
   GET /download?file=../../../etc/passwd
   ```
+
+[1]: /static/images/types-of-idor.png

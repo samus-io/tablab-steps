@@ -4,6 +4,8 @@
 * IDOR vulnerabilities commonly result in horizontal privilege escalation, allowing access to other users' data at the same privilege level. However, they can also lead to vertical privilege escalation, granting elevated privileges such as administrative access.
 * Direct references to resources in web applications and APIs are common sources of IDOR vulnerabilities, while compiled libraries are less susceptible, as they usually enforce strict access controls.
 
+![IDOR overview][1]
+
 ## How it works
 
 * An insecure direct object reference vulnerability takes place when these three conditions are present:
@@ -28,3 +30,5 @@
 * Unvalidated user ID values, command names, or API keys may be exploited to **execute unauthorized operations**, including resetting other users' passwords and **taking over accounts**, performing admin actions to add users or upgrade privileges, or accessing restricted APIs.
 * **Manipulate the application's internal state and data**, potentially enabling changes to business logic (e.g., altering prices in an online store), updates to critical settings (e.g., deactivating security features), or session manipulation to impersonate users.
 * Exploiting direct file access may allow attackers **unauthorized file acces**, which, when combined with path traversal techniques, can enable unauthorized file retrieval or modification, including overwriting or deletion.
+
+[1]: /static/images/idor-overview.png
