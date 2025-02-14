@@ -11,6 +11,7 @@
 * [ ] Set the `SameSite` attribute for session cookies to `Lax` or `Strict` mode.
 * [ ] Avoid using GET for state-changing operations, as it may enable CSRF under the `SameSite=Lax` cookie configuration and expose CSRF tokens through browser history, log files, network utilities that log HTTP request headers, the `Referer` header when linking to external sites.
 * [ ] Review CORS configuration to ensure it does not allow cross-origin requests while dynamically reflecting the origin (`Access-Control-Allow-Origin: https://attacker.com`) and permitting credentialed requests (`Access-Control-Allow-Credentials: true`), as this would enable cross-origin JavaScript to access HTTP responses from an authenticated session.
+* [ ] Ensure no `Cross-Site Scripting (XSS)` vulnerabilities are present, as XSS allows attackers to execute arbitrary JavaScript in the victim's browser and bypass CSRF protections.
 * [ ] Validate that upon authentication, the unauthenticated session is discarded and a new session is initiated to prevent session fixation vulnerabilities that could bypass CSRF protection. If a logout happens, the session must also be destroyed and regenerated, ensuring that any tokens generated within the session are revoked.
 
 ## Request for authentication before critical state-changing operations
