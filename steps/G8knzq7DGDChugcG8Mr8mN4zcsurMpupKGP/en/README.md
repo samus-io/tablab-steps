@@ -1,6 +1,27 @@
-# Preventing CSRF using synchronizer token pattern in Node.js 20 with Express.js
+# Preventing CSRF using synchronizer token pattern in Node.js 20 with Express.js and csrf-sync
 
-* TODO
+* The [`csrf-sync` npm package][1] is a lightweight and straightforward library designed to mitigate `Cross-Site Request Forgery (CSRF)` attacks by implementing the synchronizer token pattern. This package simplifies the process of integrating CSRF protection into Express.js applications by generating and validating CSRF tokens that are stored on the server-side and must be included in client requests to perform sensitive actions.
+* By utilizing `csrf-sync`, applications can ensure that only legitimate requests originating from authenticated users are processed, effectively blocking unauthorized CSRF attempts.
+
+## Specifying particular configuration settings
+
+* When initializing the `csrfSync` object, multiple configuration options can be specified, including:
+
+  ```javascript
+  const { generateToken, csrfSynchronisedProtection, invalidCsrfTokenError } = csrfSync({
+    ignoredMethods: ["GET", "HEAD", "OPTIONS"],
+    getTokenFromState: (req) => req.session.csrfToken,
+    getTokenFromRequest: (req) => req.headers["x-csrf-token"],
+    storeTokenInState: (req, token) => (req.session.csrfToken = token),
+    size: 128
+  });
+  ```
+
+  * `ignoredMethods`: defines the HTTP methods to exclude from CSRF protection, such as safe methods (`GET`, `HEAD`, `OPTIONS`).
+  * `getTokenFromState`: retrieves the CSRF token from the server's state (i.e., user session).
+  * `getTokenFromRequest`: extracts the CSRF token from the client's request headers (i.e., `x-csrf-token`).
+  * `storeTokenInState`: stores the generated CSRF token in the server state (i.e., attaches it to the user's session).
+  * `size`: specifies the size of the generated tokens in bits (128 bits is secure and sufficient).
 
 ## Exercise to practice :writing_hand:
 
@@ -13,3 +34,5 @@
 * After applying the changes, click the `Verify Completion` button to validate the exercise has been completed.
 
   @@ExerciseBox@@
+
+[1]: https://www.npmjs.com/package/csrf-sync

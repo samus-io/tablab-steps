@@ -82,15 +82,16 @@
   1. When a user visits this page, their browser automatically submits the form, initiating a login request. If the server responds with:
 
       ```http
-      Set-Cookie: session=attacker_account_session_id; Secure; HttpOnly; Path=/
+      Set-Cookie: sessionId=attacker_account_session_id; Secure; HttpOnly; Path=/
       ```
 
       The browser overwrites the victim's existing session cookie with the attacker account's session.
 
+      > :older_man: The `Same-Origin Policy (SOP)` prevents JavaScript running in a given origin from accessing the content of a document loaded from a different origin. Technically, cross-origin requests are still possible, but JavaScript cannot read the responses. However, the browser continues to process them, including handling the `Set-Cookie` headers.
+
   1. Since the victim remains unaware of this manipulation, they may continue using the trusted application, believing they are still logged into their own account. However, all actions they perform are tied to the attacker's session.
 * This technique is particularly dangerous in applications where users store personal information, payment details, or sensitive messages, as any data entered while under the attacker's session will be accessible to them.
 * Attackers can also leverage this approach to track user interactions and harvest sensitive data, initiate fraudulent transactions using stored payment details, exploit account linking mechanisms to permanently associate the victim's actions with the attacker's controlled session.
-  > :older_man: However, there is a shift in behavior. Historically, the absence of the `SameSite` attribute on cookies was treated as `SameSite=None` by most browsers. Recognizing the security risks of this approach, modern browsers now default to `SameSite=Lax`, which would prevent this attack. Although this change enhances security, depending on browser defaults is not considered a reliable security practice.
 
 ## Common CSRF payloads
 

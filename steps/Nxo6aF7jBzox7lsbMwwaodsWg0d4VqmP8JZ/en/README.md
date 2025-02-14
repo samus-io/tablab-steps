@@ -11,6 +11,7 @@
 * [ ] Set the `SameSite` attribute for session cookies to `Lax` or `Strict` mode.
 * [ ] Avoid using GET for state-changing operations, as it may enable CSRF under the `SameSite=Lax` cookie configuration and expose CSRF tokens through browser history, log files, network utilities that log HTTP request headers, the `Referer` header when linking to external sites.
 * [ ] Review CORS configuration to ensure it does not allow cross-origin requests while dynamically reflecting the origin (`Access-Control-Allow-Origin: https://attacker.com`) and permitting credentialed requests (`Access-Control-Allow-Credentials: true`), as this would enable cross-origin JavaScript to access HTTP responses from an authenticated session.
+* [ ] Validate that upon authentication, the unauthenticated session is discarded and a new session is initiated to prevent session fixation vulnerabilities that could bypass CSRF protection. If a logout happens, the session must also be destroyed and regenerated, ensuring that any tokens generated within the session are revoked.
 
 ## Request for authentication before critical state-changing operations
 
@@ -147,6 +148,8 @@
   * `Strict`: the cookie is sent only with requests that originate from the same site that set the cookie. On requests from cross-site sources, the browser does not include the cookie.
   * `Lax`: the cookie is sent in same-site requests, similar to `Strict` mode, but also in top-level, user-initiated navigations (e.g., clicking a link) when the request uses a safe method (`GET`, `HEAD`, `OPTIONS`, `TRACE`). It is excluded from background requests initiated by scripts, iframes, references to images, and other resources, as well as from requests using unsafe methods (`POST`, `PUT`, `DELETE`, `PATCH`).
   * `None`: the cookie is sent with all same-site and cross-site requests, which removes the built-in CSRF protection that `Lax` or `Strict` provide. This setting also mandates the `Secure` cookie attribute, restricting cookie transmission to HTTPS.
+
+    > :older_man: Historically, the absence of the `SameSite` attribute on cookies was treated as `SameSite=None` by most browsers. Recognizing the security risks of this approach, modern browsers now default to `SameSite=Lax`.
 
 * It is essential to understand that `Lax` enforcement provides a reasonable defense-in-depth measure against CSRF attacks that use unsafe HTTP methods, but does not constitute a complete defense against CSRF attacks as a general security concern:
   * Cookies are still sent for top-level, user-initiated navigations using safe methods, allowing attackers to open a new window, trigger a forced navigation, or trick users into clicking a malicious link to bypass this restriction. CSRF attacks can still be performed through GET requests, which remain as a potential attack vector.
