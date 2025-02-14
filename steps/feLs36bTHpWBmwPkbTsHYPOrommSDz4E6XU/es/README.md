@@ -1,6 +1,6 @@
 # Integración de arquitecturas de software y seguridad de 3-niveles tradicionales
 
-* A continuación se muestra una representación gráfica de cómo integrar la arquitectura de software de 3 niveles tradicional (niveles de Presentación, Aplicación y Datos) con la arquitectura de seguridad de 3 niveles tradicional (niveles Desmilitarizado, Confianza y Privado).
+* A continuación se muestra una representación gráfica de cómo integrar la arquitectura de software de 3 niveles tradicional (niveles de presentación, aplicación y datos) con la arquitectura de seguridad de 3 niveles tradicional (niveles desmilitarizado, confianza y privado).
 
 ![Integración de arquitecturas de software y seguridad de 3-niveles][1]
 
@@ -8,23 +8,23 @@
   * Las capas de lógica de negocio deben descargarse de los servidores web a servidores dedicados al procesamiento de datos y es aquí donde se produce el procesamiento de datos real, incluyendo la adición de información a la base de datos, la recuperación y manipulación de datos y la ejecución de tareas y trabajos programados.
   * Estas capas de lógica de negocio también deben asumir la responsabilidad de implementar la mayoría de las medidas de seguridad de los datos, garantizando la integridad de los mismos.
   * Los servidores web interactuan con los servidores de procesamiento de datos a través de un protocolo menos benigno, como HTTP o HTTPS, y estas aplicaciones son las que se codifican para realizar llamadas SQL a los servidores de bases de datos internos.
-  * Estos servidores backend del Nivel de Confianza nunca serán expuestos directamente a Internet.
+  * Estos servidores backend del nivel de confianza nunca serán expuestos directamente a Internet.
 * Este enfoque de 3 niveles se observa en las infraestructuras on-premises tradicionales y todavía puede considerarse hoy en día para aplicaciones web sencillas o para el desarrollo unificado de aplicaciones on-premises y en la nube.
 
 ## Proceso de integración
 
-### El Nivel de Presentación se ubica en el Nivel Desmilitarizado
+### El nivel de presentación se ubica en el nivel desmilitarizado
 
-* El Nivel de Presentación, que contiene sólo la lógica de visualización de la aplicación y otros servicios para el soporte de visual, debe colocarse en el Nivel Desmilitarizado.
+* El nivel de presentación, que contiene sólo la lógica de visualización de la aplicación y otros servicios para el soporte de visual, debe colocarse en el nivel desmilitarizado.
 
-### El Nivel de Aplicación se divide entre el Nivel Desmilitarizado y el Nivel de Confianza
+### El nivel de aplicación se divide entre el nivel desmilitarizado y el nivel de confianza
 
-* Los componentes del Nivel de Aplicación necesarios para satisfacer las peticiones de la interfaz de usuario deben colocarse en el Nivel Desmilitarizado.
-* Los servidores de aplicaciones que contienen toda la lógica de negocio deben colocarse en el Nivel de Confianza, haciéndolos accesibles a través de comunicaciones designadas desde el Nivel Desmilitarizado.
+* Los componentes del nivel de aplicación necesarios para satisfacer las peticiones de la interfaz de usuario deben colocarse en el nivel desmilitarizado.
+* Los servidores de aplicaciones que contienen toda la lógica de negocio deben colocarse en el nivel de confianza, haciéndolos accesibles a través de comunicaciones designadas desde el nivel desmilitarizado.
 
-### El Nivel de Datos se ubica en el Nivel Privado
+### El nivel de datos se ubica en el nivel privado
 
-* El Nivel Privado debe contener los servidores de bases de datos, que idealmente sólo serán consultados por servidores en el Nivel de Confianza con acceso específico permitido y limitado.
+* El nivel privado debe contener los servidores de bases de datos, que idealmente sólo serán consultados por servidores en el nivel de confianza con acceso específico permitido y limitado.
 
 ### Desafíos
 
@@ -36,7 +36,7 @@
 * Utilizar el autoescalado para gestionar los cambios en la carga de trabajo.
 * Considerar el uso de mensajería asíncrona para desacoplar los niveles.
 * Instalar un cortafuegos de aplicaciones web (WAF) para analizar el tráfico entrante de Internet.
-* Restringir el acceso al Nivel de Datos permitiendo solicitudes sólo desde el Nivel de Confianza.
+* Restringir el acceso al nivel de datos permitiendo solicitudes sólo desde el nivel de confianza.
 
 ## Pros y contras
 
@@ -56,7 +56,7 @@
 ## Consideraciones adicionales de seguridad
 
 * Los servidores públicos nunca deben tener acceso directo a las redes o recursos internos.
-  * Se puede considerar la posibilidad de añadir un controlador de dominio de sólo lectura (RODC) en el Nivel de Confianza para gestionar las autenticaciones de usuarios externos si es necesario.
+  * Se puede considerar la posibilidad de añadir un controlador de dominio de sólo lectura (RODC) en el nivel de confianza para gestionar las autenticaciones de usuarios externos si es necesario.
 * Los usuarios nunca deben tocar directamente los servidores web que sirven contenido.
   * Todas las solicitudes entrantes de Internet deben atravesar un proxy inverso para llegar a los distintos servicios web.
   * Estos proxies HTTP inversos deben mantenerse en sus propias subredes, separadas de las subredes de otros servidores web.
