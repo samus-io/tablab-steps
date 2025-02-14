@@ -54,7 +54,26 @@
       ```
 
   * Update the PATCH endpoint `/change-email` to include protection against CSRF attacks, ensuring it returns a `403 Forbidden` status code if the HTTP request sent by the client does not include a valid CSRF token in the `x-csrf-token` header, which must match the token stored in the `csrfToken` cookie also sent in the request.
-  * Be aware that the frontend client application automatically attempts to retrieve a CSRF token from the `csrfToken` cookie and, if successful, adds it to the `x-csrf-token` header before sending the PATCH request to update the email, thus eliminating the need for any frontend modification.
+  * Be aware that the frontend client application automatically attempts to retrieve a CSRF token from the `csrfToken` cookie and, if successful, adds it to the `x-csrf-token` header before sending the PATCH request to update the email, thus **eliminating the need for any frontend modification**:
+
+    ```javascript
+    const csrfToken = Cookies.get("csrfToken") || "";
+    
+    axios({
+      url: "/change-email",
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+        "x-csrf-token": csrfToken
+      },
+      data: {
+        username,
+        currentEmail,
+        newEmail
+      }
+    })
+    ```
+
 * After applying the changes, click the `Verify Completion` button to validate the exercise has been completed.
 
   @@ExerciseBox@@

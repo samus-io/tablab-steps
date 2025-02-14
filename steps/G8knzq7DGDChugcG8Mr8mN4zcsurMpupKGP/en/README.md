@@ -30,7 +30,31 @@
 * The purpose of this exercise is to edit the source code using the `Open Code Editor` button to implement a CSRF protection based on the synchronizer token pattern via the `csrf-sync` npm package. More specifically, the following steps must be accomplished to correctly support this functionality:
   * Add a GET endpoint under the `/csrf-token` route that returns the CSRF token associated with the user's session. This endpoint should permit only authenticated users and respond with `401 Unauthorized` status code response for unauthorized attempts. Legitimate requests should return a JSON object such as `{ "csrfToken": "<csrf_token_value>" }` that provides the CSRF token attached to the user's session.
   * Update the PATCH endpoint `/change-email` to include protection against CSRF attacks, ensuring it returns a `403 Forbidden` status code if the HTTP request sent by the client does not include a valid CSRF token in the `x-csrf-token` header, which must match the token stored on the server-side.
-  * Be aware that the frontend client application automatically attempts to retrieve a CSRF token from the `/csrf-token` endpoint and, if successful, adds it to the `x-csrf-token` header before sending the PATCH request to update the email, thus eliminating the need for any frontend modification.
+  * Be aware that the frontend client application automatically attempts to retrieve a CSRF token from the `/csrf-token` endpoint and, if successful, adds it to the `x-csrf-token` header before sending the PATCH request to update the email, thus **eliminating the need for any frontend modification**:
+
+    ```javascript
+    const csrfToken = await axios({
+      url: "/csrf-token",
+      method: "GET"
+    })
+      .then((res) => res.data.csrfToken)
+      .catch((err) => "") // User may not have implemented CSRF functionality yet
+
+    axios({
+      url: "/change-email",
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+        "x-csrf-token": csrfToken
+      },
+      data: {
+        username,
+        currentEmail,
+        newEmail
+      }
+    });
+    ```
+
 * After applying the changes, click the `Verify Completion` button to validate the exercise has been completed.
 
   @@ExerciseBox@@
