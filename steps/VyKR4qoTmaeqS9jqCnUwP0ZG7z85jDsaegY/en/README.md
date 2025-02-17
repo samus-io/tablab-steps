@@ -16,13 +16,13 @@
 * An example of privilege escalation would occur if a regular customer manipulates the URL or API request to access an admin-only feature, such as viewing all orders or editing product details.
 * For instance, a regular user accessing the admin dashboard by navigating to:
 
-  ```
+  ```url
   https://example.tbl/admin/orders
   ```
 
 * Or using an API endpoint like:
 
-  ```
+  ```http
   GET /api/admin/orders
   ```
 
@@ -36,13 +36,13 @@
 * Following the same e-commerce example, a privilege escalation would occur if a user manipulates the URL or API requests to access other user's data, such as obtaining its private information or making actions on its behalf.
 * For instance, a regular user accessing to another user's order by navigating to:
 
-  ```
+  ```url
   https://example.tbl/getOrder?id=1234
   ```
 
 * Or using an API endpoint like:
 
-  ```
+  ```http
   GET /api/order/1234
   ```
 
@@ -56,4 +56,4 @@
 * A breach on access control will occur if a user manipulates a client-side request to bypass the restriction and attempts to change the shopping cart contents even after payment.
 * This could allow the user to modify orders by adding more content to their order than they have paid for.
 
-[1]: /static/images/Access_control_types.png
+[1]: /static/images/bac-types.png

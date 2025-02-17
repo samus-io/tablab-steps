@@ -1,0 +1,15 @@
+# Why is attribute and relationship based access control preferable over RBAC?
+
+* Each access model has its own strengths and weaknesses, and the preference for one over the others depends on the specific requirements and context of the system.
+* However, ABAC and ReBAC offer some advantages over RBAC in certain scenarios.
+
+|Property|RBAC|ABAC & ReBAC|
+|:--:|:--:|:--:|
+|Flexibility and granularity|Structured around predefined roles and less adaptable to complex scenarios where users have diverse roles or require fine-grained access control.|Offer greater flexibility by allowing access decisions to be based on dynamic attributes or relationships between users.|
+|Dynamic authorization policies|Requires static assignment of roles to users, which may not be suitable for environments where access requirements vary dynamically.|Support dynamic authorization policies that evaluate attributes and relationships in real-time to make access decisions.|
+|Resource-centric access control|Focuses primarily on user roles and permissions, with less emphasis on the characteristics of the resources being accessed.|Take a more resource-centric approach by considering attributes and relationships associated with both users and resources when making access decisions.|
+|Scalability and maintenance|Become complex and difficult to manage as the number of roles and permissions grows, especially in large-scale systems |Offer scalability advantages by allowing access control policies to be defined based on flexible attribute and relationship criteria.|
+|Processing Efficiency|When there are too many roles, RBAC can lead to role explosion, where there are more roles defined than can be efficiently managed.|ABAC and ReBAC avoid role explosion but may introduce computational overhead due to real-time evaluation of attributes and relationships, which can impact performance in large-scale environments.|
+|Multi-tenancy and cross-organizational requests|Managing multi-tenancy and cross-organization access is challenging due to static role assignments.|Provide better support for multi-tenancy by using standardized attributes and relationships for seamless access control across infrastructures.|
+|Management and robustness|Setup may seem simpler initially, but as the system grows in size and complexity, managing roles becomes challenging. Testing and auditing also become more difficult as the number of roles increases.|More expressive and easier to update since they rely on attributes and relationships, reducing the need for manual role adjustments.|
+|Fine-grained and detailed boolean logic|RBAC's simplistic approach allows access decisions to be based solely on the presence or absence of roles, which limits the granularity of control and makes it challenging to support object-level or horizontal access control decisions and those that require multiple factors.|ABAC supports complex boolean logic through attribute-based conditions, while ReBAC enables fine-grained permissions using user-object relationships and algebraic operators for complex policies.|

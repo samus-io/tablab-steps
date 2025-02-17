@@ -1,118 +1,207 @@
-# Preventing Privilege Escalation
+# Preventing privilege escalation
 
-* By incorporating the below principles into your application development process, you can establish robust access controls and reduce the risk of privilege escalation vulnerabilities:
+* Incorporating the principles below into the application development process helps establish robust access controls and reduce the risk of privilege escalation vulnerabilities.
 
-## Enforce Least Privileges
+## Principle of least privilege
 
-* This principle advocates for granting users the minimum level of access or permissions required to perform their tasks effectively. By limiting privileges, you reduce the potential impact of security breaches and unauthorized access.
-* During design phase of any app, define trust boundaries, user types, resources, and operations they can perform. Granting too many permissions is risky, so plan carefully to avoid needing to revoke later.
-* An example of this is in a web application, instead of giving all users administrative privileges, create different roles such as **admin**, **editor**, and **user**. Admins have full control, editors can edit content but not manage users, and regular users have limited access to their own profile information. The roles should have their own permissions and should ensure that it is both horizontally and vertically controlled.
+* The principle of least privilege advocates for granting users the minimum level of access or permissions required to perform their tasks effectively.
+* Restricting privileges reduces the risk of security breaches, unauthorized access and potential damage caused by compromised accounts.
+* During the design phase of a web application, defining trust boundaries, user roles, resources, and allowed operations is essential to maintain secure access control.
+* Assigning excessive permissions can introduce security risks, making it crucial to carefully plan access levels to avoid unnecessary revocations later. Adding permissions is easier than removing them.
+* Access control should be enforced at both horizontal and vertical levels to prevent unauthorized access to other user's data and privileged functionalities.
+* Applying this principle strengthens security by minimizing the attack surface and ensuring that users can only perform actions relevant to their responsibilities.
 
-## Deny by Default
+### Practical example
 
-* Following the **deny by default** principle means that access to resources is denied unless explicitly allowed. This approach helps minimize the attack surface and reduces the risk of unauthorized access.
-* Keep in mind to justify permissions granted to users or groups, rather than assuming access is the default and to explicitly configure over relying on default settings of frameworks or libraries, as these may change over time without the developer's knowledge.
-* For instance one can configure network firewalls to block all incoming traffic by default and only allow specific ports or IP addresses that are required for legitimate communication.
+* An example of the principle of least privilege would be a web application that has two primary roles:
+  * A `User` which has basic permissions, such as managing their own profile and performing limited actions within the system.
+  * An `Administrator` which has full control, including managing users, modifying system settings, and accessing sensitive data.
+* Consider that there is one user that needs the ability to impersonate users to troubleshoot issues or assist customers.
+* Assigning the `Administrator` role to the support agent would be too excessive, as it would grant them unnecessary permissions beyond impersonation.
+* Increasing the `User` role privileges for all users would be too broad, potentially exposing impersonation capabilities to users who should not have it.
+* Instead of misusing existing roles, a new role such as `Support Agent` or `Customer Service` should be created.
+* This new role is assigned only the necessary permissions, allowing user impersonation but restricting access to system settings, security controls, or administrative features.
+* This ensures that users receive only the permissions they need to perform their tasks, reducing security risks and preventing unauthorized access to sensitive system functions.
 
-### Example Deny by Default Access Control in Nodejs + Express
+## Deny by default
 
-* Let's implement **deny by default** access control in a Node.js application using a simple Express server and a Client-side API call.
+* The deny by default principle ensures that access to resources is restricted unless explicitly granted, reducing the risk of unauthorized access and minimizing the attack surface.
+* Access permissions should be explicitly defined rather than assumed, preventing unintended access due to misconfigurations or default settings.
+* Justifying permissions before granting them helps maintain tight access control, ensuring that users and groups receive only the necessary privileges.
+* A practical example of the deny by default principle would be a web application where access to all endpoints are initially restricted, preventing unauthorized users from accessing any functionality.
 
-#### Server-side implementation (Node.js)
+  <details>
+    <summary>Dependencies</summary>
 
-```javascript
-  const express = require('express'); // install express
-  const session = require('express-session'); // install express-session
+    ```javascript
+    const express = require("express");
+    const session = require("express-session");
+    ```
+
+  </details>
+
+  ```javascript
   const app = express();
 
-  // Middleware for session authentication
+  // Configure session middleware
   app.use(session({
-      secret: 'secret',
-      resave: true,
-      saveUninitialized: true
+    secret: "sessionsecret",
+    resave: false,
+    saveUninitialized: false,
   }));
 
-  // Middleware for access control
-  app.use((req, res, next) => {
-      // Check if user is authenticated
-      if (req.session.authenticated || req.path == '/login') {
-          return next(); // Allow access for authenticated users
+  // Authorization middleware that checks for allowed roles from the session
+  const authMiddleware = (allowedRoles) => (req, res, next) => {
+    const role = req.session?.user?.role; // Extract role from the session
+
+    if (allowedRoles.includes("public") || (role && allowedRoles.includes(role))) {
+      return next(); // Grant access if the role is authorized
+    }
+    return res.status(403).send("Access denied.");
+  };
+  ```
+
+  ```javascript
+  app.get("/", authMiddleware(["public"]), (req, res) => {
+    res.send("Welcome!");
+  });
+
+  app.get("/login", authMiddleware(["public"]), (req, res) => {
+    // Login logic
+  });
+
+  // Explicitly authorized routes
+  app.get("/admin", authMiddleware(["admin"]), (req, res) => {
+    res.send("Welcome, Admin!");
+  });
+
+  app.get("/user", authMiddleware(["user", "admin"]), (req, res) => {
+    res.send("Welcome, User!");
+  });
+  ```
+
+* By default, the web application will block all requests unless explicit access control rules are defined for specific roles or the definition that the endpoint is public.
+* Applying this approach enforces a proactive security model, where access decisions are carefully evaluated rather than assumed, reducing exposure to potential threats.
+
+## Verify permissions before processing requests
+
+* Authorization checks should be the first step in request processing to ensure that only authorized users can access resources or perform actions.
+* Performing access control verification at the beginning of request handling prevents unnecessary processing and protects sensitive data from unauthorized access.
+* Using a global access control configuration helps maintain consistency across the entire application and reduces the risk of misconfigured permissions.
+* An effective approach is to implement middleware in the web application to verify user permissions before executing the endpoint's logic.
+* The following code snippet ensures that the `authMiddleware` is the first to process the request:
+
+  ```javascript
+  const customMiddleware = () => (req, res, next) => {
+    // Custom middleware that applies application logic
+    return next(); 
+  };
+
+  const authMiddleware = (allowedRoles) => (req, res, next) => {
+    const role = req.session?.user?.role; // Extract role from the session
+
+    if (allowedRoles.includes("public") || (role && allowedRoles.includes(role))) {
+      return next(); // Grant access if the role is authorized
+    }
+    return res.status(403).send("Access denied.");
+  };
+
+  app.get("/profile", authMiddleware(["user", "admin"]), customMiddleware, (req, res) => {
+    res.send("Welcome, User!");
+  });
+  ```
+
+* If a user does not have the necessary privileges, the web application returns a `403 Forbidden` response without processing the request further.
+
+## Enforce authorization checks on static resources
+
+* Static resources that are not meant to be publicly accessible, such as user profile pictures, invoices, system logs, or private documents, must be protected by proper access control mechanisms to prevent unauthorized access and data leakage.
+* Instead of serving static resources directly, the backend should enforce authentication and authorization checks before granting access.
+* After verifying the user's identity, the backend checks whether they have the necessary permissions to access the requested file.
+* If authorized, the backend retrieves the file from secure storage, such as a protected server directory, database, or cloud storage service, and serves it to the user.
+
+  ```javascript
+  // Secure route to serve private files with authorization checks
+  app.get("/private/files/:filename", authMiddleware, (req, res) => {
+    const filesDirectory = "/var/www/users/files/";
+    const filename = req.params.filename;
+
+    // Construct the full file path
+    const filePath = path.join(filesDirectory, filename);
+
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).send("File not found.");
+    }
+
+    // If authorized and file exists, serve the file
+    return res.sendFile(filePath, (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Error reading file.");
       }
-      // Deny access by default
-      return res.status(403).send('Access denied');
+    });
   });
+  ```
 
-  app.get('/login', (req, res) => {
-      // Simulate login
-      req.session.authenticated = true;
-      res.send('Login successful');
+
+## Create unit and integration test cases for authorization logic
+
+* Testing authorization logic ensures that access controls are correctly enforced, preventing unauthorized access to sensitive resources.
+* Identifying vulnerabilities or misconfigurations early in the development lifecycle reduces the risk of security breaches.
+* Writing unit tests using testing frameworks helps validate authorization functions, middleware, and access control mechanisms in isolation.
+* Unit tests should include different user roles, permissions, and scenarios to verify that access restrictions work as intended.
+* For example, a test can confirm that a regular user cannot access admin-only routes while an administrator can perform privileged actions.
+
+  ```javascript
+  describe("authorize middleware (unit tests)", () => {
+    it("calls next if user has the required role", () => {
+      const { req, res, next } = mockExpress("admin");
+      const middleware = authorize("admin");
+
+      middleware(req, res, next);
+      expect(next).toHaveBeenCalled();
+    });
+
+    it("returns 403 if user does not have the required role", () => {
+      const { req, res, next } = mockExpress("user");
+      const middleware = authorize("admin");
+
+      middleware(req, res, next);
+      expect(res.status).toHaveBeenCalledWith(403);
+      expect(res.json).toHaveBeenCalledWith({ error: "Access denied." });
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it("returns 403 if user role is undefined", () => {
+      const { req, res, next } = mockExpress(undefined);
+      const middleware = authorize("admin");
+
+      middleware(req, res, next);
+      expect(res.status).toHaveBeenCalledWith(403);
+      expect(res.json).toHaveBeenCalledWith({ error: "Access denied." });
+      expect(next).not.toHaveBeenCalled();
+    });
   });
+  ```
 
-  app.get('/logout', (req, res) => {
-      // Simulate logout
-      req.session.authenticated = false;
-      res.send('Logged out');
-  });
+* Testing should cover horizontal and vertical privilege escalation attempts to ensure unauthorized users cannot escalate their access.
+* Automated testing helps maintain consistent security validation and prevents accidental changes from introducing access control flaws.
+* Additionally, integration tests should simulate real-world interactions to verify end-to-end authorization workflows across different application components.
 
-  app.get('/data', (req, res) => {
-      res.json({ message: 'Access granted for authenticated user' });
-  });
+## Review the access control logic of chosen technologies and implement necessary custom logic
 
-  app.listen(3000, () => {
-      console.log('Server is running...');
-  });
-```
+* Understand how the authorization logic works in the technologies being used to ensure it aligns with security best practices.
+* Evaluate the capabilities and limitations of the chosen technologies instead of depending on default configurations.
+* Implement custom authorization logic where necessary to ensure security policies are enforced according to the application's requirements.
+* Review and update access control settings as new security threats emerge to maintain strong protection against unauthorized access.
+  * Regularly check for vulnerabilities in third-party components and apply updates or patches to mitigate security risks.
 
-#### Client-side implementation (API call)
+## Proper error handling and logging
 
-* Firstly, send a `GET` request to the path `/data`. It will deny with `403` response code.
-* Secondly, make a request to `/login` and then to `/data`. It will grant access.
-* Finally, send a request to `/logout` and then `/data`. It will deny again.
-* This setup simulates the deny by default prevention technique.
-
-## Validate permissions on every request before anything else
-
-* Authorization checks should be performed as the first step in request processing to ensure that only authorized users can access resources or perform actions.
-* Ensure the access control technology used allows for global configuration across the entire application. Even a single missed access control check can compromise the confidentiality or integrity of a resource.
-* An example would be to implement middleware in nodejs app to verify user permissions before executing route handlers. If a user lacks the necessary permissions, return a `403 Forbidden` response without further processing.
-
-## Enforce Authorization checks on static resources
-
-* Static resources such as files, directories, or endpoints should also be protected by access controls to prevent unauthorized access or disclosure of sensitive information.
-* For cloud services like GCP or AWS or Azure, use configuration options and tools provided by cloud service vendors to secure static resources. Refer to documentation from providers for specific implementation details.
-* Ensure uniform protection across all aspects of the application to maintain security consistency.
-* For instance, one can configure web server settings (e.g., Apache, Nginx) to restrict access to directories containing sensitive files, such as configuration files or logs. Use server directives like **Deny from all** or **Require all denied** to enforce access controls.
-
-## Verify that Authorization checks are performed in the right location
-
-* Authorization logic should be implemented consistently across all layers of the application stack, including frontend (UI) and backend (API) components, to prevent bypassing of access controls.
-* An example is to perform authorization checks in a single-page application (SPA) on both the client-side and server-side. The client-side checks provide a better user experience by hiding or disabling unauthorized UI elements, while the server-side checks enforce security and prevent unauthorized API access.
-
-## Create Unit and Integration Test cases for Authorization logic
-
-* Testing authorization logic ensures that access controls are correctly enforced and help identify vulnerabilities or misconfigurations early in the development lifecycle.
-* For instance one can write unit tests using testing frameworks like Jest or Mocha to validate authorization functions or middleware. Include test cases for different user roles and scenarios to verify proper enforcement of access controls. Additionally, create integration tests to simulate real-world interactions and validate end-to-end authorization workflows.
-
-## Proper Error Handling and Logging
-
-* Deal with access control failures carefully and make sure to handle all errors, even if they seem unlikely.
-* Keep the handling of access control failures in one place. Double-check how you handle errors and access control failures to avoid making the software unstable.
-* Do not reveal any sensitive information to users when a failure occurs. Instead inform them that the attempted operation was not successful.
-* Utilize clear and consistent log formats for easy analysis. Tailor logging levels to match application needs and environment.
-* Maintain synchronized clocks and timezones across systems. Integrate application logs into a centralized server.
-* For example, if a user tries to access a premium feature without a subscription, the application should display a message explaining the need for a subscription instead of crashing or exposing sensitive data.
-
-## Ensuring protected access to object identifiers
-
-* Keep object identifiers hidden from users whenever possible.
-* Use techniques to obfuscate or randomize identifiers to prevent easy guessing.
-* Implement access controls to verify permissions for each object or functionality accessed. Ensure that users cannot access unauthorized resources by manipulating object identifiers in URLs or other parameters.
-* For instance, in a banking application, instead of exposing account numbers in URLs like `https://example.org/account?acct_id=2024`, use session-specific references to retrieve account details securely.
-
-## Review the Access Control logic of chosen technologies and implement necessary custom logic
-
-* Pick libraries and frameworks carefully, considering their security track record. Understand the authorization logic provided by chosen components.
-* Regularly check for vulnerabilities in third-party components. Don't rely solely on one framework or library for access control.
-* Understand the capabilities of the technologies you use. Don't depend solely on default configurations.
-* Test configurations thoroughly in your specific environment.
-* Suppose you're using a popular authentication library for your web application. By default, it allows users to reset their passwords via email without verifying their identity. To ensure secure access control, you customize the configuration to require additional verification steps before allowing password resets, such as answering security questions or entering a temporary code sent to their registered phone number.
+* Handle access control failures carefully to ensure that all errors are managed properly, even those that seem unlikely.
+* Avoid exposing sensitive information when an access failure occurs. Instead, return a generic message indicating that the operation was unsuccessful.
+  * For example, if a user attempts to access a premium feature without a subscription, the system should display a clear message explaining that a subscription is required instead of crashing or exposing internal system details.
+* Adjust logging levels to align with application needs and security requirements, ensuring that sensitive data is not logged in production environments.
+* Its recommended to store logs in a centralized location to facilitate monitoring, security audits, and real-time threat detection.
+* Proper error handling ensures that security violations are logged while preventing attackers from gaining insights into system vulnerabilities.

@@ -11,10 +11,10 @@
 * In a web application lacking proper access control, the following endpoint for deleting user accounts is vulnerable because it fails to verify whether the requester possesses the necessary administrative privileges before performing the action:
 
   ```javascript
-  // Route for deleting user accounts (vulnerable to missing access control)
+  // Route for deleting user accounts
   app.delete('/users/:id', (req, res) => {
       const userId = req.params.id;
-      // Delete user account from the database (no access control check)
+      // Delete user account from the database without access control check
       User.findByIdAndDelete(userId, (err, deletedUser) => {
           if (err) {
               return res.status(500).send('Internal Server Error');
@@ -38,7 +38,7 @@
       const isAdmin = req.query.isAdmin;
 
       if (isAdmin) {
-          User.findMany((err, users) => {
+          User.findMany({}, (err, users) => {
               if (err) {
                   return res.status(500).send('Internal Server Error');
               }
@@ -53,31 +53,9 @@
 
 * In this example, an attacker could manipulate the URL by modifying the `isAdmin` parameter:
 
-  ```
+  ```url
   https://example.tbl/admin/users?isAdmin=true
   ```
-
-## Broken access control by URL mismatching
-
-* Web applications may interpret different variations of a URL as referring to the same endpoint, but access control mechanisms may not always enforce restrictions consistently across these variations.
-* Some web applications treat URLs as case-insensitive, meaning that the following two endpoints may be considered the same:
-
-  ```
-  https://example.tbl/admin/deleteUser
-  https://example.tbl/ADMIN/DELETEUSER
-  ```
-
-* However, if the access control mechanism is case-sensitive, it may enforce restrictions only on one of them, allowing unauthorized access to the other.
-* This not only happens when capitalizing characters, it also can be found when using trailing slashes. For instance, the following two endpoints may be managed as the same:
-
-  ```
-  https://example.tbl/admin/deleteUser
-  https://example.tbl/admin/deleteUser/
-  ```
-
-* If access control is only applied to one of these two endpoints, an attacker could bypass it by adding or removing the trailing slash.
-* There are many techniques to apply URL mismatching, including URL encoding some characters to bypass the access control filter, using route aliases (e.g., `/admin/deleteUser` aliased to `/admin/removeUser`) where the one of them is not protected by the access control, etc.
-* Mitigating these vulnerabilities requires a depth understanding on how the web application handle requests and ensuring consistent enforcement of access controls across all variations of URLs and addressing any discrepancies in URL matching and access control enforcement.
 
 ## Vertical privilege escalation for authenticated and unauthenticated users
 
