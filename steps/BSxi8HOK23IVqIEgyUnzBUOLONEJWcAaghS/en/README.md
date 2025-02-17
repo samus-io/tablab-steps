@@ -1,5 +1,7 @@
 # Finding and exploiting file upload vulnerabilities
 
+* Identifying and exploiting file upload vulnerabilities requires systematically testing and methodical evaluation of the application's upload functionality.
+
 ## General methodology for identifying insecure file uploads
 
 1. Locate the file upload capability in the application, confirming that the required permissions for uploading files are present.
@@ -132,29 +134,31 @@
 ## Exercise to practice :writing_hand:
 
 * The following file upload form is vulnerable to `Remote Code Execution (RCE)`, meaning it's possible to upload a file that can be used to execute arbitrary code on the server.
-* When accessing the code editor via the `Open Code Editor` button, a command line is available along with a file named `webshell.php`, located in `/home/coder/app/webshell.php`, that could allow arbitrary code execution on the server if it gets uploaded.
-* The goal here is to ***use the command line provided in the code editor** to upload, using `curl`, the `webshell.php` file via an HTTP POST request to the `/upload` endpoint:
+* The scenario provides a command line along with a file named `webshell.php`, located in `/home/tbl/webshell.php`, that could allow arbitrary code execution on the server if it gets uploaded.
+* The goal here is to use the command line provided to upload, using `curl`, the `webshell.php` file via an HTTP POST request to the `/upload` endpoint:
 
   ```bash
   curl -F "file=@webshell.php" $APP_URL/upload
   ```
 
-* However, there is a weak security measure in place that restricts file uploads to `.jpg`, `.jpeg`, and `.png` extensions, as shown below, which needs to be bypassed to upload the `webshell.php` file:
+  * However, there is a weak security measure in place that restricts file uploads to `.jpg`, `.jpeg`, and `.png` extensions, which will need to be bypassed in order to upload the `webshell.php` file:
 
-  ```bash
-  coder@localhost:~/app$ curl -F "file=@webshell.php" $APP_URL/upload
-  { "message" : "File type not allowed" }
-  ```
+    ```bash
+    tbl@localhost:~$ curl -F "file=@webshell.php" $APP_URL/upload
+    { "message" : "File type not allowed" }
+    ```
 
-* Only after circumventing this security measure by one of the techniques shown above and successfully uploading the file to the server, which is your job, it's time then to use the `webshell.php` file to arbitrarily execute the `validate` command in order to complete the exercise:
+    This restriction can also be tested using the web app, which offers sample images with various extensions and a dedicated form interface for uploading them.
+
+* **Note that `/upload` is the API endpoint for uploading files, while `/uploads/` is the directory where the uploaded files are stored**.
+* Once this security measure has been bypassed using one of the mentioned techniques and the `webshell.php` file has been successfully uploaded to the server, the final task is to use it for the arbitrary execution of the `validate` command to complete the exercise:
 
   ```bash
   curl $APP_URL/uploads/<webshell_file>?cmd=validate
   ```
 
-  * Besides `validate`, it will be possible to execute any supported command such as `whoami`, `ls` or `pwd` just like in a regular terminal.
-  * Note that `/upload` is the endpoint for uploading files, while `/uploads/` is the directory where the uploaded files are stored.
-* Will you be able to bypass the security measure and run the `validate` command through the `webshell.php` file to complete the exercise?
+  * Besides the `validate` command, it will be possible to execute any supported command such as `whoami`, `ls` or `pwd` just like in a regular terminal. Feel free to execute various commands to observe the behavior of a `webshell`.
+* Will you be able to bypass the security measure and run the `validate` command through the `webshell.php` file to complete the exercise? :slightly_smiling_face::muscle:
   @@ExerciseBox@@
 
 [1]: https://en.wikipedia.org/wiki/List_of_file_signatures
