@@ -59,7 +59,9 @@
   * `pdf` files start with `25 50 44 46 2D` (corresponding to `%PDF-`).
   * `zip` files start with `50 4B 03 04` (corresponding to `PK␃␄`).
 * Malicious users can easily prepend a valid magic number to malicious files, making them seem legitimate. For instance, adding the `%PDF-2.0` signature at the start of a webshell file can trick the system into thinking it's a PDF file.
-  > :older_man: `webshell` is the common name given to a script used by attackers that, when uploaded to a web server, allows them to execute system commands and take control of the server as if they had direct shell access, but all remotely via the web.
+
+  > :older_man: The term `webshell` is the common name given to a script used by attackers that, when uploaded to a web server, allows them to execute system commands and take control of the server as if they had direct shell access, but all remotely via the web.
+
 * The following command execution is a demonstrative example of how it can be performed.
   1. Start by showing the content of the `webshell.php` file:
 
@@ -134,7 +136,7 @@
 ## Exercise to practice :writing_hand:
 
 * The following file upload form is vulnerable to `Remote Code Execution (RCE)`, meaning it's possible to upload a file that can be used to execute arbitrary code on the server.
-* The scenario provides a command line along with a file named `webshell.php`, located in `/home/tbl/webshell.php`, that could allow arbitrary code execution on the server if it gets uploaded.
+* The scenario below provides a command line along with a file named `webshell.php`, located in `/home/tbl/webshell.php`, that could allow arbitrary code execution on the server if it gets uploaded.
 * The goal here is to use the command line provided to upload, using `curl`, the `webshell.php` file via an HTTP POST request to the `/upload` endpoint:
 
   ```bash
@@ -151,7 +153,7 @@
     This restriction can also be tested using the web app, which offers sample images with various extensions and a dedicated form interface for uploading them.
 
 * **Note that `/upload` is the API endpoint for uploading files, while `/uploads/` is the directory where the uploaded files are stored**.
-* Once this security measure has been bypassed using one of the mentioned techniques and the `webshell.php` file has been successfully uploaded to the server, the final task is to use it for the arbitrary execution of the `validate` command to complete the exercise:
+* Once this security measure has been bypassed using one of the mentioned techniques and the `webshell.php` file has been successfully uploaded to the server, the final task is to use the `webshell` for the arbitrary execution of the `validate` command to complete the exercise:
 
   ```bash
   curl $APP_URL/uploads/<webshell_file>?cmd=validate
