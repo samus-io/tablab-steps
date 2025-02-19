@@ -1,6 +1,6 @@
-# Traditional 3-Tier Software & Secure Architectures Integration
+# Traditional 3-tier software & secure architectures integration
 
-* Below is a graphical representation of how to integrate the traditional 3-tier software architecture (Presentation, Application and Data tiers) with the traditional 3-tier secure architecture (Demilitarized, Trusted and Private tiers).
+* Below is a graphical representation of how to integrate the traditional 3-tier software architecture (presentation, application and data tiers) with the traditional 3-tier secure architecture (demilitarized, trusted and private tiers).
 
 ![Three-tier software & secure architecture integration][1]
 
@@ -8,23 +8,23 @@
   * The business layers should be offloaded from the web servers to dedicated business data processing servers and this is where the actual data processing occurs, including adding information to the database, retrieving and manipulating data, and executing scheduled tasks and jobs.
   * These business backend layers should also take responsibility for implementing most data security measures, ensuring data integrity.
   * Web servers will contact the business data processing servers through a less benign protocol, such as HTTP or HTTPS, and these applications will be coded to make SQL calls to the internal database servers.
-  * These backend servers at the Trusted Tier will never be exposed directly to the Internet.
-* This 3-tier approach is seen in traditional on-premises infrastructures, and it can still be considered nowadays for simple web applications or unified development of on-premises and cloud applications.
+  * These backend servers at the trusted tier will never be exposed directly to the Internet.
+* This 3-tier approach was observed in traditional on-premises infrastructures, and it can still be considered nowadays for simple web applications or unified development of on-premises and cloud applications.
 
 ## Integration process
 
-### Presentation Tier is placed in the Demilitarized Tier
+### Presentation tier is placed in the demilitarized tier
 
-* The Presentation Tier, containing only application display logic and other display services support, should be placed in the Demilitarized Tier.
+* The presentation tier, containing only application display logic and other display services support, should be placed in the demilitarized tier.
 
-### Application Tier is split between the Demilitarized and Trusted Tiers
+### Application tier is split between the demilitarized and trusted tiers
 
-* Components of the Application Tier needed to fulfill user interface requests should be placed in the Demilitarized Tier.
-* Application servers containing all business logic should be placed in the Trusted Tier, making them accessible through designated communications from the Demilitarized Tier.
+* Components of the application tier needed to fulfill user interface requests should be placed in the demilitarized tier.
+* Application servers containing all business logic should be placed in the trusted tier, making them accessible through designated communications from the demilitarized tier.
 
-### Data Tier is placed in the Private Tier
+### Data tier is placed in the private tier
 
-* The Private Tier should contain the database servers, which ideally will only be queried by servers at the Trusted Tier with limited specific access allowed.
+* The private tier should contain the database servers, which ideally will only be queried by servers at the trusted tier with limited specific access allowed.
 
 ### Challenges
 
@@ -35,10 +35,10 @@
 
 * Use autoscaling to manage workload changes.
 * Consider asynchronous messaging to decouple tiers.
-* Install a Web Application Firewall (WAF) to analyze incoming Internet traffic.
-* Restrict access to the Data Tier by permitting requests only from the Trusted Tier.
+* Install a `Web Application Firewall (WAF)` to analyze incoming Internet traffic.
+* Restrict access to the data tier by permitting requests only from the trusted tier.
 
-## Pros & Cons
+## Pros & cons
 
 ### Benefits
 
@@ -56,7 +56,7 @@
 ## Additional security considerations
 
 * Public-facing servers should never be granted direct access to internal networks or resources.
-  * Consider adding a Read-Only Domain Controller (RODC) in the Trusted Tier to manage external user authentications if necessary.
+  * Consider adding a `Read-Only Domain Controller (RODC)` in the trusted tier to manage external user authentications if necessary.
 * Users should never directly touch content serving web servers.
   * All incoming Internet requests should be reverse proxied to various web services.
   * These reverse HTTP proxies should be kept on their own subnets, separate from the subnets of other web servers.

