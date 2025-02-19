@@ -2,5 +2,6 @@
   "numExercises": 1,
   "estimatedCompletionTime": 8,
   "author": "samus.io",
-  "authorGithubId": "samus-io"
+  "authorGithubId": "samus-io",
+  "isChoosable": false
 }

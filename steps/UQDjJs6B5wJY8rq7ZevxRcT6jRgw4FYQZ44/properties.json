@@ -1,6 +1,7 @@
 {
   "numExercises": 0,
   "estimatedCompletionTime": 6,
-  "author": "Nikhil S Kalburgi",
-  "authorGithubId": "nikhilkalburgi"
+  "author": "samus.io",
+  "authorGithubId": "samus-io",
+  "isChoosable": true
 }

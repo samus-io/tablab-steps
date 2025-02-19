@@ -27,7 +27,8 @@
       "numExercises": 0,
       "estimatedCompletionTime": 0,
       "author": "samus.io",
-      "authorGithubId": "samus-io"
+      "authorGithubId": "samus-io",
+  "isChoosable": true
     }
     ```
 
