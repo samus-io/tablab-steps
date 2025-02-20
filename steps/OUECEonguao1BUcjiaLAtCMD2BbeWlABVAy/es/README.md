@@ -15,7 +15,7 @@
 
   > :warning: Debido a los límites de almacenamiento en caché, la detección basada en firmas actualmente solo procesa archivos de menos de 5 MB.
 
-### Behavioral analysis through FortiSandbox
+### Análisis de comportamiento a través de FortiSandbox
 
 * Además del análisis estático de archivos, FortiWeb Cloud utiliza FortiSandbox para proporcionar un análisis dinámico y de comportamiento. Los archivos se ejecutan dentro de un entorno aislado y controlado para supervisar su comportamiento en tiempo real.
 * Este método es crucial para detectar amenazas avanzadas como el *malware* de día cero o ataques sofisticados que pueden no detectarse mediante los métodos tradicionales basados en firmas. Al simular la ejecución de archivos en un entorno real, FortiSandbox puede descubrir comportamientos maliciosos ocultos, como intentos de acceder a recursos no autorizados o ejecutar comandos dañinos.
