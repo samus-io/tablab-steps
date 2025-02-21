@@ -1,46 +1,82 @@
-# Finding Vertical Privilege Escalation
+# Finding privilege escalation
 
-* You can uncover Vertical Privilege Escalation vulnerabilities resulting from Broken Access Control using multiple methods, including the following.
+* Privilege escalation vulnerabilities can be identified using manual and automated techniques to detect broken access control in web applications.
+* Both vertical and horizontal privilege escalation can occur if role validation, authentication, or access controls are not properly enforced.
 
-## For Unprotected functionalities
+## Automated and manual exploitation
 
-* **Manual exploitation**:
-  * **URL enumeration**: Manually explore different URLs of the application, especially those that may contain sensitive functionalities such as administrative panels or user management pages.
-  * **Link Crawling**: Follow links within the application to discover hidden or unlinked pages that may contain unprotected functionalities.
-* **Automated scanning**:
-  * **Web vulnerability scanners**: Use automated web vulnerability scanners like OWASP ZAP, Burp Suite, or Nikto to crawl the application and identify unprotected functionalities based on patterns or signatures.
-  * **Fuzzing**: Utilize fuzzing techniques to systematically test different endpoints and parameters for potential vulnerabilities.
-* **Source code analysis**:
-  * **Static code analysis**: Analyze the source code of the application to identify any unprotected endpoints or functionalities that may have been overlooked during development.
-  * **Manual code review**: Conduct manual code reviews to identify potential security flaws, including unprotected functionalities that may not be immediately apparent.
-* **API documentation review**: Review the application's API documentation, if available, to identify any endpoints or functionalities that are exposed but not adequately protected by authentication or authorization mechanisms.
-* **Browser developer tools**: Use browser developer tools to inspect network requests and responses while interacting with the application. Look for endpoints or functionalities that are accessible without proper authentication or authorization.
-* **Authentication and Authorization testing**: Test the application's authentication and authorization mechanisms to identify any weaknesses or bypass techniques that could allow unauthorized access to unprotected functionalities.
-* **Data analysis**: Analyze application logs and access records to identify any unusual or unexpected access patterns that may indicate access to unprotected functionalities.
+* Using automated tools like OWASP ZAP or Burp Suite can help scan for access control weaknesses by crawling the application and analyzing responses.
+* Automated scanners can detect hidden endpoints, exposed APIs, unprotected admin panels, and misconfigured authentication mechanisms.
+* Additionally, manually navigate different URLs of the application, especially those that may contain sensitive functionalities such as administrative panels or user management pages, and try to access without the proper permissions.
 
-## For Parameter-based access control
+## Source code analysis
 
-* **Parameter manipulation**:
-  * **Manual testing**: Modify parameter values (e.g., role=1) to higher privilege levels (e.g., role=admin) and observe if access is granted to functionalities or resources reserved for privileged users.
-  * **Automated Fuzzing**: Use automated tools or scripts to systematically test different parameter values, including higher privilege levels, to identify discrepancies in access control enforcement.
-* **Cookie Tampering**:
-  * **Manual testing**: Manipulate cookie values (e.g., admin=false to admin=true) using browser developer tools or proxy tools like Burp Suite and observe if access controls are bypassed, granting unauthorized access to privileged functionalities.
-  * **Automated testing**: Use automated testing frameworks or tools to modify cookie values and assess if higher privilege levels can be achieved, potentially leading to unauthorized access.
-* **Session Management testing**:
-  * **Session Fixation**: Test for session fixation vulnerabilities where an attacker can set the session ID to a known value and hijack the session of a privileged user, gaining access to their privileges.
-  * **Session Replay**: Assess if session tokens or cookies are susceptible to replay attacks, allowing attackers to reuse valid session information to gain unauthorized access to privileged functionalities.
-* **Authorization bypass techniques**:
-  * **Insecure Direct Object References (IDOR)**: Test for IDOR vulnerabilities where attackers manipulate parameters or cookies to access resources or functionalities belonging to other users, including those with higher privilege levels.
-  * **Forced Browsing**: Attempt to access restricted URLs directly by guessing or enumerating URLs associated with higher privilege levels, bypassing access controls implemented based on parameters or cookies.
-* **Browser extension testing**: Use browser extensions such as Cookie Editor or Tamper Data to manipulate parameters or cookies and observe if access controls can be bypassed to escalate privileges.
+* Analyze the source code of the application to identify any unprotected endpoints or functionalities that may have been overlooked during development.
+* In many frameworks, middleware is responsible for enforcing authorization. If an endpoint does not apply the access control middleware, it may lack proper access control.
 
-## For Broken Access Control resulting from platform misconfiguration
+### API documentation review
 
-* Add or modify HTTP headers to attempt accessing protected resources.
-* Common headers to test include `X-Original-URL` and `X-Rewrite-URL` which might be used by the server to route requests.
+* If it is available, review the application's API documentation to identify any endpoints or functionalities that are exposed but not adequately protected by authentication or authorization mechanisms.
 
-## For Broken Access Control resulting from URL-matching discrepancies
+## Parameter-based access control
 
-* Access URLs in varying cases (e.g., `/admin` vs. `/ADMIN`) to check if the access control varies.
-* Use alternative encodings or unexpected formats to try bypassing URL filters.
-* Configure web application firewalls to detect and block suspicious or unauthorized access attempts that exploit URL-matching discrepancies for privilege escalation. WAFs can provide an additional layer of defense against such vulnerabilities.
+* Modifying parameter values in requests, such as changing `role=user` to `role=admin`, can reveal weak access control if the system grants unauthorized access to privileged functionalities.
+* Role-based access control parameters may also be found in cookies, and if these values are editable without backend validation, an attacker could modify them to gain higher privileges.
+* In the following example, the cookie `role` is used to identify the currently logged-in user role:
+
+  ```http
+  GET /
+  Cookie: role=user
+  ```
+
+  If the application does not verify that the `role` corresponds to the authenticated user's session or permissions, an attacker can alter the cookie value to access to the admin panel:
+
+  ```http
+  GET /admin
+  Cookie: role=admin
+  ```
+
+## Referrer header manipulation
+
+* Some web applications use the `Referer` header as a weak access control mechanism without verifying authentication, assuming that requests from trusted pages are legitimate.
+* Removing or forging the `Referer` header (pointing to internal domains or administrative endpoints) in HTTP requests can allow unauthorized access to restricted sections of a web application.
+* For instance, an attacker could modify the `Referer` header to bypass the access control:
+
+  ```http
+  GET /admin
+  Referer: https://internal.example.tbl
+  ```
+
+## Horizontal privilege escalation
+
+### Finding Insecure Direct Object Reference (IDOR)
+
+* Basic IDOR vulnerabilities often occur when applications use predictable identifiers to reference internal objects. For example, user profiles may be accessed by appending an ID to the URL:
+
+  ```http
+  GET /user/profile?id=123
+  ```
+
+  By simply modifying the `id` parameter, an attacker can attempt to access another user's profile:
+
+  ```url
+  GET /user/profile?id=124
+  ```
+
+  If the application does not verify whether the requesting user has authorization to access the modified resource, it may return unauthorized data, such as the profile of the user with `124` identifier.
+
+#### Direct reference to static files
+
+* Static files stored on the server can also be susceptible to IDOR vulnerabilities. For example, an application may store user-uploaded files in a shared directory without implementing proper access controls:
+
+  ```http
+  GET /uploads/123.pdf
+  ```
+
+  If the file names are sequential or predictable, an attacker can modify the file name in the request to access files uploaded by other users:
+
+  ```url
+  GET /uploads/124.pdf
+  ```
+
+  Without verifying whether the requesting user has permission to access the specified file, the server may expose sensitive or private data belonging to other users.

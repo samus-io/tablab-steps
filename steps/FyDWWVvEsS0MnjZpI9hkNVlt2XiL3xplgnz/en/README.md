@@ -1,40 +1,73 @@
-# Horizontal Privilege Escalation
+# Horizontal privilege escalation
 
-* Horizontal Privilege Escalation occurs when a user gains unauthorized access to resources or functionalities belonging to other users within the same privilege level.
-* This type of vulnerability allows attackers to move laterally across the application's user base, accessing data or performing actions they are not authorized to perform.
-* Let's break down different possible scenarios.
+* Horizontal privilege escalation occurs when a user gains unauthorized access to resources or functionalities belonging to other users within the same privilege level.
+* This vulnerability allows attackers to move laterally across the application's user base, accessing other users' data or performing actions they are not authorized to execute.
+* Exploiting horizontal privilege escalation can lead to unauthorized data exposure, account manipulation, or disruption of services.
+
+## Referer-based access control
+
+* Some applications use the HTTP `Referer` header to determine whether a request is allowed based on its origin. If access control is enforced solely through `Referer` validation, it becomes vulnerable to manipulation.
+* If an application restricts access to certain files or APIs based on `Referer` validation, an attacker could send a crafted request without a `Referer` header or modify it to bypass access controls.
+* Consider a web application that grants access to user information based on whether the request originates from the company's internal website.
+* The application relies on the `Referer` header to determine if a request comes from a trusted internal system, allowing access to sensitive data without requiring additional authentication:
+
+```javascript
+// Middleware for referer-based access control
+function internalAccessControl(req, res, next) {
+    const internalURL = 'https://internal.example.tbl';
+    const referer = req.headers['referer'];
+
+    if (!referer || !referer.startsWith(internalURL)) {
+        return res.status(403).send('Access denied');
+    }
+
+    next();
+}
+
+// Protected route for internal requests only
+app.get('/user/profile/:username', internalAccessControl, (req, res) => {
+    User.findOne({ username: username }, (err, user) => {
+        if (err) {
+            return res.status(500).send('Internal Server Error');
+        }
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        res.json(user);
+    });
+});
+```
+
+* If the request contains a `Referer` header from the internal network, such as:
+
+  ```http
+  Referer: https://internal.example.tbl
+  ```
+
+* Then the access control will assume that the user is authorized and provides access to restricted information.
+* An attacker outside the network can exploit this by modifying or forging the `Referer` header to appear as if their request is coming from the internal website.
+* This can lead to data leaks, allowing the attacker to retrieve confidential records or personal details of other users.
+
+## Location-based access control
+
+* Some applications restrict access to content or functionalities based on a user's geographical location. If location-based access control is improperly implemented, attackers can manipulate their location to bypass restrictions.
+* An attacker can use a VPN, proxy, or GPS spoofing techniques to disguise their actual location and access content or features meant for users in specific regions.
+* If an application relies only on IP-based location checks without additional verification, an attacker can access geo-restricted services, potentially exposing sensitive data meant for specific regions.
 
 ## Insecure Direct Object References (IDOR)
 
-* IDOR vulnerabilities occur when an application fails to properly enforce access controls, allowing attackers to manipulate parameters or directly reference objects (such as database records or files) to access unauthorized data.
-* An attacker can modify a URL parameter to access another user's profile page or a sensitive data without proper authorization from database. In this case, an attacker can change `userId=123` to `userId=456`:
+* `Insecure Direct Object Reference (IDOR)` is a type of access control vulnerability in web applications that occurs when insufficient access controls allow malicious users to manipulate object references, such as identifiers or file names, to access restricted data or perform unauthorized actions.
+* Direct references to resources in web applications and APIs are common sources of IDOR vulnerabilities, while compiled libraries are less susceptible, as they usually enforce strict access controls.
+* As a simple illustrative example, the following request includes a numerical identifier referencing a user ID for displaying profile information:
 
-  ```
-  https://example.com/profile?userId=123
-  ```
-
-* Also they can use a hidden field in the submit form that allows to update user profile:
-
-  ```html
-  <form action="/update_profile" method="post">
-    <input type="hidden" name="user_id" value="456">
-    <button type="submit">Update Profile</button>
-  </form>
+  ```http
+  GET /user/profile?id=123
   ```
 
-* An attacker can access any kind of static files just by passing it to URL.
+* An IDOR vulnerability may arise when access control mechanisms are either absent or ineffective, enabling unauthorized disclosure of information from other user profiles by simply modifying the identifier:
 
+  ```http
+  GET /user/profile?id=124
   ```
-  https://example.com/static/file.txt
-  ```
 
-## Location-based Access Control
-
-* Location-based access control restricts access to resources or functionalities based on the user's geographical location. However, if this control is improperly implemented, attackers can spoof their location or manipulate request headers to bypass these restrictions.
-* An attacker uses a VPN to spoof their location and access content restricted to a specific geographical location.
-* If server fails to identify the attacker location then it can cause exposure to location specific sensitive data.
-
-## Referer-based Access Control
-
-* Referer-based access control restricts access to resources or functionalities based on the referring URL of the request.
-* Attackers can manipulate the Referer header to trick the application into granting access to unauthorized resources.
+* IDOR is not limited to user profiles and can expose financial records, invoices, order details, among others, if access controls are missing or improperly implemented.
