@@ -17,19 +17,21 @@ const main = () => {
 
   fs.mkdir(nanoid)
     .then(() => {
-      return Promise.all([
-        fs.mkdir(`${nanoid}/en`),
-      ]);
+      return Promise.all([fs.mkdir(`${nanoid}/en`)]);
     })
     .then(() => {
       const properties = {
         numExercises: 0,
         estimatedCompletionTime: 0,
         author: "samus.io",
-        authorGithubId: "samus-io"
+        authorGithubId: "samus-io",
+        isChoosable: false,
       };
 
-      fs.writeFile(`${nanoid}/properties.json`, JSON.stringify(properties, null, 2));
+      fs.writeFile(
+        `${nanoid}/properties.json`,
+        JSON.stringify(properties, null, 2)
+      );
       fs.writeFile(`${nanoid}/en/README.md`, `# TODO\n`);
     })
     .catch((err) => {
@@ -38,4 +40,3 @@ const main = () => {
 };
 
 main();
-

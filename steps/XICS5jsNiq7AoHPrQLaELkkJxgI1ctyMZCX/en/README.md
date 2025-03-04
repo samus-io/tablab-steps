@@ -15,6 +15,7 @@
   |Unsafe characters|`"` `<` `>` `%` `{` `}` `\|` `\` `^` and blank/empty space (` `)|These characters may be considered *unsafe* for various reasons, although it generally occurs because they can be interpreted differently or even modified by intermediary transport agents (e.g., trailing spaces in the URL may be removed)|Sí|
 
 * *Non-ASCII*, *Unsafe characters* and *Reserved characters* (when the latter are **not** used for their reserved purpose) must be encoded using the *Percent-encoding* mechanism, also called *URL encoding*, which consists of blocks formed by the character `%` followed by two hexadecimal digits:
+
   |Type|Character|Purpose in URI|Encoding|
   |:--:|:--:|:--:|:--:|
   |Reserved character|`/`|Delimits path segments in the *URL-path*.|`%2F`|

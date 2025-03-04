@@ -303,7 +303,7 @@
   * Username: `johndoe`, password: `pJI+zM2k-qZdOzwz`, role: `moderator`.
   * Username: `alice99`, password: `W-KTJ_!3r*8HwRE^`, role: `member`.
 * The goal here is to edit the source code to enforce a server-side access control policy, limiting **file uploads to authenticated users** (those with an active session) and allowing only **users with the `admin` or `moderator` role to download files**. Successful requests should return a `200 OK` status, while unauthorized attempts should result in a `401 Unauthorized` status.
-* More precisely, the modifications should be made in the `AuthFilter.java` and `AuthPrivFilter.java` files, located in `/home/coder/app/src/main/java/io/ontablab/`.
+  * More precisely, the modifications should be made in the `AuthFilter.java` and `AuthPrivFilter.java` files, located in `/home/coder/app/src/main/java/io/ontablab/`.
 * After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
 
   @@ExerciseBox@@
