@@ -31,7 +31,7 @@
     find . -type f -regex ".*\.\(bak\|txt\|src\|dev\|old\|inc\|orig\|copy\|tmp\)$"
     ```
 
-  * On Windows, the `cmd` command can scan for common backup file extensions:
+  * On Windows, the `cmd.exe` command can scan for common backup file extensions:
 
     ```cmd
     dir *.bak *.txt *.src *.dev *.old *.inc *.orig *.copy *.tmp /s /b

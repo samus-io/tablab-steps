@@ -9,20 +9,14 @@
 
 ## Extracting repositories from a `.git`
 
-* Extracting a repository from an exposed `.git` folder can be done using tools like [GitTools][1], which provide scripts to identify, download and extract the repository content.
-* If the `.git` directory is accessible, `gitdumper.sh` can retrieve the data from the exposed repository:
+* When a `.git` directory is publicly accessible, tools like [git-dumper][1] can extract its contents and reconstruct the repository.
+* The following command retrieves the repository from an exposed `.git` folder:
 
   ```bash
-  ./gitdumper.sh https://example.tbl/.git/ git-folder
+  python3 git_dumper.py https://example.tbl/.git git-repo
   ```
 
-* Once the repository has been downloaded, `extractor.sh` can be used to extract commits and their content from the `.git` directory:
-
-  ```bash
-  ./extractor.sh ./git-folder ./git-repo
-  ```
-
-* These tools help reconstruct the repository’s history, allowing attackers to analyze the code, uncover credentials, or identify security vulnerabilities.
+* These tools help reconstruct the repository's history, allowing attackers to analyze the code, uncover credentials, or identify security vulnerabilities.
 
 ## Prevention techniques
 
@@ -81,4 +75,20 @@
   </configuration>
   ```
 
-[1]: https://github.com/internetwache/GitTools
+## Exercise to practice :writing_hand:
+
+* The web application has an exposed `.git` directory in its root folder, making it possible for an attacker to extract the repository.
+* This exposure allows unrestricted access to download the entire repository, including sensitive information.
+* The objective of this exercise is to retrieve the `.git` folder and reconstruct the repository from it through the `Open Code Editor` button.
+* Keep in mind that the `$APP_URL` is an environment variable that represents the base path of the application, so you can make a request to `.git` using the following command:
+
+  ```bash
+  curl -L $APP_URL/.git
+  ```
+
+* For the exercise to be completed properly, the repository must be reconstructed in `/home/coder/app/git-repo`.
+* Once the repository is extracted successfully, press the `Verify Completion` button to confirm that the exercise has been completed.
+
+@@ExerciseBox@@
+
+[1]: https://github.com/arthaud/git-dumper

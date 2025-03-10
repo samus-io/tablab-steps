@@ -1,4 +1,4 @@
-# Information Disclosure via web crawlers
+# Information disclosure via web crawlers
 
 * Web crawlers, also known as search bots, are essential tools for search engines. Their primary function is to index website content, significantly improving the search experience for users.
 * These bots operate by accessing specific URLs, extracting all the links found on a page, and navigating through them to continue their indexing process.
