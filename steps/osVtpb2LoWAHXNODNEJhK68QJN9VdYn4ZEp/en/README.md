@@ -22,19 +22,19 @@
   | `https://example.tbl` | `http://example.tbl` | ❌ No | Protocol differs (`https` vs `http`) |
   | `https://example.tbl` | `https://sub.example.tbl` | ❌ No | Host differs (`example.tbl` vs `sub.example.tbl`) |
   | `https://example.tbl:443` | `https://example.tbl:8443` | ❌ No | Port differs (`443` vs `8443`) |
-  | `https://example.tbl/profile/account` | `https://example.tbl/payment?id=123` | ✅ Yes | Query parameters do not affect the origin |
+  | `https://example.tbl/profile/account` | `https://example.tbl/payment?id=123` | ✅ Yes | Path and query parameters do not affect the origin |
 
 ## Exceptions to SOP restrictions
 
-* Certain resource types, such as images, stylesheets (CSS), scripts (JavaScript files), and media files (videos/audio), are not restricted by the `Same-Origin Policy (SOP)`. These resources are freely loaded by the browser from external origins without SOP enforcement, except for fonts, being a notable distinction.
+* Certain resource types, such as images, stylesheets (CSS), scripts (JavaScript files), and media files (videos/audio), are not restricted by the `Same-Origin Policy (SOP)`. These resources are freely loaded by the browser from external origins without SOP enforcement except for fonts, being a notable distinction.
   * Without this exceptions, displaying images or including JavaScript code from external origins would not be possible.
   * As example, `websiteA.tbl` can include a JavaScript file hosted on `websiteB.tbl`, and the JavaScript code from `websiteB.tbl` will run as expected within `websiteA.tbl`'s execution environment.
 
 ## What SOP actually restricts
 
-* DOM access: JavaScript from one origin cannot access or manipulate the `Document Object Model (DOM)` of a page loaded from a different origin. This prevents attacks where one website attempts to steal or modify content from another loaded in the same browser session (e.g., in an iframe).
-* Reading HTTP responses: although JavaScript can send cross-origin HTTP requests (e.g., via `fetch` or `XMLHttpRequest`), it cannot read the response unless the target server explicitly allows it via `Cross-Origin Resource Sharing (CORS)` headers.
-  * Despite this restriction, the **browser still processes these cross-origin responses**, including managing `Set-Cookie` headers. This means that cookies may still be stored and authentication mechanisms may still function, even though JavaScript running in a different origin cannot access the response body.
+* **DOM access**: JavaScript from one origin cannot access or manipulate the `Document Object Model (DOM)` of a page loaded from a different origin. This prevents attacks where one website attempts to steal or modify content from another loaded in the same browser session (e.g., in an iframe).
+* **Reading HTTP responses**: although JavaScript can send cross-origin HTTP requests (e.g., via `fetch` or `XMLHttpRequest`), it cannot read the response unless the target server explicitly allows it via `Cross-Origin Resource Sharing (CORS)` headers.
+  * Despite this restriction, **the browser still processes these cross-origin responses**, including managing `Set-Cookie` headers. This means that cookies may still be stored and authentication mechanisms may still function, even though JavaScript running in a different origin cannot access the response body.
 
 ## When SOP is applied
 

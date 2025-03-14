@@ -15,7 +15,7 @@
     </form>
     ```
 
-    Visiting the crafted malicious page while authenticated in the target application will trigger the CSRF attack.
+    Visiting the crafted malicious page while authenticated in the target application would trigger the CSRF attack.
 
 1. Additionally, as part of in-depth research, leverage a vulnerability scanner for automatic CSRF detection, inspect source code if accessible, perform SAST to uncover security risks, and evaluate the effectiveness of CSRF protections by attempting bypass techniques.
 
@@ -50,14 +50,14 @@
     https://vulnerable.tbl/email/update?email=attacker@attacker.tbl
     ```
 
-  * Clicking the link while authenticated to `vulnerable.tbl` causes the browser to automatically send a GET request to the exposed endpoint.
+  * Clicking the link while authenticated to `vulnerable.tbl` would cause the browser to automatically send a GET request to the exposed endpoint.
 * CSRF can also be exploited via the GET method by embedding the malicious link in an HTML element like an `<img>` tag. When the victim accesses a malicious website, the browser automatically processes the HTML and issues the GET request to the vulnerable endpoint without requiring user interaction:
 
     ```html
     <img src="https://vulnerable.tbl/email/update?email=attacker@attacker.tbl">
     ```
 
-  * The request sent, containing the victim's authenticated session cookies, would trigger the state-changing operation, altering the user's email address to `attacker@attacker.tbl` without the victim's awareness or approval.
+  * The request sent, containing the victim's authenticated session cookies, would trigger the state-changing operation, altering the user's email address to `attacker@attacker.tbl` without the victim's awareness or approval in this case.
 * As an example, after updating the victim’s email, the attacker could reset the password through the new email, effectively gaining complete control of the account.
 
 ## Exploiting CSRF via session fixation
@@ -143,7 +143,7 @@
 
 * Preflight requests are only triggered for cross-origin `XMLHttpRequest` or `fetch()` requests, not for traditional CSRF payloads that use HTML forms.
 
-### How preflight requests effect on CSRF exploitation
+### How preflight requests affect CSRF exploitation
 
 * If the server **does not include** `Access-Control-Allow-Origin` for the attacker's domain in the preflight response, the browser **blocks the actual request**. This prevents the malicious site from sending unauthorized cross-origin requests on behalf of the victim.
 * Some CSRF exploits may attempt to use `PUT`, `PATCH`, or `DELETE` requests to modify sensitive user data. Since these methods **trigger a preflight request**, the attacker cannot bypass **CORS restrictions** unless the server explicitly allows the request.

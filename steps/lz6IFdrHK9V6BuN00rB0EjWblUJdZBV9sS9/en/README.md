@@ -43,7 +43,7 @@
 * The purpose of this exercise is to edit the source code using the `Open Code Editor` button to implement a CSRF protection based on the double-submit cookie pattern via the `csrf-csrf` npm package. More specifically, the following steps must be accomplished to correctly support this functionality:
   * Make sure the POST `/login` endpoint sends a cookie named `csrfToken` in the HTTP response, containing a valid CSRF token associated with the user's session upon successful login. The cookie must be configured with the following attributes:
     * `httpOnly` set to `false`, so its value can be accessed by the application's frontend JavaScript.
-    * **`secure` set to `true` and `sameSite` set to `none`**, as these flags are mandatory for setting cookies via an iframe, where the exercise is actually embedded.
+    * `secure` **set to** `true` **and** `sameSite` **set to** `none`, as these flags are mandatory for setting cookies via an iframe, where the exercise is actually embedded.
     * The `iframeCookieOptions` variable can be utilized for this purpose:
 
       ```javascript
