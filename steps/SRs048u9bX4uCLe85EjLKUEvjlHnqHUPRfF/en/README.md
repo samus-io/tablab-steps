@@ -138,12 +138,12 @@
 * The second tab contains a malicious website where the rendered HTML can be modified by opening the code editor through the `Open Code Editor` button and editing the `attacker-website.html` file located at `client/build/attacker-website.html`.
 * This exercise aims to simulate the potential actions that may be carried out by a malicious user through the creation of a JavaScript payload that forces the logged-in user's email to be updated to an arbitrary address. The process requires following these steps to be completed successfully:
   1. The source code of the `attacker-website.html` file must be edited to include a `<script>` HTML tag containing a JavaScript payload that sends an HTTP request designed to change the user's email address, while keeping in mind that:
-      * The request must be directed to the `/change-email` endpoint, specifically `https://<instance_id>.ontablab.io/change-email`, where `<instance_id>` represents the deployed instance ID.
-      * The request must be an HTTP `PATCH` request that includes a parameter named `newEmail`, which will be holding the new email value (e.g., `attacker@attacker.tbl`).
+      * The request must be directed to the `/change-email` endpoint, specifically `https://<instance_id>.ontablab.io/change-email`, where `<instance_id>` represents your deployed instance ID.
+      * The request must be an HTTP `POST` request that includes a parameter named `newEmail`, which will be holding the new email value (e.g., `attacker@attacker.tbl`).
       * The request must have a `Content-Type` of `application/x-www-form-urlencoded` and must be sent using an `XMLHttpRequest` object in JavaScript.
   2. After crafting the JavaScript payload and adding it to the `attacker-website.html` file, ensure that the `johndoe` user is logged into the main application, and then visit the attacker's webpage to trigger the execution of the JavaScript `<script>` code to update the `johndoe`'s email.
   3. Confirm the email modification by reviewing the `johndoe`'s profile in the main application.
 * When finished, use the `Verify Completion` button to validate the successful completion of the exercise.
-* Note that no rebuild is necessary after editing the `attacker-website.html` file. However, if the rebuild button is pressed unintentionally in the code editor, after the rebuilding process log in to the main application again, and re-exploit the CSRF vulnerability before clicking the `Verify Completion` button to confirm the exercise completion.
+* Note that no rebuild is necessary after editing the `attacker-website.html` file. However, if the rebuild button is pressed unintentionally in the code editor, once the rebuilding process is complete make sure to log in to the main application again, and re-exploit the CSRF vulnerability before clicking the `Verify Completion` button to confirm the exercise completion.
 
   @@ExerciseBox@@
