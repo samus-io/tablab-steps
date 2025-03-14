@@ -19,7 +19,7 @@
 
 1. Additionally, as part of in-depth research, leverage a vulnerability scanner for automatic CSRF detection, inspect source code if accessible, perform SAST to uncover security risks, and evaluate the effectiveness of CSRF protections by attempting bypass techniques.
 
-## Exploiting CSRF via state-changing requests (usually POST)
+## Exploiting CSRF via state-changing requests (POST requests)
 
 * CSRF attacks using the POST method are among the most common forms of CSRF. These attacks occur when a web application fails to implement security mechanisms (i.e, implementing CSRF tokens or using the `SameSite` attribute on cookies) to protect against unauthorized requests.
 * An attacker can exploit this by crafting malicious HTML content that automatically triggers a POST request as soon as the user's browser renders the page.
@@ -97,18 +97,18 @@
 
 ### HTML4 and HTML5 not requiring user interaction
 
-|HTML tags|
-|:--:|
-|```<iframe src="URL" />```,<br/> ```<script src="URL" />```,<br/> ```<input type="image" src="URL" alt="" />```,<br/> ```<embed src="URL" />```,<br/> ```<audio src="URL" />```,<br/> ```<video src="URL" />```,<br/> ```<source src="URL" />```,<br/> ```<video poster="URL" />```,<br/> ```<link rel="stylesheet" href="URL" />```,<br/> ```<object data="URL" />```,<br/> ```<body background="URL" />```,<br/> ```<div style="background:url("URL")" />```,<br/> ```<style>body { background:url("URL") } </style> />```|
+  |HTML tags|
+  |:--:|
+  |```<iframe src="URL" />```,<br/> ```<script src="URL" />```,<br/> ```<input type="image" src="URL" alt="" />```,<br/> ```<embed src="URL" />```,<br/> ```<audio src="URL" />```,<br/> ```<video src="URL" />```,<br/> ```<source src="URL" />```,<br/> ```<video poster="URL" />```,<br/> ```<link rel="stylesheet" href="URL" />```,<br/> ```<object data="URL" />```,<br/> ```<body background="URL" />```,<br/> ```<div style="background:url("URL")" />```,<br/> ```<style>body { background:url("URL") } </style> />```|
 
 ### HTML and JavaScript not requiring user interaction
 
-```html
-<form action="https://vulnerable.tbl/email/update" method="POST" id="CSRF" style="display: none;">
-  <input name="email" value="attacker@attacker.tbl"/>
-</form>
-<script>document.getElementById("CSRF").submit()</script>
-```
+  ```html
+  <form action="https://vulnerable.tbl/email/update" method="POST" id="CSRF" style="display: none;">
+    <input name="email" value="attacker@attacker.tbl"/>
+  </form>
+  <script>document.getElementById("CSRF").submit()</script>
+  ```
 
 ### JavaScript not requiring user interaction
 
@@ -131,11 +131,30 @@
   });
   ```
 
+## JavaScript-based CSRF exploitation faces additional challenges from preflight requests
+
+* A **preflight request** is sent in the context of `Cross-Origin Resource Sharing (CORS)` when a **cross-origin request** meets certain conditions that require the browser to first verify whether the server allows the request before actually sending the main request. Specifically, a preflight request is triggered when any of the following conditions apply:
+
+  * The request **uses HTTP methods other than** `GET`, `HEAD`, or `POST`.
+  * The request **includes custom headers** or headers that are not considered "simple" (e.g., `X-Requested-With`, `Authorization`).
+  * The request **sends a `Content-Type` header** with values other than `application/x-www-form-urlencoded`, `multipart/form-data`, or `text/plain`.
+
+  > :older_man: A preflight request is an HTTP OPTIONS request that a browser automatically sends before making a cross-origin request that does not qualify as a simple request. It is part of the CORS mechanism and is used to determine whether the actual request is allowed by the target server.
+
+* Preflight requests are only triggered for cross-origin `XMLHttpRequest` or `fetch()` requests, not for traditional CSRF payloads that use HTML forms.
+
+### How preflight requests effect on CSRF exploitation
+
+* If the server **does not include** `Access-Control-Allow-Origin` for the attacker's domain in the preflight response, the browser **blocks the actual request**. This prevents the malicious site from sending unauthorized cross-origin requests on behalf of the victim.
+* Some CSRF exploits may attempt to use `PUT`, `PATCH`, or `DELETE` requests to modify sensitive user data. Since these methods **trigger a preflight request**, the attacker cannot bypass **CORS restrictions** unless the server explicitly allows the request.
+* If the request requires authentication (such as session cookies or an `Authorization` header), the browser **does not include credentials by default in a preflight request**. The preflight response must explicitly include `Access-Control-Allow-Credentials: true`, which **secure applications should not allow for untrusted origins**.
+
 ## Exercise to practice :writing_hand:
 
 * The application shown in the first tab is vulnerable to CSRF attacks, as there is no protection that prevents a malicious site forcing a logged-in user to send a request to change their email to any arbitrary address.
   * Logging into the application is available with `johndoe`'s credentials (i.e., username `johndoe` and password `EPx@z<t#934y`).
 * The second tab contains a malicious website where the rendered HTML can be modified by opening the code editor through the `Open Code Editor` button and editing the `attacker-website.html` file located at `client/build/attacker-website.html`.
+  * Note that no rebuild is necessary after editing the `attacker-website.html` file. However, if the rebuild button is pressed unintentionally in the code editor, once the rebuilding process is complete make sure to log in to the main application again, and re-exploit the CSRF vulnerability before clicking the `Verify Completion` button to confirm the exercise completion.
 * This exercise aims to simulate the potential actions that may be carried out by a malicious user through the creation of a JavaScript payload that forces the logged-in user's email to be updated to an arbitrary address. The process requires following these steps to be completed successfully:
   1. The source code of the `attacker-website.html` file must be edited to include a `<script>` HTML tag containing a JavaScript payload that sends an HTTP request designed to change the user's email address, while keeping in mind that:
       * The request must be directed to the `/change-email` endpoint, specifically `https://<instance_id>.ontablab.io/change-email`, where `<instance_id>` represents your deployed instance ID.
@@ -144,6 +163,5 @@
   2. After crafting the JavaScript payload and adding it to the `attacker-website.html` file, ensure that the `johndoe` user is logged into the main application, and then visit the attacker's webpage to trigger the execution of the JavaScript `<script>` code to update the `johndoe`'s email.
   3. Confirm the email modification by reviewing the `johndoe`'s profile in the main application.
 * When finished, use the `Verify Completion` button to validate the successful completion of the exercise.
-* Note that no rebuild is necessary after editing the `attacker-website.html` file. However, if the rebuild button is pressed unintentionally in the code editor, once the rebuilding process is complete make sure to log in to the main application again, and re-exploit the CSRF vulnerability before clicking the `Verify Completion` button to confirm the exercise completion.
 
   @@ExerciseBox@@
