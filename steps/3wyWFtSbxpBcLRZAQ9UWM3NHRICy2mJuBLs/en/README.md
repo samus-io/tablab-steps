@@ -3,7 +3,7 @@
 * This type of information exposure occurs when sensitive data such as usernames, passwords, session identifiers, tokens, database details, credit card numbers or any kind of Personally Identifiable Information (PII) or other potentially sensitive data is passed to parameters in the URL, as shown in the following example:
 
   ```url
-  https://example.org/?user=john&auth_token=7s41nx93hdlaks8FtSbWM3NHRICy2sdhd83jksd9
+  https://example.tbl/?user=john&auth_token=7s41nx93hdlaks8FtSbWM3NHRICy2sdhd83jksd9
   ```
 
 ## What could result from this scenario
@@ -35,33 +35,36 @@
 
 #### HTTP GET
 
-* An HTTP GET request shouldn't be sent with a body according to the [HTTP specifications][1]. Consequently:
-  * A payload body on a GET request might cause some existing implementations to reject the request. As example, Spring Boot throws `HttpMessageNotReadableException` when a body is passed and the Fetch API throws also an error in such scenario.
-  * Others implementations may just ignore GET request bodies when handling the request.
-  * Potential intermediaries, like load balancers or caching proxies, may remove GET request bodies for performance reasons.
-  * Since a GET request is cacheable and a cache may use it to satisfy subsequent GET requests, this circumstance can create inconsistencies because proxies will not read the request body.
+* An `HTTP GET` request shouldn't be sent with a body according to the [HTTP specifications][1]. Consequently:
+  * A payload body on a `GET` request might cause some existing implementations to reject the request. As example, Spring Boot throws `HttpMessageNotReadableException` when a body is passed and the `Fetch API` throws also an error in such scenario.
+  * Others implementations may just ignore `GET` request bodies when handling the request.
+  * Potential intermediaries, like load balancers or caching proxies, may remove `GET` request bodies for performance reasons.
+  * Since a `GET` request is cacheable and a cache may use it to satisfy subsequent `GET` requests, this circumstance can create inconsistencies because proxies will not read the request body.
 
 #### HTTP POST
 
-* An HTTP POST request shouldn't be used to retrieve data because POST requests are widely considered as a method of creating resources. **However, it is often the most common implemented approach**, although:
+* An `HTTP POST` request shouldn't be used to retrieve data because `POST` requests are widely considered as a method of creating resources. **However, it is often the most common implemented approach**, although:
   * It's semantically incorrect, particularly in REST conventions.
   * Imposes restrictions on caching.
-* A typical use of HTTP POST for requesting a simple search would be:
+* A typical use of `HTTP POST` for requesting a simple search would be:
 
   ```http
   POST /search HTTP/1.1
-  Host: example.org
+  Host: example.tbl
   Content-Type: application/x-www-form-urlencoded
 
   q=foo&limit=10&sort=-published
   ```
 
-* Conventionally, the adoption of the POST method over GET is not solely based on the need to send sensitive information or due to URI character limitations. In very particular cases, it is also chosen to simplify the complexities of input data validation in order to help in the prevention of Server-Side Request Forgery (SSRF) vulnerabilities in requests made between API servers where the URL path is based on user input parameters.
+* Conventionally, the adoption of the `POST` method over `GET` is not solely based on the need to send sensitive information.
+* Some requests require sending complex filters, multiple search criteria, or deeply structured data that can exceed URL length limits.
+  * Browsers, servers, and proxies impose restrictions on URL length, which can cause `GET` requests to be truncated or rejected.
+* Using `POST` allows sending data in the request body, avoiding these limitations and ensuring the full dataset is processed.
 
 #### HTTP QUERY
 
-* An HTTP QUERY was drafted at the [IETF standard][2] as a means of making a safe, cacheable, idempotent request that contains content.
-* According to the specification, the QUERY method is used to ask the server to perform a query operation over some set of data scoped to the effective request URI. The body payload of the request defines the query.
+* `HTTP QUERY` was drafted at the [IETF standard][2] as a means of making a safe, cacheable, idempotent request that contains content.
+* According to the specification, the `QUERY` method is used to ask the server to perform a query operation over some set of data scoped to the effective request URI. The body payload of the request defines the query.
 * It states that implementations may use a request body of any content type, although the example provided is:
 
   ```http
