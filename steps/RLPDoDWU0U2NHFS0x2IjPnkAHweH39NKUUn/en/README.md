@@ -1,6 +1,6 @@
-# What is meant by information disclosure in web application security?
+# What is meant by information disclosure vulnerabilities?
 
-* `Information disclosure` is arises as a security vulnerability in web applications when sensitive or confidential information is exposed to unauthorized users who should not have access to it.
+* `Information disclosure` arises as a security vulnerability in web applications when sensitive or confidential information is exposed to unauthorized users who should not have access to it.
   * This can include `Personally identifiable information (PII)` such as usernames, email addresses, and identification numbers, as well as technical details like server versions, source code, internal IP addresses, and more.
 * The exposure of technical information enables attackers to identify vulnerabilities in outdated components and understand the application's architecture, increasing the likelihood of successful attacks. Additionally, granting access to sensitive data expands the attack surface, raising the probability of exploitation.
 
