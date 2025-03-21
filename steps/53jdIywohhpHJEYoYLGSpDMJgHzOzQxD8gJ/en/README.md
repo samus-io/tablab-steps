@@ -5,7 +5,7 @@
 
 ## Files intended for web crawlers
 
-* Some files are designed to guide crawlers on site paths, with `robots.txt` and `sitemap.xml` being the most common.
+* Some files are designed to guide crawlers on site paths, being `robots.txt` and `sitemap.xml` the most common.
 * A security concern arises when these files disclose paths that should be kept hidden from potential adversaries.
 * An evident case of this risk is when a `robots.txt` file inadvertently reveals access to an administrative section:
 
@@ -20,7 +20,7 @@
 
 ## How to find search engine indexed pages
 
-* Beyond avoiding the inclusion of sensitive paths in crawler-specific files, it is also crucial to understand that pages with sensitive details may still be indexed. To verify which pages of a domain have been indexed, the following search query can be performed in the search engine:
+* Beyond avoiding the inclusion of sensitive paths in crawler-specific files, it is also crucial to understand that pages with sensitive details may still be indexed. To verify which pages of a domain have been indexed, the following search query can be performed in a search engine:
 
   ```plaintext
   site:example.tbl
@@ -28,7 +28,7 @@
 
   * Where `example.tbl` is the domain hosting the web application.
 
-* Additionally, to locate sensitive indexed pages, specific search engine commands can be used. For example, to find exposed login pages or configuration files, the following queries can be executed:
+* Specific search engine commands can be used to locate sensitive indexed pages. For example, to find exposed login pages or configuration files, the following queries can be executed:
 
   ```plaintext
   site:example.tbl inurl:login
@@ -42,7 +42,7 @@
 
   * To attempt to locate exposed `.env`, `.sql`, or `.log` files that could contain sensitive information.
 
-## Recommended approaches to prevent page indexing
+## Recommended security approaches to prevent page indexing
 
 * To block search engines from indexing specific pages, the HTML `meta` tag with `noindex` is recommended over using files like `robots.txt`:
 
