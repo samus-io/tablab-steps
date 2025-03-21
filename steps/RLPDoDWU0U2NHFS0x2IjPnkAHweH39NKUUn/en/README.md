@@ -2,7 +2,7 @@
 
 * `Information disclosure` arises as a security vulnerability in web applications when sensitive or confidential information is exposed to unauthorized users who should not have access to it.
   * This can include `Personally identifiable information (PII)` such as usernames, email addresses, and identification numbers, as well as technical details like server versions, source code, internal IP addresses, and more.
-* The exposure of technical information enables attackers to identify vulnerabilities in outdated components and understand the application's architecture, increasing the likelihood of successful attacks. Additionally, granting access to sensitive data expands the attack surface, raising the probability of exploitation.
+* The exposure of technical information enables attackers to identify vulnerabilities in outdated components and understand the application's architecture, increasing the likelihood of successful attacks. On the other hand, granting access to sensitive data expands the attack surface, raising the probability of exploitation.
 
 ## Common scenarios involving information disclosure
 
@@ -15,5 +15,5 @@
 
 * **Application security risks** occur when technical details are revealed, allowing attackers to exploit vulnerabilities and compromise system integrity.
 * **User privacy risks** arise when personal data is leaked, potentially leading to identity theft and fraud.
-* **Legal and reputational consequences** may follow due to poor information management, resulting in legal penalties, financial losses, and damage to an organization's reputation.
-* Attackers can examine the application's logic when the web application source code is exposed, increasing the **likelihood of discovering new vulnerabilities**.
+  * **Legal and reputational consequences** may follow due to poor information management, resulting in legal penalties, financial losses, and damage to an organization's reputation.
+* Attackers can examine the application's logic when certain source code is exposed, increasing the **likelihood of discovering new vulnerabilities**.
