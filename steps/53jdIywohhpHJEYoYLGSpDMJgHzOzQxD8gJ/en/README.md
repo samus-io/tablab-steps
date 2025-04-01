@@ -1,47 +1,60 @@
 # Information disclosure via web crawlers
 
 * Web crawlers, also known as search bots, are essential tools for search engines. Their primary function is to index website content, significantly improving the search experience for users.
-* These bots operate by accessing specific URLs, extracting all the links found on a page, and navigating through them to continue their indexing process.
+* These bots operate by accessing specific URLs, extracting all page links, and systematically following them to continue their indexing process.
 
-## Files for web crawlers
+## Files intended for web crawlers
 
-* Certain files are designed to inform crawlers about paths within a site, the most common being `robots.txt` and `sitemap.xml`.
-* However, a risk arises when these files expose sensitive paths that should be hidden from potential adversaries.
-* A clear example of this risk is how a `robots.txt` file could inadvertently reveal access to an admin section:
+* Some files are designed to guide crawlers on site paths, being `robots.txt` and `sitemap.xml` the most common.
+* A security concern arises when these files disclose paths that should be kept hidden from potential adversaries.
+* An evident case of this risk is when a `robots.txt` file inadvertently reveals access to an administrative section:
 
-  ```
+  ```plaintext
   User-agent: *
   Allow: /
   Disallow: /sup3r-s3cr3t-admin-login
   ```
 
 * Although the intent behind the previous `robots.txt` is to prevent indexing of certain paths, it may paradoxically alert adversaries to their existence.
-* Additionally, Google advises against relying on these files to prevent paths from being indexed, as restricted paths may still be discovered and indexed through other means.
+* Furthermore, Google advises against relying on these files to prevent paths from being indexed, as restricted paths may still be discovered and indexed through other means.
 
-## Indexing of pages in search engines
+## How to find search engine indexed pages
 
-* Beyond avoiding the inclusion of sensitive paths in crawler-specific files, it is crucial to recognize that pages containing sensitive information may still become indexed.
-* To verify which pages of a domain have been indexed, the following search query can be used in the search engine:
+* Beyond avoiding the inclusion of sensitive paths in crawler-specific files, it is also crucial to understand that pages with sensitive details may still be indexed. To verify which pages of a domain have been indexed, the following search query can be performed in a search engine:
 
-  ```
+  ```plaintext
   site:example.tbl
   ```
 
-* Where `example.tbl` is the domain hosting the web application.
+  * Where `example.tbl` is the domain hosting the web application.
 
-## Preventing page indexing
+* Specific search engine commands can be used to locate sensitive indexed pages. For example, to find exposed login pages or configuration files, the following queries can be executed:
 
-* To prevent search engines from indexing certain pages, it is recommended to use the HTML meta tag with `noindex` instead of using files like `robots.txt`:
+  ```plaintext
+  site:example.tbl inurl:login
+  ```
+
+  * To search for URLs containing "login", which may indicate authentication entry points.
+
+  ```plaintext
+  site:example.tbl ext:env | ext:sql | ext:log
+  ```
+
+  * To attempt to locate exposed `.env`, `.sql`, or `.log` files that could contain sensitive information.
+
+## Recommended security approaches to prevent page indexing
+
+* To block search engines from indexing specific pages, the HTML `meta` tag with `noindex` is recommended over using files like `robots.txt`:
 
   ```html
   <meta name="robots" content="noindex">
   ```
 
-* This approach ensures that search engines do not index the specified page. It is crucial not to list these pages in `robots.txt`, as Google has stated that such paths may still be indexed through alternative methods.
-* An alternative way to avoid indexing pages is to send the following response header:
+  * This strategy ensures that the specified page is not indexed by search engines. It is important to refrain from adding these pages to `robots.txt`, as Google has stated that such paths can still be indexed through different mechanisms and may also be effortlessly discovered by malicious actors.
+* An alternative way to prevent page indexing is to send the following HTTP response header:
 
   ```http
   X-Robots-Tag: noindex
   ```
 
-* This technique is particularly useful for non-HTML resources, such as PDFs, images, or videos.
+  * This method is particularly useful for non-HTML resources, such as PDFs, images, or videos.
