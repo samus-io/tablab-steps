@@ -7,13 +7,13 @@
 
 * Default files often remain in the system after installation, and if not removed, they can be accessed directly through their URL. Attackers frequently scan for these files to gather insights about the application's configuration, versions, and potential vulnerabilities.
 * Security risks from these default documentation, installation scripts, or log files may be disregarded, even though they can contain internal paths, debugging information, or database credentials and API keys that attackers could exploit to gain deeper access to the system.
-* Web servers with improper configurations may allow directory listing, making it easy for anyone to browse and locate sensitive files. If directory indexing is enabled, malicious users can explore exposed folders, retrieve documentation, backups, or configuration files, and use this information to plan further attacks.
+* Additionally, web servers with improper configurations may allow directory listing, making it easy for anyone to browse and locate sensitive files. If directory indexing is enabled, malicious users can explore exposed folders, retrieve documentation, backups, or configuration files, and use this information to plan further attacks.
 
 ## Common default files
 
 |Filename|Description|
 |:--:|:--:|
-|`README.md`|Offers detailed descriptions of the software itself, including how to configure or use it, which might include sensitive hints.|
+|`README.md`|Offers detailed descriptions of the software installed, including how to configure or use it, which might include sensitive hints.|
 |`INSTALL.md`|Provides installation steps, which may reveal system paths, dependencies, or security recommendations.|
 |`CHANGELOG.txt`|Lists software updates, including fixed vulnerabilities that attackers can exploit in older versions.|
 |`phpinfo.php`|Displays detailed PHP environment information, including loaded modules, file paths, and configuration settings.|
@@ -28,7 +28,7 @@
 ## Recommended security approaches
 
 * After installing software, carefully **review and remove unnecessary files** to minimize potential information disclosure. Default installation files such as documentation, configuration samples, and outdated scripts can reveal sensitive details about the system, software version, or internal structure, making them a target for attackers.
-* If deletion of these files is not feasible, **restrict access through the web server configuration** to prevent exposure via HTTP requests. This limits public access while retaining the files on the server or container for internal use:
+* If deletion of these files is not feasible, **restrict access through the web server configuration** to prevent exposure via HTTP requests. This limits public access while retaining the files on the server or container instance for internal use:
 
   @@TagStart@@apache
 
@@ -86,7 +86,7 @@
 
   @@TagStart@@apache
 
-  * In Apache, edit the `httpd.conf` or `.htaccess` file:
+  * In **Apache**, edit the `.htaccess` file disabling automatic indexing:
 
     ```plaintext
     Options -Indexes
@@ -96,7 +96,7 @@
 
   @@TagStart@@nginx
 
-  * In Nginx, update the `nginx.conf` or site-specific configuration file:
+  * In Nginx, update the `nginx.conf` with the following directive:
 
     ```plaintext
     location / {
@@ -108,7 +108,7 @@
 
   @@TagStart@@iis
 
-  * In IIS, modify the `web.config` file:
+  * In IIS, disable directory browsing by modifying the `web.config` file:
   
     ```xml
     <configuration>
