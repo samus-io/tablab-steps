@@ -1,6 +1,6 @@
 # Information disclosure via directory listing in Apache 2.4
 
-* A directory listing is a web server feature that displays the contents of a directory (files and subdirectories) when a user requests a directory that doesn't have a default page (such as `index.html` or `index.php`).
+* A directory listing is a web server feature that displays the contents of a directory (files and subdirectories) when a user requests a directory that doesn't have a default page, such as `index.html` or `index.php`.
 * If enabled, directory listing can inadvertently expose sensitive files and data to unauthorized users, creating a significant security risk.
   * Malicious users frequently rely on directory listing to map a web application's structure and locate files that may hold credentials, internal APIs, or vulnerabilities, making it a frequently exploited flaw in misconfigured web servers.
 * The following image illustrates a web application that exposes its directory contents, revealing a specific file to the public. If directory listing was properly disabled, this information would remain hidden from unauthorized users:
