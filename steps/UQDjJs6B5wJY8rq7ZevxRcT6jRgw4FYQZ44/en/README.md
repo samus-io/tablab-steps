@@ -34,7 +34,7 @@
 
   * In Apache, access can be denied using the `.htaccess` file:
 
-    ```plaintext
+    ```apache
     <FilesMatch "^(README\.md|INSTALL\.md|CHANGELOG\.txt|phpinfo\.php)$">
         Require all denied
     </FilesMatch>
@@ -82,43 +82,6 @@
 
   @@TagEnd@@
 
-* **Disable directory listing** to prevent unauthorized users from browsing the contents of directories. This avoids exposure of sensitive files not meant to be publicly accessible:
-
-  @@TagStart@@apache
-
-  * In **Apache**, edit the `.htaccess` file disabling automatic indexing:
-
-    ```plaintext
-    Options -Indexes
-    ```
-
-  @@TagEnd@@
-
-  @@TagStart@@nginx
-
-  * In Nginx, update the `nginx.conf` with the following directive:
-
-    ```plaintext
-    location / {
-        autoindex off;
-    }
-    ```
-
-  @@TagEnd@@
-
-  @@TagStart@@iis
-
-  * In IIS, disable directory browsing by modifying the `web.config` file:
-  
-    ```xml
-    <configuration>
-      <system.webServer>
-        <directoryBrowse enabled="false" />
-      </system.webServer>
-    </configuration>
-    ```
-  
-  @@TagEnd@@
-
+* **Disable directory listing** to prevent unauthorized users from browsing the contents of directories. This contributes to prevent the exposure of sensitive files not meant to be publicly accessible.
 * Additionally, **use automated scanning tools** such as Nikto, Dirb, or OWASP ZAP to identify accessible default files and misconfigurations before malicious users do.
 * By implementing these security measures, default installation files can be effectively managed, reducing the risk of information disclosure and unauthorized access.
