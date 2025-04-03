@@ -16,5 +16,30 @@
   ```
 
 * This setting ensures that users accessing a directory without an index file, such as `index.html` or `index.php`, receive a `403 Forbidden` error instead of a file listing, thereby protecting existing files from exposure.
+* Below is a representative `.htaccess` file that uses `Options -Indexes` along with other additional security and functionality enhancements:
+
+  ```apache
+  # Disable directory listing
+  Options -Indexes
+
+  # Enable URL rewriting
+  RewriteEngine On
+
+  # Redirect all HTTP requests to HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Prevent access to sensitive files
+  <FilesMatch "\.(htaccess|htpasswd|env|ini|log|bak)$">
+    Require all denied
+  </FilesMatch>
+
+  # Set content security headers
+  <IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+  </IfModule>
+  ```
 
 [1]: /static/images/directory-listing-example.png
