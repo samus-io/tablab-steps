@@ -140,7 +140,7 @@
 ### When `Referer` validation is non-strict
 
 * If the web application does not strictly validate the `Referer` header value, attackers can bypass the protection by crafting requests from malicious domains that partially match the expected value.
-* As example, if the application only checks that the `Referer` domain starts with `vulnerable.tbl`, an attacker can manipulate it by using a matching subdomain:
+* As example, if the application only checks that whether the `Referer` domain contains `vulnerable.tbl`, an attacker can manipulate it by using a matching subdomain:
 
   ```url
   https://vulnerable.tbl.attacker.tbl/

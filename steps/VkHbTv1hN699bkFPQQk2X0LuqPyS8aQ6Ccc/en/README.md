@@ -18,12 +18,10 @@
   1. The victim unknowingly clicks the link, initiating the attack.
   1. The victim's browser, still authenticated to the target website, automatically sends the forged request along with the session cookie, causing the trusted site to process it as legitimate and performing the unintended action.
 
-* CSRF is categorized as a one-way attack because it only involves forging requests, without requiring access to responses.
-
 ## What could be achieved with CSRF
 
 * Perform unintended actions within a trusted application on behalf of an authenticated user without their knowledge or consent, such as modifying account settings, changing passwords, updating email addresses, purchasing products, transferring funds, or altering security questions, leading to account takeover.
-* Exploit CSRF to escalate privileges if combined with other vulnerabilities, such as weak authentication mechanisms, or bypass specific access controls by making requests from the victim's authenticated session.
+* Exploit CSRF to escalate privileges if combined with other vulnerabilities such as weak authentication mechanisms, or bypass specific access controls by making requests from the victim's authenticated session.
 * Gain full access to the application's data, functionality, and critical configurations, potentially leading to a widespread compromise when leveraging a privileged user's session, such as an administrator's.
 
 ## XSS vs CSRF
@@ -33,6 +31,6 @@
   * CSRF manipulates the victim into performing specific unintended actions, without granting the attacker direct control over the browser.
 * The impact of XSS vulnerabilities is generally more severe than CSRF vulnerabilities:
   * The scope of CSRF attacks is usually constrained to certain subset of actions a user can perform, while XSS exploits often allow the attacker to perform any action available to the victim.
-  * XSS is considered as a two-way attack because the injected script can send arbitrary requests, process responses, and exfiltrate data to an attacker-controlled domain.
+  * CSRF is categorized as a one-way attack because it only involves forging requests, without requiring access to responses, while XSS is considered as a two-way attack because the injected script can send arbitrary requests, process responses, and exfiltrate data to an attacker-controlled domain.
 
 [1]: /static/images/csrf-workflow.png

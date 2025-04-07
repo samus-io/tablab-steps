@@ -7,7 +7,7 @@
   * Session-tied: each token must be uniquely generated for a session and remain valid only within that session.
   * Strictly validated: the server must validate the token before executing the associated action.
 
-## How the synchronizer token pattern works
+## Understanding the synchronizer token pattern
 
 * A unique CSRF token must be generated per session and securely stored on the server. The method below illustrates a simple way to generate and store the token:
 
@@ -220,7 +220,7 @@
   org.owasp.csrfguard.JavascriptServlet.injectIntoDynamicNodes = true
   ```
 
-* Next, configure how CSRF violations are handled, including logging and response codes. When a request fails CSRF validation, CSRFGuard can log the event, return an error, or take other actions. Logging settings also define the level of detail stored.
+* Next, configure how CSRF violations are handled, including logging and response codes. When a request fails CSRF validation, CSRFGuard can log the event, return an error, or take other actions. Logging settings also define the level of detail stored:
 
   ```properties
   # Error handling

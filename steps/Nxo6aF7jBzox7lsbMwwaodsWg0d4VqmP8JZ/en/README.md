@@ -112,7 +112,6 @@
   1. When a user submits a form or performs a state-changing operation, the frontend application should explicitly include the token as a custom HTTP header or a request parameter (e.g., such as in a hidden input field), while the browser automatically sends the CSRF token cookie along with the request as part of its default behavior:
 
       ```javascript
-      // Ensure js-cookie is available
       import Cookies from "js-cookie";
 
       // Retrieve CSRF token from cookie
@@ -135,7 +134,7 @@
 
 * As observed, this pattern relies on the `Same-Origin Policy (SOP)`, which restricts cookie access to the legitimate origin.
 
-  > :older_man: When a cookie is set without specifying the `domain` attribute, the browser automatically restricts the cookie to the exact domain that issued the `Set-Cookie` header. As a result, the cookie is only sent to the issuing domain and not to its subdomains. However, if the server explicitly sets a domain (e.g., `Domain=example.tbl`), the cookie is sent to both `example.tbl` and all its subdomains (e.g., `*.example.tbl`, `*.sub.example.tbl`) - no matter how deep.
+  > :older_man: When a cookie is set without specifying the `domain` attribute, the browser automatically restricts the cookie to the exact domain that issued the `Set-Cookie` header. As a result, the cookie is only sent to the issuing domain and not to its subdomains. However, if the server explicitly sets a domain (e.g., `Domain=example.tbl`), the cookie is sent to both `example.tbl` and all its subdomains (e.g., `*.example.tbl`, `*.sub.example.tbl`) — no matter how deep.
 
 * To generate stateless CSRF tokens without requiring server-side storage, tokens can be created as a series of values that are either hashed or encrypted. Using the `Hash-based Message Authentication Code (HMAC)` algorithm is strongly recommended, as it is less computationally intensive than encryption and decryption processes while still ensuring strong security.
 
@@ -153,7 +152,7 @@
     > :older_man: Historically, the absence of the `SameSite` attribute on cookies was treated as `SameSite=None` by most browsers. Recognizing the security risks of this approach, modern browsers now default to `SameSite=Lax`.
 
 * It is essential to understand that `Lax` enforcement provides a reasonable defense-in-depth measure against CSRF attacks that use unsafe HTTP methods, but does not constitute a complete defense against CSRF attacks as a general security concern:
-  * Cookies are still sent for top-level, user-initiated navigations using safe methods, allowing attackers to open a new window, trigger a forced navigation, or trick users into clicking a malicious link to bypass this restriction. CSRF attacks can still be performed through GET requests, which remain as a potential attack vector.
+  * Cookies are still sent for top-level, user-initiated navigations using safe methods, allowing attackers to open a new window, trigger a forced navigation, or trick users into clicking a malicious link to bypass this restriction, meaning CSRF attacks can still be performed through GET requests, which remain as a potential attack vector.
   * Features like `<link rel="prerender">` allow browsers to load pages in the background before a user actually navigates to them. If a site prerenders a page with sensitive actions, an attacker could exploit this to send an automatic "legitimate" request that appears same-site.
 * According to OWASP, the `sameSite` attribute should not replace an anti-CSRF token mechanism, but should be used alongside it to strengthen security.
 
@@ -163,7 +162,7 @@
 * Although it is technically possible to include an anti-CSRF token as a GET parameter, it is not recommended due to significant security risks:
   * URLs containing CSRF tokens may be logged by web servers, proxies, or analytics tools. Moreover, if a user follows a link or visits an insecure page, the token might be leaked via the `Referer` header.
   * The presence of CSRF tokens in URLs may allow attackers to intercept or recover them, enabling them to bypass CSRF protection.
-* However, in specific cases, such as when an application sends a confirmation email with an activation link after user sign-in to activate the user's account, using the GET method for state-changing operations provides a seamless and user-friendly experience.
+* However, in certain cases, such as when an application sends a confirmation email with an activation link after user sign-in to activate the user's account, using the GET method for state-changing operations provides a seamless and user-friendly experience.
 
 ## Quiz to consolidate :rocket:
 

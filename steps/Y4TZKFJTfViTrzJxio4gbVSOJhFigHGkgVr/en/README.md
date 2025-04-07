@@ -87,17 +87,19 @@
 
 ## Exercise to practice :writing_hand:
 
-* This web application has an exposed `.git` directory in its root folder, enabling a malicious user to retrieve the repository. This security flaw enables unrestricted access to download the entire repository.
-* The objective of this exercise is to retrieve the `.git` folder and reconstruct the repository from it through the `Open Code Editor` button.
-* Keep in mind that the `$APP_URL` is an environment variable that represents the base path of the application, so you can make a request to `.git` using the following command:
+* This web application has an exposed `.git` folder accessible at the `https://ontablab.io/.git` in the simulated browser, allowing unrestricted access of the entire repository.
+* The goal of this exercise is to extract the `.git` folder and rebuild the source code with the help of the [git-dumper][1] tool, already available in the `Terminal` tab.
+  * An environment variable named `$APP_URL` stores the application's base URL, which can be used to send requests, for example, to fetch the HTML content of the `.git` path:
 
   ```bash
   curl -L $APP_URL/.git
   ```
 
-* For the exercise to be completed properly, the repository must be reconstructed in `/home/coder/app/git-repo`.
-* Once the repository is extracted successfully, press the `Verify Completion` button to confirm that the exercise has been completed.
+  * Note that logging into the presented application is not required for the exercise.
+* In order to complete the exercise, **the repository must be reconstructed in a folder named** `git-repo` **located at** `/home/tbl/git-repo`.
+* After the repository is successfully extracted, click the `Verify Completion` button to confirm the exercise is complete.
+  * Consider analyzing the code to validate how `git-dumper` restored the repository and retrieved the source code from the remote `.git` folder.
 
-@@ExerciseBox@@
+  @@ExerciseBox@@
 
 [1]: https://github.com/arthaud/git-dumper
