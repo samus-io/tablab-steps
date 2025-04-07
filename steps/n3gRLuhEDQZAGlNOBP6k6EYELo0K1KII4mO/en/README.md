@@ -1,4 +1,4 @@
-# How to remove response headers in Apache 2.54.X
+# How to implement Referrer-Policy in Apache 2.54.X
 
 ## Apache configuration files
 
@@ -9,20 +9,25 @@
   * If the configuration should only apply to one specific web application, it is better to modify the appropriate file inside the `sites-available` directory, which holds the configuration files for individual applications.
 * It is also possible to configure Apache using `.htaccess` files in the same format as the other configuration files, but these will only take effect in the directory in which they are stored.
 
-## Remove response headers
+## Implementing Referrer-Policy header
 
-* Response headers like `Server` often reveal unnecessary technical information that are not required for application functionality and can be removed to improve security.
-* Apache allows the removal of headers through the `mod_headers` module. To enable this module, run the following commands on the server and restart Apache:
+* Setting headers in Apache is quite simple through the `mod_headers` module. To enable this module, run the following commands on the server and restart Apache:
 
   ```bash
   sudo a2enmod headers
   sudo service apache2 restart
   ```
 
-* Once the module is enabled, headers can be removed by adding a directive to the relevant Apache configuration file:
+* Once the module is enabled, headers can be configured by editing the appropriate Apache configuration file.
+* In this example, to add the `Referrer-Policy` response header, include the following directive in the configuration file:
 
   ```apacheconf
-  Header always unset Server
+  Header always set Referrer-Policy "no-referrer"
   ```
 
-* This directive ensures that the Server header is not included in the HTTP response, reducing the amount of information exposed.
+* This configuration instructs the server to send the `Referrer-Policy` header with the value `no-referrer`.
+* After applying the changes, restart or reload Apache to apply the updated configuration
+
+  ```bash
+  sudo service apache2 reload
+  ```

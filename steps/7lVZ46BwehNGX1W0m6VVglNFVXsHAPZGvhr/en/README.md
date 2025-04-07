@@ -1,14 +1,27 @@
 # Referrer-Policy header basics
 
-* To understand what the `Referrer-Policy` header is, you need to know what the `Referer` header is, because the `Referrer-Policy` header is responsible for setting the policy for that header.
-* The `Referer` header is sent with HTTP requests and its value is the URL from which the request originated. To better understand this header, consider the following example:
-  * The web application `https://domain.tbl` has a link pointing to the URL `https://example.tbl`.
-  * When a user requests this link, the value of the `Referer` header is `https://domain.tbl`.
-  * While this may not appear to have any security implications, it is possible that the `https://domain.tbl` web application could originate the request from the URL `https://domain.tbl/users/<user>`, where `<user>` is the user's name. This would send the user's name to the `https://example.tbl` page, causing an information leak.
-* Although this example is not very serious from a security point of view, it is important to know what information is sent to other pages, because it could have a high impact in some cases.
-* The `Referrer-Policy` header is used to control what information is sent to other pages with the `Referer` header. It is important to define this header well to avoid information leakage by sending routes or web application parameters.
-* This header is made up of directives that are interpreted by the browser and the appropriate information is appended according to its directive. An example of the `Referrer-Policy` could be the following
+* The `Referrer-Policy` response header helps control what gets shared in the Referer header when a browser makes a request.
+* Without restrictions, the `Referer` header can include full URLs that may contain sensitive information like tokens or user identifiers
+* This header allows websites to define rules that limit or remove parts of the referring URL before it is sent.
+* Different values, known as directives, can be set to adjust how much information is included in the `Referer` header.
+* These directives help reduce the risk of leaking sensitive data to external domains during navigation or resource loading.
 
-  ```
-  Referrer Policy: no-referrer
-  ```
+## Directives
+
+* The following table defines the different directives of the `Referrer-Policy` header:
+  |Directive|Description|Referer header result|
+  |:--:|:--:|:--:|
+  |`no-referrer`|Completely removes the `Referer` header from all requests, preventing any referrer data from being shared.|No `Referer` header is sent.|
+  |`no-referrer-when-downgrade`|Sends the full URL in the Referer header for HTTPS to HTTPS requests, but omits it when navigating from HTTPS to HTTP. This is the default behavior in many browsers but is not recommended for secure setups.|`https://domain.tbl/user?name=User`|
+  |`origin`|The `Referer` header contains only the origin from which the request originated.|`https://domain.tbl/user/`|
+  |`origin-when-cross-origin`|Sends the full URL for same-origin requests and only the origin for cross-origin requests.|`https://domain.tbl`|
+  |`same-origin`|Sends the full URL in the Referer header only for same-origin requests. Nothing is sent for cross-origin requests.|No `Referer` header is sent.|
+  |`strict-origin`|Sends only the origin in the `Referer` header if the security protocol is the same (`HTTP` to `HTTP` or `HTTPS` to `HTTPS`), otherwise the header is not sent.|`https://domain.tbl`|
+  |`strict-origin-when-cross-origin`|Sends the full URL for same-origin requests. For cross-origin requests, sends only the origin if the protocol is the same. No header is sent if downgrading from HTTPS to HTTP.|`https://domain.tbl`|
+  |`unsafe-url`|Always sends the full URL in the Referer header, including path and query parameters. This directive is not recommended due to the risk of exposing sensitive data.|`https://domain.tbl/user?name=johndoe`|
+
+## Referrer-Policy header recommendations
+
+* Web analytics tools like Google Analytics rely on the `Referer` header to track which pages users visit. The chosen `Referrer-Policy` directive can impact how much information is shared with these services.
+* If a data analytics service is being used, it is recommended to use the `same-origin`, `origin-when-cross-origin` or `strict-origin-when-cross-origin` directives to avoid errors in its operation.
+* If no analytics or tracking services are in use, more restrictive directives are preferred to enhance privacy and reduce data exposure like `strict-origin`, `origin` and `no-referrer`.
