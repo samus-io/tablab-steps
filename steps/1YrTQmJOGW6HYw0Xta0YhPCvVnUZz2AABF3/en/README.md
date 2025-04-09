@@ -1,4 +1,4 @@
-# Information disclosure through response headers
+# Information disclosure via response headers
 
 * Web servers, like `Apache`, often include response headers that reveals sensitive information by default, such as `Server` header. Other technologies, like programming languages or frameworks, may also add headers automatically, such as PHP including the `X-Powered-By` header.
 * These headers can expose technical details about the web application's environment. Disclosing server types and versions helps attackers look for known exploits associated with specific versions.

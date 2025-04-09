@@ -1,4 +1,4 @@
-# Information disclosure through sensitive query strings in URL
+# Information disclosure via sensitive query strings in URL
 
 * This type of information exposure occurs when sensitive data such as usernames, passwords, session identifiers, tokens, database details, credit card numbers or any kind of `Personally Identifiable Information (PII)` or other potentially sensitive data is passed to parameters in the URL, as shown in the following example:
 
