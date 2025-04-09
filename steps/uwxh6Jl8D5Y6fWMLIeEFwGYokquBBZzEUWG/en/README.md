@@ -1,88 +1,132 @@
-# Enforcing a custom error handler using Express in Node.js
+# Enforcing a custom error handler using Express in Node.js 20
 
-* Handling errors properly in an Express application is crucial to ensuring a robust, secure, and maintainable backend.
-* Express should be run in production mode using `NODE_ENV=production` environment variable to disable detailed error messages that could expose sensitive information.
-* There are multiple ways to manage errors, each with its own advantages and drawbacks.
+* Error handling aims to ensure that unexpected or untreated errors are not leaked to the user under any circumstances, thereby protecting sensitive information.
+* Proper error handling is essential in any backend application to ensure robustness, security, and long-term maintainability.
+* In Express.js, different techniques can be applied to handle errors depending on the architecture and scope of the application.
 
-## Try/Catch blocks
+  > :warning: Setting the `NODE_ENV` variable to `production` in Node.js is strongly recommended to limit error details that might expose sensitive information.
 
-* Wrapping every route handler inside a `try/catch` block is a straightforward way to handle errors. This approach ensures that errors are caught and handled within each route.
-* The example shows how `try/catch` is used to return an `HTTP 500` error when an error occurs:
+## Using basic try/catch blocks
+
+* Encapsulating every route handler in a `try/catch` block provides a straightforward approach to error handling, allowing errors to be managed within the route itself.
+* The following code sample demonstrates how `try/catch` is used to handle errors and return appropriate HTTP status codes based on the type of error:
 
   ```javascript
-  app.get('/data', async (req, res) => {
-      try {
-          const data = await fetchData();
-          res.json(data);
-      } catch (err) {
-          res.status(500).json({ message: 'An unexpected error occurred' });
+  class ValidationError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "ValidationError";
+    }
+  }
+
+  class NotFoundError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "NotFoundError";
+    }
+  }
+  ```
+
+  ```javascript
+  app.get("/profile", async (req, res) => {
+    const { userId } = req.query;
+
+    try {
+      const user = await fetchDatabase(userId); // Error thrown here
+      res.json(user);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        res.status(400).json({ message: "Invalid request data" });
+      } else if (err instanceof NotFoundError) {
+        res.status(404).json({ message: "Profile not found" });
+      } else {
+        res.status(500).json({ message: "An unexpected error occurred" });
       }
+    }
   });
   ```
 
-* However, this approach quickly becomes repetitive and increases the risk of missing a handler, leading to uncaught errors.
-* Repeating `try/catch` in every route increases code duplication and makes it easier to overlook error handling and missing one can result in uncaught errors that crash the application.
+* However, this method can quickly become repetitive and may result in missed handlers, accidentally allowing some errors to go uncaught.
+* Applying `try/catch` blocks across all routes causes redundancy and raises the chance of overlooking error handling, where a missed case could cause the application to crash. For this reason, it is only recommended in simple applications.
 
-## Global error handler
+## Using a global error handler
 
-* A global error handler centralizes error management and ensures consistent processing of unhandled errors.
+* A global error handler enables centralized control over error management and ensures consistent processing of unhandled errors.
 * Express natively supports error-handling middleware, allowing developers to streamline error management.
-* The following example illustrates how a global error-handling middleware captures and processes errors, returning a standardized response:
+* The following example illustrates how a global error-handling middleware captures and processes generated errors while returning a standardized response:
 
   ```javascript
-  /**
-   * Middleware for centralized error handling.
-   * Logs the error and responds with a generic message to prevent sensitive data exposure.
-   */
-  const errorHandlerMiddleware = (err, req, res, next) => {
-    console.error(`Error: ${err.message}`);
+  app.get("/add", (req, res) => {
+    const { a, b } = req.query;
 
-    res.status(err.status || 500).json({
-      message: err.status ? err.message : 'Internal Server Error',
-    });
-  };
+    const numA = Number(a);
+    const numB = Number(b);
 
-  app.get('/error', (req, res) => {
-    throw new Error('Error'); // Automatically handled
+    if (isNaN(numA) || isNaN(numB)) {
+      throw new ValidationError("'a' and 'b' must be valid numbers"); // Error thrown here
+    }
+
+    const result = numA + numB;
+    res.json({ result });
   });
+
+  const errorHandlerMiddleware = (err, req, res, next) => {
+    if (err instanceof ValidationError) {
+      res.status(400).json({ message: err.message });
+    } else {
+      res.status(500).json({ message: "An unexpected error occurred" });
+    }
+  };
 
   app.use(errorHandlerMiddleware);
   ```
 
-* When an unhandled error occurs, Express automatically executes the `errorHandlerMiddleware` middleware, preventing sensitive information from being displayed.
-* However, it is best practice to handle errors with `try/catch` while relying on the global error handler as a fallback for any unhandled exceptions due to missing `try/catch` blocks.
+  * In this scenario, when an unhandled error arises, Express automatically triggers the `errorHandlerMiddleware`, which helps prevent the exposure of sensitive information.
+* Furthermore, basic `try/catch` blocks can be used alongside a global error handler, serving as a fallback for unhandled exceptions.
 
-### Handling async errors
+### Using a global error handler while wrapping async code
 
-* When an `async` function throws an error, Express does not handle it properly by default, returning an empty HTTP response.
-* Middleware alone is not sufficient to catch errors from `async` functions, as unhandled rejections are not automatically forwarded.
-* The following code resolves this problem by resolving all promises before returning a response:
+* Express does not handle errors thrown from async functions by default. If an error occurs in an async route handler and isn't properly caught, Express will return an empty HTTP response or fail silently.
+* Standard middleware functions, like the one previously shown, are not sufficient to catch exceptions from async functions since unhandled promise rejections are not automatically passed to `next()`, which is what Express relies on to delegate errors to the error-handling middleware.
+* A common, simple, and effective solution is to wrap all async route handlers in a utility function that catches errors and forwards them using `next()`:
 
-```javascript
-
-  /**
-   * Higher-order function that wraps async route handlers.
-   * Catches errors and forwards them to Express error handling automatically.
-   */
-  const catchAsyncErrors = (fn) => (req, res, next) => {
+  ```javascript
+  const asyncErrorWrapper = (fn) => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
 
-app.get('/error-async', catchAsyncErrors(async (req, res) => {
-  const content = await fs.readFile('./invalid-file.txt', 'utf8'); // Will throw an error
-  res.send(content);
-}));
-```
+  app.get("/profile", asyncErrorWrapper(async (req, res) => {
+    const { userId } = req.query;
 
-* The `catchAsyncErrors` function wraps asynchronous route handlers, ensuring that any thrown error is forwarded to Express' error-handling middleware.
+    if (!userId) {
+      throw new ValidationError("Missing required query parameter: 'userId'");
+    }
+
+    const user = await fetchDatabase(userId); // Error thrown here
+    res.json(user);
+  }));
+
+  const errorHandlerMiddleware = (err, req, res, next) => {
+    if (err instanceof ValidationError) {
+      res.status(400).json({ message: err.message });
+    } else {
+      res.status(500).json({ message: "An unexpected error occurred" });
+    }
+  };
+
+  app.use(errorHandlerMiddleware);
+  ```
+
+  * Note how the route handler is currently asynchronous through the use of `async/await`.
+  * Within the code, the `asyncErrorWrapper` function can be used to wrap asynchronous route handlers, ensuring that any thrown or rejected error is properly forwarded to Express's error-handling middleware.
 
 ## Exercise to practice :writing_hand:
 
-* The following web application includes a registration form that does not handle errors properly, which could reveal internal details about how the application works.
-* The purpose of this exercise is to modify the source code using the `Open Code Editor` button to implement a custom error handler that meets the following requirements:
-  * If any field in the registration form is incorrect, the application must return the JSON `{"message": "The registration form is not correct."}` with a 400 HTTP code.
-  * If another kind of error occurs, such as a malformed JSON request, the application must return the JSON `{"message": "Bad Request"}` with a 400 HTTP code.
-* More precisely, the `/register` endpoint of the Express application in `app.js` should have code modifications to support this functionality.
-* After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
+* The following web application includes a registration form that mishandles errors by exposing internal details to the user interface when a field does not meet the expected criteria.
+* The goal of this exercise is to use the `Open Code Editor` button to modify the source code and create a proper custom error handler while satisfying the specified requirements:
+  * As a representative example, when any field in the registration form is invalid, the application should always return an HTTP 400 status code response with the JSON content of `{"message":"Registration data is not correctly formatted."}`.
+  * For any error unrelated to form validation, like a connection failure to the database, the application should return an HTTP 500 status code response with the JSON content of `{"message":"Internal Server Error"}`.
+  * More precisely, the Express application in `app.js` should have code modifications to support this functionality.
+* After making the changes, press the `Verify Completion` button to confirm the exercise has been completed.
 
-@@ExerciseBox@@
+  @@ExerciseBox@@
