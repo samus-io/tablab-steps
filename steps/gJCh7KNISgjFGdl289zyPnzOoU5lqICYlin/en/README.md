@@ -1,4 +1,4 @@
-# Enforcing file extension restrictions in Java Jakarta through allow-list validation
+# Enforcing file extension restrictions through allow-list validation in Java Jakarta
 
 * An allow-list validation strategy involves creating a list of approved values or characters considered as safe, rejecting any input that doesn't conform to the list in order to maintain data integrity and security.
 

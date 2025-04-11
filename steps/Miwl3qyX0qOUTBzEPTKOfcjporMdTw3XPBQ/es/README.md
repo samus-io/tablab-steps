@@ -1,4 +1,4 @@
-# Aplicación de restricciones de extensión de archivo en Node.js mediante validación de lista de permitidos
+# Aplicación de restricciones de extensión de archivo mediante validación de lista de permitidos en Node.js
 
 * Una estrategia de validación de lista de permitidos implica la creación de una lista de valores o caracteres aprobados que son considerados seguros, rechazando cualquier entrada que no se ajuste a la lista para mantener la integridad y seguridad de los datos.
 
