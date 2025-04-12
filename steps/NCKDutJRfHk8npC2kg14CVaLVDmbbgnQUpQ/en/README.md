@@ -388,7 +388,8 @@
 
 ## Compliant code in Node.js using `multer` while keeping the original file name
 
-* The following code snippet demonstrates how to handle file uploads using the `multer` middleware and storing files in a specific folder while preserving the original file name sent by the user. It applies a custom file name length limit, restricts characters and reserved names using the `sanitize-filename` package, treats file names as case-insensitive, prevents hidden files or those ending with a period or space, and ensures no file name collisions:
+* The following code snippet demonstrates how to handle file uploads using the `multer` middleware and storing files in a specific folder while preserving the original file name sent by the user.
+* It enforces a maximum file name length, decodes URL-encoded names, removes unsafe or reserved characters using the `sanitize-filename` package, and further restricts the resulting name to alphanumeric characters, hyphens, and dots. It also trims leading and trailing dots to prevent hidden files or unsafe paths, normalizes the name to lowercase for consistency, and prefixes the final name with a random string to prevent collisions:
 
   ```javascript
   const sanitizeFilename = require("sanitize-filename");
@@ -415,13 +416,12 @@
         return;
       }
 
-      const croppedFilename = decodedFilename.replace(/^[.\s]+|[.\s]+$/g, ""); // Remove outer periods and spaces
-      const sanitizedFilename = sanitizeFilename(croppedFilename);
-      const trimmedFilename = sanitizedFilename.replace(/^[.\s]+|[.\s]+$/g, ""); // Remove enclosing periods and spaces
-      const lowerCaseFilename = trimmedFilename.toLowerCase();
-      const canonicalizedFilename = lowerCaseFilename.replace(/\s+/g, "-"); // Replace spaces with hyphens
+      const sanitizedFilename = sanitizeFilename(decodedFilename); // Remove unsafe characters and reserved names
+      const strictSanitizedFilename = sanitizedFilename.replace(/[^A-Za-z0-9.-]/g, ""); // Keep only alphanumerics, dots, and hyphens
+      const trimmedFilename = strictSanitizedFilename.replace(/^[.]+|[.]+$/g, ""); // Strip leading/trailing dots to prevent hidden files or path traversal artifacts
+      const lowerCaseFilename = trimmedFilename.toLowerCase(); // Normalize casing for consistency across platforms
 
-      if (!canonicalizedFilename) {
+      if (!lowerCaseFilename) {
         error.message = "Invalid file name";
         cb(error);
         return;
@@ -429,7 +429,7 @@
 
       // Ensure no file name collisions
       const randomString = generateRandomString();
-      const filename = `${randomString}_${canonicalizedFilename}`;
+      const filename = `${randomString}_${lowerCaseFilename}`;
 
       cb(null, filename);
     }
