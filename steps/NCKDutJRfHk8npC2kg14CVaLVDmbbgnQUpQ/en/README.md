@@ -416,12 +416,12 @@
         return;
       }
 
-      const sanitizedFilename = sanitizeFilename(decodedFilename); // Remove unsafe characters and reserved names
-      const strictSanitizedFilename = sanitizedFilename.replace(/[^A-Za-z0-9.-]/g, ""); // Keep only alphanumerics, dots, and hyphens
-      const trimmedFilename = strictSanitizedFilename.replace(/^[.]+|[.]+$/g, ""); // Strip leading/trailing dots to prevent hidden files or path traversal artifacts
-      const lowerCaseFilename = trimmedFilename.toLowerCase(); // Normalize casing for consistency across platforms
+      const restrictedFilename = decodedFilename.replace(/[^A-Za-z0-9.-]/g, ""); // Keep only alphanumerics, dots, and hyphens
+      const trimmedFilename = restrictedFilename.replace(/^[.]+|[.]+$/g, ""); // Strip leading/trailing dots to prevent hidden files or path traversal artifacts
+      const sanitizedFilename = sanitizeFilename(trimmedFilename); // Remove system-reserved filenames
+      const normalizedFilename = sanitizedFilename.toLowerCase(); // Normalize casing for consistency across platforms
 
-      if (!lowerCaseFilename) {
+      if (!normalizedFilename) {
         error.message = "Invalid file name";
         cb(error);
         return;
@@ -429,7 +429,7 @@
 
       // Ensure no file name collisions
       const randomString = generateRandomString();
-      const filename = `${randomString}_${lowerCaseFilename}`;
+      const filename = `${randomString}_${normalizedFilename}`;
 
       cb(null, filename);
     }
