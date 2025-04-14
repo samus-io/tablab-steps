@@ -1,4 +1,4 @@
-# Enforcing a custom error handler using Express in Node.js 20
+# Enforcing a custom error handler using Express in Node.js
 
 * Error handling aims to ensure that unexpected or untreated errors are not leaked to the user under any circumstances, thereby protecting sensitive information.
 * Proper error handling is essential in any backend application to ensure robustness, security, and long-term maintainability.
