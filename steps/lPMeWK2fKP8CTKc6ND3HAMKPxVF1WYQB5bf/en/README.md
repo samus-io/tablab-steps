@@ -7,7 +7,7 @@
 
 * The application below allows users to upload files without enforcing any control over the file name, directly using the `originalname` value from the `multer` package during storage.
 * The goal here is to modify the source code by clicking the `Open Code Editor` button and integrate a strong, secure file name sanitization mechanism that fulfills the outlined criteria:
-  * Disallow reserved names and strip unsafe characters, preserving only alphanumeric characters, dots, and hyphens (i.e., `A-Za-z0-9-.`).
+  * Disallow reserved names and strip unsafe characters, preserving only alphanumeric characters, dots, and hyphens (i.e., `A-Za-z0-9.-`).
   * Remove leading and trailing dots to avoid hidden files or path-related exploits.
   * Normalize file names by transforming casing to lowercase for uniformity across environments.
   * Set a file name length limit of 100 characters.
