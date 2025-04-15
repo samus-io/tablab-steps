@@ -296,12 +296,6 @@
   ```java
   private static final Integer MAX_FILENAME_LENGTH = 100;
 
-  private Boolean isFilenameAllowed(String filename) {
-      // Restrict to alphanumeric, hyphens, spaces and dots
-      Pattern pattern = Pattern.compile("^[a-zA-Z0-9.\\- ]*$");
-      return pattern.matcher(filename).matches();
-  }
-
   private Boolean isWindowsReservedName(String filename) {
       Pattern pattern = Pattern.compile("^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\\..*)?$", Pattern.CASE_INSENSITIVE);
       return pattern.matcher(filename).matches();
@@ -313,11 +307,11 @@
       if (decodedFilename.length() > MAX_FILENAME_LENGTH)
           throw new SecurityException("File name too long");
       
-      if (!isFilenameAllowed(decodedFilename))
-          throw new SecurityException("File name can only contain alphanumeric characters, hyphens, dots and spaces");
+      // Restrict to alphanumeric, hyphens, spaces and dots
+      String restrictedFilename = decodedFilename.replaceAll("[^a-zA-Z0-9.\\- ]", "");
   
       // Avoid hidden files and trailing periods and spaces
-      String trimmedFilename = decodedFilename.replaceAll("^[.\\s]+|[.\\s]+$", "");
+      String trimmedFilename = restrictedFilename.replaceAll("^[.\\s]+|[.\\s]+$", "");
 
       // Handle case-insensitive
       String lowerCaseFilename = trimmedFilename.toLowerCase();
