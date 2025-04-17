@@ -15,7 +15,7 @@
       String userId = request.getParameter("userId");
 
       try {
-          User user = fetchDatabase(userId);
+          User user = fetchDatabase(userId); // Error thrown here
 
           response.getWriter().println("User profile:");
           response.getWriter().println("ID: " + user.getId());
@@ -58,14 +58,14 @@
             httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpResponse.getWriter().println("Invalid request data");
 
-        } catch (NotFoundException e) {
-            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            httpResponse.getWriter().println("Profile not found");
+          } catch (NotFoundException e) {
+              httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+              httpResponse.getWriter().println("Profile not found");
 
-        } catch (Exception e) {
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            httpResponse.getWriter().println("An unexpected error occurred");
-        }
+          } catch (Exception e) {
+              httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+              httpResponse.getWriter().println("An unexpected error occurred");
+          }
       }
   }
   ```
