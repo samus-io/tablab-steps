@@ -297,15 +297,14 @@
   ```java
   private static final Integer MAX_FILENAME_LENGTH = 100;
 
-  private Boolean isFilenameAllowed(String filename) {
-      // Restrict to alphanumeric, hyphens, spaces and dots
-      Pattern pattern = Pattern.compile("^[a-zA-Z0-9.\\- ]*$");
-      return pattern.matcher(filename).matches();
-  }
+  private String removeReservedNames(String filename) {
+      // Avoid hidden files and trailing periods and spaces
+      String trimmedFilename = filename.replaceAll("^[.\\s]+|[.\\s]+$", "");
+      
+      // Avoid reserved names in Windows
+      String restrictedFilename = trimmedFilename.replaceAll("(?i)^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\\..*)?$", "");
 
-  private Boolean isWindowsReservedName(String filename) {
-      Pattern pattern = Pattern.compile("^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\\..*)?$", Pattern.CASE_INSENSITIVE);
-      return pattern.matcher(filename).matches();
+      return restrictedFilename;
   }
 
   private String generateSafeFilename(String originalFilename) throws SecurityException {
@@ -314,26 +313,22 @@
       if (decodedFilename.length() > MAX_FILENAME_LENGTH)
           throw new SecurityException("File name too long");
       
-      if (!isFilenameAllowed(decodedFilename))
-          throw new SecurityException("File name can only contain alphanumeric characters, hyphens, dots and spaces");
-  
-      // Avoid hidden files and trailing periods and spaces
-      String trimmedFilename = decodedFilename.replaceAll("^[.\\s]+|[.\\s]+$", "");
+      // Restrict to alphanumeric, hyphens, spaces and dots
+      String restrictedFilename = decodedFilename.replaceAll("[^a-zA-Z0-9.\\- ]", "");
 
-      // Handle case-insensitive
-      String lowerCaseFilename = trimmedFilename.toLowerCase();
+      // Restrict reserved names in Windows and Linux
+      String sanitizedFilename = removeReservedNames(restrictedFilename);
 
       // Replace spaces with hyphens
-      String canonicalizedFilename = lowerCaseFilename.replaceAll("\\s+", "-");
+      String canonicalizedFilename = sanitizedFilename.replaceAll("\\s+", "-");
 
-      // Restrict reserved names in Windows
-      if (isWindowsReservedName(canonicalizedFilename)) {
-          throw new SecurityException("File name cannot be a Windows reserved name");
-      }
+      // Handle case-insensitive
+      String normalizedFilename = canonicalizedFilename.toLowerCase();
 
-      // Ensure no file name collisions
-      String randomString = generateRandomString(6);
-      return randomString + "_" + canonicalizedFilename;
+      if (normalizedFilename.isEmpty())
+          throw new SecurityException("Invalid file name");
+
+      return normalizedFilename;
   }
   ```
 

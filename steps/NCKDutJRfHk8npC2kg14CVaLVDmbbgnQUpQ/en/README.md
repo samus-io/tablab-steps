@@ -296,9 +296,14 @@
   ```java
   private static final Integer MAX_FILENAME_LENGTH = 100;
 
-  private Boolean isWindowsReservedName(String filename) {
-      Pattern pattern = Pattern.compile("^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\\..*)?$", Pattern.CASE_INSENSITIVE);
-      return pattern.matcher(filename).matches();
+  private String removeReservedNames(String filename) {
+      // Avoid hidden files and trailing periods and spaces
+      String trimmedFilename = filename.replaceAll("^[.\\s]+|[.\\s]+$", "");
+      
+      // Avoid reserved names in Windows
+      String restrictedFilename = trimmedFilename.replaceAll("(?i)^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\\..*)?$", "");
+
+      return restrictedFilename;
   }
 
   private String generateSafeFilename(String originalFilename) throws SecurityException {
@@ -309,24 +314,20 @@
       
       // Restrict to alphanumeric, hyphens, spaces and dots
       String restrictedFilename = decodedFilename.replaceAll("[^a-zA-Z0-9.\\- ]", "");
-  
-      // Avoid hidden files and trailing periods and spaces
-      String trimmedFilename = restrictedFilename.replaceAll("^[.\\s]+|[.\\s]+$", "");
 
-      // Handle case-insensitive
-      String lowerCaseFilename = trimmedFilename.toLowerCase();
+      // Restrict reserved names in Windows and Linux
+      String sanitizedFilename = removeReservedNames(restrictedFilename);
 
       // Replace spaces with hyphens
-      String canonicalizedFilename = lowerCaseFilename.replaceAll("\\s+", "-");
+      String canonicalizedFilename = sanitizedFilename.replaceAll("\\s+", "-");
 
-      // Restrict reserved names in Windows
-      if (isWindowsReservedName(canonicalizedFilename)) {
-          throw new SecurityException("File name cannot be a Windows reserved name");
-      }
+      // Handle case-insensitive
+      String normalizedFilename = canonicalizedFilename.toLowerCase();
 
-      // Ensure no file name collisions
-      String randomString = generateRandomString(6);
-      return randomString + "_" + canonicalizedFilename;
+      if (normalizedFilename.isEmpty())
+          throw new SecurityException("Invalid file name");
+
+      return normalizedFilename;
   }
   ```
 
