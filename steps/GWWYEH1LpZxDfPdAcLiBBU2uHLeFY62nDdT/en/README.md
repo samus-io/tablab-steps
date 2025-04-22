@@ -26,7 +26,7 @@
   * The only allowed origin must be `https://example.tbl`.
   * The only allowed HTTP method must be `DELETE`.
   * A custom header named `X-CSRF-Token` must be allowed.
-  * The application must correctly handle preflight requests for the `DELETE /api/products/:id` endpoint by allowing HTTP `OPTIONS` requests to that exact same route.
+  * The application must correctly handle preflight requests for the `DELETE /api/products/:id` endpoint by allowing HTTP `OPTIONS` requests to **only that exact same route**.
 * After implementing the changes and redeploying the app, use `curl` to send requests and review the HTTP response headers for manual validation:
 
   ```bash
