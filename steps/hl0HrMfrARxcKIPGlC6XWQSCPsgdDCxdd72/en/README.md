@@ -2,7 +2,7 @@
 
 * Error handling aims to ensure that unexpected or untreated errors are not leaked to the user under any circumstances, thereby protecting sensitive information.
 * Proper error handling is essential in any backend application to ensure robustness, security, and long-term maintainability.
-* In Java Jakarta, different techniques can be applied to handle errors depending on the architecture and scope of the application.
+* Different techniques can be applied to handle errors depending on the architecture and scope of the application.
 
 ## Using basic try/catch blocks
 
@@ -76,10 +76,10 @@
 ## Exercise to practice :writing_hand:
 
 * The following web application includes a registration form that mishandles errors by exposing internal details to the user interface when a field does not meet the expected criteria.
-  * The goal of this exercise is to use the `Open Code Editor` button to modify the source code and create a proper custom error handler while satisfying the specified requirements:
+* The goal of this exercise is to use the `Open Code Editor` button to modify the source code and create a proper custom error handler while satisfying the specified requirements:
   * As a representative example, when any field in the registration form is invalid, the application should always return an HTTP 400 status code response with the JSON content of `{"message":"Registration data is not correctly formatted."}`.
   * For any error unrelated to form validation, like a connection failure to the database, the application should return an HTTP 500 status code response with the JSON content of `{"message":"Internal Server Error"}`.
-  * More precisely, the `RegisterFormServlet.java` and `GlobalErrorHandlerFilter.java` files in the `src/main/java/io/ontablab/` directory should have code modifications to support this functionality.
+* To support this functionality, code changes are required in the `RegisterFormServlet.java` and `GlobalErrorHandlerFilter.java` files within the `src/main/java/io/ontablab/` directory.
 * After making the changes, press the `Verify Completion` button to confirm the exercise has been completed.
 
   @@ExerciseBox@@
