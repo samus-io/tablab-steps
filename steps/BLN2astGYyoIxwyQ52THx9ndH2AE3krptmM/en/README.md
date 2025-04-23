@@ -11,7 +11,7 @@
   * Remove leading and trailing dots to avoid hidden files or path-related exploits.
   * Normalize file names by transforming casing to lowercase for uniformity across environments.
   * Set a file name length limit of 100 characters.
-* The `doPost` method found in `src/main/java/io/ontablab/FileUploadServlet.java` is the main place where changes need to be implemented to enable this functionality.
+* The `FileUploadServlet` class found in `src/main/java/io/ontablab/FileUploadServlet.java` is the main place where changes need to be implemented to enable this functionality.
 * **It is important to note that, in this case, there is no need to implement any mechanism for handling file name collisions**.
 * After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
 
