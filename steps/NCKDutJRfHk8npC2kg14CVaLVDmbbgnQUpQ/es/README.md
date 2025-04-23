@@ -279,8 +279,8 @@
 
 ## Código de cumplimiento en Java Jakarta manteniendo el nombre de archivo original
 
-* El siguiente fragmento de código muestra cómo gestionar la carga de archivos en Java Jakarta almacenando los archivos en una carpeta específica y conservando el nombre de archivo original enviado por el usuario.
-* El código aplica un límite personalizado a la longitud de los nombres de archivo, restringe los caracteres y los nombres reservados, no distingue entre mayúsculas y minúsculas, evita los archivos ocultos o los que terminan con un punto o un espacio, y garantiza que no se produzcan colisiones entre los nombres de archivo:
+* El siguiente fragmento de código muestra cómo gestionar la carga de archivos almacenándolos en una carpeta específica y conservando el nombre de archivo original enviado por el usuario.
+* El código decodifica los nombres de archivo que se encuentran *URL-encoded*, aplica una longitud máxima de nombre de archivo, limita los caracteres a alfanuméricos, guiones y puntos, elimina los puntos iniciales y finales para evitar archivos ocultos o *paths* inseguros, bloquea los nombres de sistema reservados, normaliza el nombre a minúsculas y antepone un valor aleatorio para evitar colisiones:
 
   <details>
     <summary>Dependencias</summary>
@@ -385,7 +385,7 @@
 ## Código de cumplimiento en Node.js usando `multer` y manteniendo el nombre de archivo original
 
 * El siguiente fragmento de código demuestra cómo gestionar la subida de archivos utilizando el *middleware* `multer` y almacenando los archivos en una carpeta específica mientras se conserva el nombre de archivo original enviado por el usuario.
-* No obstante, el código aplica una longitud máxima al nombre del archivo, decodifica nombres de archivo que se encuentran *URL-encoded*, elimina caracteres inseguros o reservados mediante el paquete `sanitize-filename` y restringe la cadena resultante a caracteres alfanuméricos, guiones y puntos. Además, elimina los puntos del inicio y del final para evitar archivos ocultos o *paths* inseguros, normaliza el nombre a minúsculas y antepone un valor aleatorio para evitar colisiones:
+* El código decodifica los nombres de archivo que se encuentran *URL-encoded*, aplica una longitud máxima de nombre de archivo, limita los caracteres a alfanuméricos, guiones y puntos, elimina los puntos iniciales y finales para evitar archivos ocultos o *paths* inseguros, bloquea los nombres de sistema reservados mediante el paquete `sanitize-filename`, normaliza el nombre a minúsculas y antepone un valor aleatorio para evitar colisiones:
 
   ```javascript
   const sanitizeFilename = require("sanitize-filename");

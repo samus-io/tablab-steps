@@ -214,7 +214,7 @@
 
 ## Compliant code in Java Jakarta while generating a random file name
 
-* The following code snippet illustrates how to handle file uploads in Java Jakarta and storing files in a specific folder with randomly generated names via UUID, ensuring the file names are both unique and unpredictable:
+* The following code snippet illustrates how to handle file uploads storing files in a specific folder with randomly generated names via UUID, ensuring the file names are both unique and unpredictable:
 
   ```java
   import java.util.UUID;
@@ -279,7 +279,8 @@
 
 ## Compliant code in Java Jakarta while keeping the original file name
 
-* The following code snippet demonstrates how to handle file uploads in Java Jakarta storing files in a specific folder while preserving the original file name sent by the user. It applies a custom file name length limit, restricts characters and reserved names, treats file names as case-insensitive, prevents hidden files or those ending with a period or space, and ensures no file name collisions:
+* The following code snippet demonstrates how to handle file uploads storing files in a specific folder while preserving the original file name sent by the user.
+* It decodes URL-encoded names, enforces a maximum file name length, limits characters to alphanumerics, hyphens, and dots, removes leading and trailing dots to avoid hidden files or unsafe paths, blocks reserved system names, converts the name to lowercase for consistency, and prefixes the final name with a random string to prevent collisions:
 
   <details>
     <summary>Dependencies</summary>
@@ -379,7 +380,7 @@
 ## Compliant code in Node.js using `multer` while keeping the original file name
 
 * The following code snippet demonstrates how to handle file uploads using the `multer` middleware and storing files in a specific folder while preserving the original file name sent by the user.
-* It enforces a maximum file name length, decodes URL-encoded names, removes unsafe or reserved characters using the `sanitize-filename` package, and further restricts the resulting name to alphanumeric characters, hyphens, and dots. It also trims leading and trailing dots to prevent hidden files or unsafe paths, normalizes the name to lowercase for consistency, and prefixes the final name with a random string to prevent collisions:
+* It decodes URL-encoded names, enforces a maximum file name length, limits characters to alphanumerics, hyphens, and dots, removes leading and trailing dots to avoid hidden files or unsafe paths, blocks reserved system names using the `sanitize-filename` package, converts the name to lowercase for consistency, and prefixes the final name with a random string to prevent collisions:
 
   ```javascript
   const sanitizeFilename = require("sanitize-filename");
