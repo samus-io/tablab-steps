@@ -47,7 +47,7 @@
 ## Exercise to practice :writing_hand:
 
 * The application below does not enforce any custom error page, directly using the default error page which discloses the web server and its version.
-* The goal here is to modify the `apache.conf` file using the code editor accessed via the `Open Code Editor` button and implement a custom error page.
+* The goal here is to modify the `apache.conf` and the `404.html` files using the code editor accessed via the `Open Code Editor` button and implement a custom error page.
 * After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
 
   @@ExerciseBox@@
