@@ -19,14 +19,10 @@
     </head>
     <body>
       <h1>Sorry, an error has occurred.</h1>
-      <p>URL requested: %{REQUEST_URI}</p>
-      <p>HTTP error code: %{STATUS}</p>
       <p>Please try again later or reach out to our support team.</p>
     </body>
   </html>
   ```
-
-  * In this example, `REQUEST_URI` is the URL requested, and `STATUS` represents the HTTP status code returned by the server. These variables can offer extra context but are not strictly required.
 
 ### Custom error pages in Apache
 
@@ -38,6 +34,7 @@
   ErrorDocument 500 /path/to/file/error500.html
   ```
 
+* Note that the path must be relative, not absolute. It should be relative to Apache's root directory where the application is hosted (e.g., `/var/www/data/`).
 * Additionally, a single generic error page may also be used for multiple error codes, streamlining the configuration process:
 
   ```apache
@@ -46,3 +43,11 @@
 
 * Both approaches can be combined, allowing customized handling for specific errors while using a general page for others.
   * For instance, a multiple error pages can be used for 4XX HTTP client errors, while a single one can handle all 5XX HTTP server errors.
+
+## Exercise to practice :writing_hand:
+
+* The application below does not enforce any custom error page, directly using the default error page which discloses the web server and its version.
+* The goal here is to modify the `apache.conf` and the `404.html` files using the code editor accessed via the `Open Code Editor` button and implement a custom error page.
+* After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
+
+  @@ExerciseBox@@

@@ -295,16 +295,17 @@
   </details>
 
   ```java
-  private static final Integer MAX_FILENAME_LENGTH = 100;
+  private static final int MAX_FILENAME_LENGTH = 100;
+
+  private static final Pattern LINUX_RESERVED_PATTERN = Pattern.compile("^\\.{1,2}$");
+  private static final Pattern WINDOWS_RESERVED_PATTERN = Pattern.compile("(?i)^(con|prn|aux|nul|com[1-9]|lpt[1-9])(\\..*)?$");
+  private static final Pattern INVALID_CHARACTERS_PATTERN = Pattern.compile("[^a-zA-Z0-9.\\-]");
+  private static final Pattern LEADING_TRAILING_DOTS_PATTERN = Pattern.compile("^\\.+|\\.+$");
 
   private String removeReservedNames(String filename) {
-      // Avoid hidden files and trailing periods and spaces
-      String trimmedFilename = filename.replaceAll("^[.\\s]+|[.\\s]+$", "");
-      
-      // Avoid reserved names in Windows
-      String restrictedFilename = trimmedFilename.replaceAll("(?i)^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\\..*)?$", "");
-
-      return restrictedFilename;
+      String withoutLinuxReserved = LINUX_RESERVED_PATTERN.matcher(filename).replaceAll("");
+      String withoutWindowsReserved = WINDOWS_RESERVED_PATTERN.matcher(withoutLinuxReserved).replaceAll("");
+      return withoutWindowsReserved;
   }
 
   private String generateSafeFilename(String originalFilename) throws SecurityException {
@@ -312,23 +313,17 @@
 
       if (decodedFilename.length() > MAX_FILENAME_LENGTH)
           throw new SecurityException("File name too long");
-      
-      // Restrict to alphanumeric, hyphens, spaces and dots
-      String restrictedFilename = decodedFilename.replaceAll("[^a-zA-Z0-9.\\- ]", "");
 
-      // Restrict reserved names in Windows and Linux
-      String sanitizedFilename = removeReservedNames(restrictedFilename);
-
-      // Replace spaces with hyphens
-      String canonicalizedFilename = sanitizedFilename.replaceAll("\\s+", "-");
-
-      // Handle case-insensitive
-      String normalizedFilename = canonicalizedFilename.toLowerCase();
+      String restrictedFilename = INVALID_CHARACTERS_PATTERN.matcher(decodedFilename).replaceAll("");
+      String trimmedFilename = LEADING_TRAILING_DOTS_PATTERN.matcher(restrictedFilename).replaceAll("");
+      String sanitizedFilename = removeReservedNames(trimmedFilename);
+      String normalizedFilename = sanitizedFilename.toLowerCase();
 
       if (normalizedFilename.isEmpty())
           throw new SecurityException("Invalid file name");
 
-      return normalizedFilename;
+      String randomString = generateRandomString(6);
+      return randomString + "_" + normalizedFilename;
   }
   ```
 
