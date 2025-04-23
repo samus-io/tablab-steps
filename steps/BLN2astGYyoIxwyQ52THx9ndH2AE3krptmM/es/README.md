@@ -11,7 +11,7 @@
   * Eliminar los puntos iniciales y finales para evitar archivos ocultos o exploits relacionados con el uso del *path*.
   * Normalizar los nombres de archivo convirtiendo las mayúsculas en minúsculas para mantener uniformidad en todos los entornos.
   * Establecer un límite de longitud de nombre de archivo de 100 caracteres.
-* El método `doPost` del archivo `src/main/java/io/ontablab/FileUploadServlet.java` es el punto principal donde es conveniente implementar cambios para habilitar esta funcionalidad.
+* La clase `FileUploadServlet` que se encuentra en el archivo `src/main/java/io/ontablab/FileUploadServlet.java` es el punto principal donde es conveniente implementar cambios para habilitar esta funcionalidad.
 * **Es importante señalar que, en este caso, no es necesario aplicar ningún mecanismo para tratar las colisiones de nombres de archivo**.
 * Una vez realizados los cambios, se requiere pulsar el botón `Verify Completion` para confirmar que el ejercicio se ha completado correctamente.
 
