@@ -87,15 +87,17 @@
   console.log(req.headers["x-forwarded-for"]);
   ```
 
-* En este caso, cuando se ejecuta una aplicación Express detrás de un proxy inverso, se puede utilizar la configuración de aplicación `trust proxy` para disponer de la información proporcionada por el proxy inverso en los *endpoints* (i.e., como `req.ip`):
-
-  ```javascript
-  app.set("trust proxy", 1); // Trust the first hop away from the application and extract the next IP as client's IP address
-  ```
+* En este escenario, cuando se ejecuta una aplicación Express detrás de un proxy inverso, se puede utilizar la configuración de aplicación `trust proxy` para disponer de la información proporcionada por el proxy inverso en los *endpoints* (i.e., como `req.ip`):
 
   ```javascript
   app.set("trust proxy", "loopback, 172.16.0.10"); // Trust 'loopback' and '172.16.0.10' proxies for getting client's IP address
   ```
+
+  ```javascript
+  app.set("trust proxy", 2); // Trust 2 hops away from the Express application
+  ```
+
+  * En este segundo caso, el enfoque consiste en seleccionar la dirección que está como máximo a `n` número de saltos de la aplicación Express, donde `req.socket.remoteAddress` es el primer salto, y el resto se buscan en la cabecera `X-Forwarded-For`.
 
   > :warning: La cabecera `X-Forwarded-For` puede ser controlada por el usuario, lo que significa que puede incluir cualquier valor, como direcciones IP falsificadas o datos no válidos. En algún punto de la infraestructura, es necesario sanearla y descartar entradas irrelevantes.
 

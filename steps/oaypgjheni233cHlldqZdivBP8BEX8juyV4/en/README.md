@@ -232,10 +232,10 @@
       cb(error);
     }
   });
-  const uploadSingleFile = upload.single("file");
   ```
 
   ```javascript
+  const uploadSingleFile = upload.single("file");
   app.post("/upload", (req, res) => {
     uploadSingleFile(req, res, (err) => {
       if (err instanceof multer.MulterError) {
