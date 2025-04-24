@@ -43,3 +43,11 @@
   ```
 
 [1]: /static/images/directory-listing-example.png
+
+## Exercise to practice :writing_hand:
+
+* The application below allows anyone to view the contents of any folder just by visiting its URL. For example, if you go to `/content/`, you'll see a list of all the files in that folder because directory listing is turned on.
+* The goal here is to modify the `.htaccess` file using the code editor accessed via the `Open Code Editor` button and implement a custom error page.
+* After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
+
+  @@ExerciseBox@@
