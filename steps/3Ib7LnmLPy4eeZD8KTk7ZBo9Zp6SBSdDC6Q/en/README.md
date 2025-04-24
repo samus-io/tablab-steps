@@ -90,12 +90,14 @@
 * In order to adjust for this, when running an Express app behind a reverse proxy, the `trust proxy` application setting may be used to expose information provided by the reverse proxy in the Express endpoints (i.e., as `req.ip`):
 
   ```javascript
-  app.set("trust proxy", 1); // Trust the first hop away from the application and extract the next IP as client's IP address
+  app.set("trust proxy", "loopback, 172.16.0.10"); // Trust 'loopback' and '172.16.0.10' proxies for getting client's IP address
   ```
 
   ```javascript
-  app.set("trust proxy", "loopback, 172.16.0.10"); // Trust 'loopback' and '172.16.0.10' proxies for getting client's IP address
+  app.set("trust proxy", 2); // Trust 2 hops away from the Express application
   ```
+
+  * In this second case, the approach is to select the address that is at most `n` number of hops away from the Express application, where `req.socket.remoteAddress` is the first hop, and the rest are looked for in the `X-Forwarded-For` header.
 
   > :warning: The `X-Forwarded-For` header is user-controlled, meaning it can include any values, such as spoofed IP addresses or invalid data. At some point in the infrastructure, it is necessary to sanitize it and discard irrelevant entries.
 
