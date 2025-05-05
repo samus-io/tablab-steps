@@ -1,4 +1,4 @@
-# How to implement Referrer-Policy in Apache 2.54.X
+# How to implement Referrer-Policy in Apache 2.4
 
 ## Apache configuration files
 
