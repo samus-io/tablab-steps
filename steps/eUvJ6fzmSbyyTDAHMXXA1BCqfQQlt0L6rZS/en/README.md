@@ -46,8 +46,8 @@
 
 ## Exercise to practice :writing_hand:
 
-* The application below allows anyone to view the contents of any folder just by visiting its URL. For example, if you go to `/content/`, you'll see a list of all the files in that folder because directory listing is turned on.
-* The goal here is to modify the `.htaccess` file using the code editor accessed via the `Open Code Editor` button and implement a custom error page.
-* After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
+* The application below permits unrestricted viewing of folder contents via URL access. For instance, visiting `/content/` displays a list of all files in that directory due to enabled directory listing.
+* The goal here is to access the code editor via the `Open Code Editor` button and edit the `.htaccess` file to prevent information disclosure caused by directory listing.
+* Once the changes are made, press the `Verify Completion` button to confirm the exercise has been completed.
 
   @@ExerciseBox@@
