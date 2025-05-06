@@ -34,6 +34,6 @@
 
 ## Recommended security approaches
 
-* Instead of displaying the default error to users, **adopt a generic error message strategy**, such as 'Internal Server Error' or 'Oops, an error occurred, please try again'.
+* Instead of displaying the default error to users, **adopt a generic error message strategy**, such as `Internal Server Error` or `Oops, an error occurred, please try again`.
 * **Develop a custom error handling mechanism** that intercepts and logs all uncaught errors and exceptions, safeguarding sensitive information from end user exposure.
 * **Ensure comprehensive input validation is in place** to avoid errors that could potentially disclose internal system details via exception messages.
