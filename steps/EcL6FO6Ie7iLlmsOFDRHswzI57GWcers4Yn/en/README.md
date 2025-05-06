@@ -35,10 +35,14 @@
   ```
 
 * Note that the path must be relative, not absolute. It should be relative to Apache's root directory where the application is hosted (e.g., `/var/www/data/`).
-* Additionally, a single generic error page may also be used for multiple error codes, streamlining the configuration process:
+* Additionally, one error page may also be used for multiple error codes:
 
   ```apache
-  ErrorDocument 400-599 /path/to/file/error.html
+  ErrorDocument 500 /path/to/file/error.html
+  ErrorDocument 501 /path/to/file/error.html
+  ErrorDocument 502 /path/to/file/error.html
+  ErrorDocument 503 /path/to/file/error.html
+  ...
   ```
 
 * Both approaches can be combined, allowing customized handling for specific errors while using a general page for others.
@@ -47,7 +51,9 @@
 ## Exercise to practice :writing_hand:
 
 * The application below does not enforce any custom error page, directly using the default error page which discloses the web server and its version.
-* The goal here is to modify the `apache.conf` and the `404.html` files using the code editor accessed via the `Open Code Editor` button and implement a custom error page.
+* The goal here is to modify the `apache.conf`, the `404.html` and the `5XX.html` files using the code editor accessed via the `Open Code Editor` button and implement a custom error page for the following HTTP error responses:
+  * 404 Not Found
+  * 500–511, excluding 509 (which does not exist)
 * After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
 
   @@ExerciseBox@@
