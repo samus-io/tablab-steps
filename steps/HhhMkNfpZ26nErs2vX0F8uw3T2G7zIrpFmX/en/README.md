@@ -71,7 +71,6 @@
 ### CSRFGuard properties
 
 * The OWASP CSRFGuard library provides a wide range of configuration options to allow fine-grained control over CSRF protection mechanisms.
-* To configure CSRFGuard, properties must be defined in the file `src/main/webapp/WEB-INF/csrfguard.properties`.
 * The configuration of CSRFGuard requires defining properties in the `src/main/webapp/WEB-INF/csrfguard.properties` file.
 * Below are common properties that define the behavior of CSRFGuard:
 
@@ -269,7 +268,7 @@
   * CSRF validation is unnecessary when no user session exists, ensuring efficient handling of unauthenticated requests.
   * All client-side interactions occur via AJAX requests.
   * To prevent unauthorized actions, any request that does not meet CSRF validation criteria must return a `403 Forbidden` response.
-* It's important to note that since CSRFGuard depends on the `csrfguard.js` script to automatically append CSRF tokens to client-side requests, reloading the frontend web application on the browser after applying any configuration is required.
+* **It's important to note that since CSRFGuard depends on the `csrfguard.js` script to automatically append CSRF tokens to client-side requests, reloading the frontend web application on the browser after applying any configuration is required.**
   * This ensures that any updates to the CSRFGuard settings, such as token injection rules or AJAX handling, take effect. Without a reload, the browser may continue using outdated configurations, potentially leading to failed CSRF validations or missing tokens in requests.
 
   @@ExerciseBox@@
