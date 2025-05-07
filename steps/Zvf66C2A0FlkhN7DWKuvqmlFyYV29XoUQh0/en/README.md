@@ -61,3 +61,18 @@
 * In this example, the key could allow actions such as viewing payment details, modifying data, or initiating transactions.
 * To prevent sensitive key exposure, these types of requests should always be handled by the backend, which can securely store and use the API key without exposing it to the client.
 * Frontend code should never contain secret keys or any credentials that can grant elevated access.
+
+## Exercise to practice :writing_hand:
+
+* The following web application is suspected of having sensitive data stored in the frontend.
+* The goal of this exercise is to find an API key and use `curl` to make a request to a protected endpoint, which is already available in the `Terminal` tab.
+  * An environment variable named `$APP_URL` stores the application's base URL, which can be used to send requests, for example, to make a `curl` request:
+
+  ```bash
+  curl -L $APP_URL/index.html
+  ```
+
+* Note that it is possible to access to the `index.html` using the `View Source Code` button.
+* After the request is made with the API key, click the `Verify Completion` button to confirm the exercise is complete.
+
+  @@ExerciseBox@@
