@@ -30,30 +30,30 @@
 
   ```apache
   ErrorDocument 404 /path/to/file/error404.html
-  ErrorDocument 403 /path/to/file/error403.html
   ErrorDocument 500 /path/to/file/error500.html
   ```
 
-* Note that the path must be relative, not absolute. It should be relative to Apache's root directory where the application is hosted (e.g., `/var/www/data/`).
-* Additionally, one error page may also be used for multiple error codes:
+  * Note that the path must be relative, not absolute. It should be relative to Apache's root directory where the application is hosted (e.g., `/var/www/data/`).
+* Additionally, one error page, like `error5XX.html`, may also be used for multiple error codes:
 
   ```apache
-  ErrorDocument 500 /path/to/file/error.html
-  ErrorDocument 501 /path/to/file/error.html
-  ErrorDocument 502 /path/to/file/error.html
-  ErrorDocument 503 /path/to/file/error.html
+  ErrorDocument 500 /path/to/file/error5XX.html
+  ErrorDocument 501 /path/to/file/error5XX.html
+  ErrorDocument 502 /path/to/file/error5XX.html
+  ErrorDocument 503 /path/to/file/error5XX.html
   ...
   ```
 
 * Both approaches can be combined, allowing customized handling for specific errors while using a general page for others.
-  * For instance, a multiple error pages can be used for 4XX HTTP client errors, while a single one can handle all 5XX HTTP server errors.
+  * Typically, distinct error pages are used for various 4XX HTTP client errors, while one unified page is applied to all 5XX HTTP server errors.
 
 ## Exercise to practice :writing_hand:
 
-* The application below does not enforce any custom error page, directly using the default error page which discloses the web server and its version.
-* The goal here is to modify the `apache.conf`, the `404.html` and the `5XX.html` files using the code editor accessed via the `Open Code Editor` button and implement a custom error page for the following HTTP error responses:
-  * 404 Not Found
-  * 500–511, excluding 509 (which does not exist)
-* After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
+* The following application does not apply any custom error page, causing the default web server error page to be shown and revealing the server version and operating system.
+* The goal here is to adjust the Apache configuration through the code editor accessed using the `Open Code Editor` button, modifying the `apache.conf` file to display `404.html` for the `404 Not Found` HTTP error and `5XX.html` for all 5XX errors from 500 to 511, excluding 509, which does not exist.
+  * The paths `/404.html` and `/5XX.html` are valid references for being used within the configuration file.
+  * Additionally, these files must contain appropriate error page content written in HTML.
+* The behavior can be tested through the simulated browser by visiting `/404` to induce a `404 Not Found` response, `/500` to cause a `500 Internal Server Error`, and subsequent codes accordingly.
+* After making the changes, press the `Verify Completion` button to confirm the exercise has been completed.
 
   @@ExerciseBox@@
