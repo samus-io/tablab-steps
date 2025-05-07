@@ -21,6 +21,12 @@
 * The application below does returns the response header `Server` which discloses the web server and its version.
 * The goal here is to modify the `security.conf` file using the code editor accessed via the `Open Code Editor` button and implement a custom error page.
 * **It is important to note that, in this case, there is no need to install or enable the `mod_security` module, as it is already installed and enabled.**
-* After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
+* After implementing the changes and redeploying the app, use `curl` to send requests and review the HTTP response headers for manual validation:
+
+  ```bash
+  curl -I $APP_URL
+  ```
+
+* Once done, press the `Verify Completion` button to confirm the exercise has been successfully completed.
 
   @@ExerciseBox@@
