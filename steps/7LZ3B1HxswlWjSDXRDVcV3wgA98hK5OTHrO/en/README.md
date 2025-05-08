@@ -51,3 +51,28 @@
 * **Storing backups on dedicated backup services or isolated infrastructure** minimizes accidental exposure by ensuring they're kept away from exposed environments.
 * **Strict access permission management** reduces exposure risks, specifically by adhering to the principle of least privilege, allowing only authorized users to access backup files.
 * **Protecting backups with encryption** guarantees that even if unauthorized access occurs, the data remains protected and unreadable.
+
+## Finding hidden files using brute-force
+
+* `wfuzz` is a powerful tool used to brute-force file and directory names in web applications, helping uncover hidden or unlinked resources.
+* The following command uses `wfuzz` to brute-force potential hidden files or directories at a specified URL:
+
+  ```bash
+  wfuzz -c -w common.txt --hc 404 <url>/FUZZ
+  ```
+
+  * `-c`: shows the output with colors.
+  * `-w`: specifies the wordlist (`common.txt`) containing potential file or directory names to try.
+  * `--hc 404`: hides responses that return a 404 HTTP status code (Not Found), focusing on potentially valid paths.
+  * `<url>/FUZZ`: The target URL where `FUZZ` is a placeholder that `wfuzz` will replace with each entry from the wordlist.
+* In summary, this command attempts to discover valid endpoints on a web server by replacing `FUZZ` in the URL with entries from `common.txt`, ignoring any responses that return a 404 error.
+
+## Exercise to practice :writing_hand:
+
+* The following web application has an exposed backup file that it is public accessible.
+* The goal of this exercise is to find the backup file using `wfuzz` by brute-forcing the web application.
+* An environment variable named `$APP_URL` stores the application's base URL, which can be used to send requests.
+* There is a wordlist in the `tbl` user's home directory that can be used with `wfuzz` tool.
+* After finding the backup file, the exercise will be completed automatically.
+
+  @@ExerciseBox@@
