@@ -52,7 +52,7 @@
 * The following application does not apply any custom error page, causing the default web server error page to be shown and revealing the server version and operating system.
 * The goal here is to adjust the Apache configuration through the code editor accessed using the `Open Code Editor` button, modifying the `apache.conf` file to display `404.html` for the `404 Not Found` HTTP error and `5XX.html` for all 5XX errors from 500 to 511, excluding 509, which does not exist.
   * The paths `/404.html` and `/5XX.html` are valid references for being used within the configuration file.
-  * Additionally, these files must contain appropriate error page content written in HTML.
+  * Additionally, these two files must contain appropriate error page content written in HTML.
 * The behavior can be tested through the simulated browser by visiting `/404` to induce a `404 Not Found` response, `/500` to cause a `500 Internal Server Error`, and subsequent codes accordingly.
 * After making the changes, press the `Verify Completion` button to confirm the exercise has been completed.
 

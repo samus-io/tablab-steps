@@ -1,12 +1,12 @@
 # Information disclosure via hardcoded data
 
+* Hardcoded data like API keys or config values in frontend code can expose sensitive information to attackers via source inspection.
+
 ## Developers HTML comments
 
-* During development, developers often leave HTML comments in the code to document functionality, leave notes, or flag areas for future updates.
-* These comments are not visible in the rendered page but can be easily viewed by inspecting the page source.
-* In some cases, comments may unintentionally expose sensitive information such as hidden directories, internal logic, or feature toggles.
-* This type of disclosure can assist attackers in mapping out the application or discovering hidden entry points
-* The following example shows a hidden admin path embedded in a comment:
+* Developers occasionally insert HTML comments during development to explain functionality, add notes, or highlight areas needing updates. If not properly removed during the frontend build process, these comments can remain visible through page source inspection.
+* In some cases, comments can inadvertently reveal sensitive details like hidden directories, internal logic, or feature toggles, which can assist attackers in mapping out the application or discovering hidden entry points.
+* The example below illustrates a comment containing a hidden admin path:
 
   ```html
   <!DOCTYPE html>
@@ -22,23 +22,22 @@
     <a href="/home">Home</a><br>
     <a href="/about">About</a><br>
     <a href="/contact">Contact</a><br>
-    <!-- Admin path
-    <a href="/sup3r-s3cr3t-admin-login">Admin Login</a>
-    -->
+
+    <!-- Path for admins -->
+    <!-- <a href="/sup3r-s3cr3t-admin-login">Admin Login</a> -->
 
   </body>
   </html>
   ```
 
-* Even though this link is commented out, it still reveals the existence of a sensitive route to anyone viewing the source.
-* To avoid this type of information disclosure, avoid including sensitive paths, internal notes, or debug references in frontend comments—especially in production environments.
+  * Even though the link is not displayed in the web application, the commented link discloses a sensitive route to anyone checking the source code.
+* To prevent this type of information disclosure, avoid including sensitive paths, internal notes, or debug references in frontend comments, especially in production environments.
 
-## Exposure of sensitive API keys
+## Exposure authentication tokens or sensitive credentials
 
-* Web applications often require API keys to interact with third-party services such as Google Maps, Firebase, or payment platforms.
-* In some cases, these API calls are made directly from JavaScript running in the browser, exposing the keys in the page source or network requests.
-* If the exposed API key has permissions to perform privileged actions, an attacker could exploit it to gain unauthorized access or escalate privileges.
-* The following JavaScript snippet demonstrates an insecure pattern where a sensitive key is hardcoded in the frontend:
+* Web applications often require API keys to interact with third-party services such as Google Maps, Firebase, or payment platforms. These API calls can sometimes originate from JavaScript in the browser, resulting in key exposure through the page source or network requests.
+* If the exposed API key grants privileged access, it can be abused by an attacker for unauthorized actions or privilege escalation.
+* The JavaScript snippet below illustrates an insecure approach by embedding a sensitive key directly in the frontend code:
 
   ```javascript
   const API_KEY = "sk_live_9a8d7f6g5h4j3k2l1m0n";
@@ -46,7 +45,7 @@
   fetch(`https://example.tbl/api/v1/payment`, {
     method: 'GET',
     headers: {
-      'Authorization': `Bearer ${API_KEY}`
+      "Authorization": `Bearer ${API_KEY}`
     }
   })
   .then(response => response.json())
@@ -54,25 +53,23 @@
     // Process response
   })
   .catch(error => {
-    console.error('Error fetching data:', error);
+    console.error("Error fetching data:", error);
   });
   ```
 
-* In this example, the key could allow actions such as viewing payment details, modifying data, or initiating transactions.
-* To prevent sensitive key exposure, these types of requests should always be handled by the backend, which can securely store and use the API key without exposing it to the client.
-* Frontend code should never contain secret keys or any credentials that can grant elevated access.
+  * In this example, this key could enable operations such as viewing financial details, editing records, or executing transactions.
+* Secret keys or credentials that provide elevated access should never be included in frontend code as a standard security measure.
 
 ## Exercise to practice :writing_hand:
 
-* The following web application is suspected of having sensitive data stored in the frontend.
-* The goal of this exercise is to find an API key and use `curl` to make a request to a protected endpoint, which is already available in the `Terminal` tab.
-  * An environment variable named `$APP_URL` stores the application's base URL, which can be used to send requests, for example, to make a `curl` request:
+* The frontend code of the following web application is suspected of containing exposed sensitive information.
+* The purpose of this exercise is to identify an API key and employ `curl` from the `Terminal` tab to interact with a protected endpoint using this schema:
 
   ```bash
-  curl -L $APP_URL/index.html
+  curl -H "Authorization: Bearer <api_key_value>" "$APP_URL/path/to/endpoint"; echo
   ```
 
-* Note that it is possible to access to the `index.html` using the `View Source Code` button.
-* After the request is made with the API key, click the `Verify Completion` button to confirm the exercise is complete.
+  * Note the environment variable called `APP_URL` that holds the application's base URL, which can be used for sending requests.
+* Upon making the request to the protected endpoint with a valid API key, press the `Verify Completion` button to confirm the exercise has been completed.
 
   @@ExerciseBox@@
