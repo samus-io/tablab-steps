@@ -46,16 +46,11 @@
 
 * Regular scans for these files assist in detecting exposed backups and applying appropriate security actions.
 
-## Recommended security approaches
+### Discovering hidden files of any type through brute-force offensive techniques
 
-* **Storing backups on dedicated backup services or isolated infrastructure** minimizes accidental exposure by ensuring they're kept away from exposed environments.
-* **Strict access permission management** reduces exposure risks, specifically by adhering to the principle of least privilege, allowing only authorized users to access backup files.
-* **Protecting backups with encryption** guarantees that even if unauthorized access occurs, the data remains protected and unreadable.
-
-## Finding hidden files using brute-force
-
-* `wfuzz` is a powerful tool used to brute-force file and directory names in web applications, helping uncover hidden or unlinked resources.
-* The following command uses `wfuzz` to brute-force potential hidden files or directories at a specified URL:
+* Malicious users frequently employ brute-force methods to guess file names and paths by sending numerous requests with a customized wordlist.
+* The command-line tool named `wfuzz` is commonly used to brute-force directories and files in web applications, helping uncover hidden or unlinked resources.
+* As a demonstrative example, the command below uses `wfuzz` to attempt discovery of hidden files or directories under the specified path `/` by replacing `FUZZ` with entries from the wordlist `common.txt`, while ignoring `404 Not Found` responses:
 
   ```bash
   wfuzz -c -w common.txt --hc 404 <url>/FUZZ
@@ -63,16 +58,37 @@
 
   * `-c`: shows the output with colors.
   * `-w`: specifies the wordlist (`common.txt`) containing potential file or directory names to try.
-  * `--hc 404`: hides responses that return a 404 HTTP status code (Not Found), focusing on potentially valid paths.
-  * `<url>/FUZZ`: The target URL where `FUZZ` is a placeholder that `wfuzz` will replace with each entry from the wordlist.
-* In summary, this command attempts to discover valid endpoints on a web server by replacing `FUZZ` in the URL with entries from `common.txt`, ignoring any responses that return a 404 error.
+  * `--hc 404`: hides responses that return a `404 Not Found` HTTP status code, focusing only on potentially valid paths.
+  * `<url>/FUZZ`: represents the targeted URL where `FUZZ` is a placeholder that `wfuzz` will replace with each entry from the wordlist.
+
+#### Common paths that may hold backup files
+
+  |Directory|Description|
+  |:--:|:--|
+  |`/backup/`|Generic backup folder used in many setups.|
+  |`/backups/`|Plural form often used for multiple backups.|
+  |`/bak/`|Abbreviation for "backup".|
+  |`/old/`|Often used to store previous versions.|
+  |`/archive/`|Used for archived data, including old backups.|
+  |`/_backup/`|Hidden-style naming with underscore prefix.|
+  |`/site_old/`|Indicates an older version of the site.|
+  |`/www-old/`|Legacy naming convention for older site data.|
+  |`/dev/`|Might contain developer versions or copies.|
+  |`/tmp/`|Temporary storage—can include dumped backups.|
+  |`/test/`|Used during testing—sometimes stores full backups.|
+  |`/uploads/`|May contain database or config dumps uploaded for testing.|
+
+## Recommended security approaches
+
+* **Storing backups on dedicated backup services or isolated infrastructure** minimizes accidental exposure by ensuring they're kept away from exposed environments.
+* **Strict access permission management** reduces exposure risks, specifically by adhering to the principle of least privilege, allowing only authorized users to access backup files.
+* **Protecting backups with encryption** guarantees that even if unauthorized access occurs, the data remains protected and unreadable.
 
 ## Exercise to practice :writing_hand:
 
-* The following web application has an exposed backup file that it is public accessible.
-* The goal of this exercise is to find the backup file using `wfuzz` by brute-forcing the web application.
-* An environment variable named `$APP_URL` stores the application's base URL, which can be used to send requests.
-* There is a wordlist in the `tbl` user's home directory that can be used with `wfuzz` tool.
-* After finding the backup file, the exercise will be completed automatically.
+* The following web application contains an unlinked and exposed backup file that it is publicy accessible. The objective is to find it using the `wfuzz` tool by brute-forcing the application.
+  * There is an environment variable named `$APP_URL` that contains the base URL of the application to facilitate request sending.
+  * A wordlist is also available within the `tbl` user's home directory for use with the `wfuzz` tool.
+* Once the backup file has been found, no further action is required to complete the exercise.
 
   @@ExerciseBox@@

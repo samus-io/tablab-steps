@@ -16,7 +16,7 @@
 * Apache allows the removal of headers through the `mod_security` module. This module can be enabled by running the listed command on the server followed by an Apache restart:
 
   ```bash
-  apt install libapache2-mod-security2 -y
+  sudo apt install libapache2-mod-security2 -y
   sudo service apache2 restart
   ```
 
