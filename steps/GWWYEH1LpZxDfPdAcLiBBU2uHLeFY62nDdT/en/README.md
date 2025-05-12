@@ -1,10 +1,63 @@
 # Enforcing CORS using Express in Node.js
 
-* TODO
+* In Express applications, `Cross-Origin Resource Sharing (CORS)` can be enforced using the official `cors` middleware, which simplifies the process of setting required CORS headers.
+
+## Importing and configuring `cors` middleware
+
+* The `cors` middleware must be installed using a package manager such as `npm` or `yarn`. Once installed, it should be imported at the top of the Express application file:
+
+  ```javascript
+  const cors = require("cors");
+  ```
+
+* Further adjustments to CORS behavior can be made by defining a configuration object. This object specifies the origin, methods, and headers allowed for cross-origin requests:
+
+  ```javascript
+  const corsOptions = {
+    origin: "https://domain.tbl",
+    methods: ["GET", "POST", "DELETE"],
+    allowedHeaders: ["Authorization", "Content-Type"],
+    credentials: true
+  };
+  ```
+
+## Enabling CORS in Express
+
+* To apply CORS settings globally across all routes, the middleware should be used with `app.use()`:
+
+  ```javascript
+  app.use(cors(corsOptions));
+  ```
+
+* When no configuration is needed, CORS can be enabled using default settings by calling the middleware without arguments:
+
+  ```javascript
+  const cors = require("cors");
+  app.use(cors());
+  ```
+
+* For fine-grained control, it can also be selectively applied to individual routes rather than globally:
+
+  ```javascript
+  app.get("/products/:id", cors(), (req, res, next) => {
+    res.json({ message : "This is CORS-enabled for a single route"})
+  });
+  ```
+
+### Enabling CORS preflight requests
+
+* In order to handle preflight requests globally, the middleware can be used to respond to all `OPTIONS` requests:
 
   ```javascript
   // Global preflight handler
-  app.options("*", cors(corsDeleteOnly)); // Respond to all OPTIONS requests with CORS headers, even if no route exists
+  app.options("*", cors(corsOptions)); // Respond to all OPTIONS requests with CORS headers, even if no route exists
+  ```
+
+* Alternatively, preflight requests can also be restricted to specific routes that require them:
+
+  ```javascript
+  // Preflight handler for a specific endpoint
+  app.options("/products/:id", cors(corsOptions)); // Enable CORS for preflight OPTIONS requests on /products/:id only
   ```
 
 ## Exercise to practice :writing_hand:
@@ -22,11 +75,11 @@
 
     * Notice that `$APP_URL` is an environment variable that points to the base path of the application.
 
-* The goal here is to to update the source code via the `Open Code Editor` button and apply the CORS mechanism **only to the `DELETE` method at `/api/products/:id`**, while fulfilling the outlined requirements and keeping other routes unaffected:
+* The goal here is to to update the source code via the `Open Code Editor` button and apply the CORS mechanism while fulfilling the outlined requirements:
   * The only allowed origin must be `https://example.tbl`.
   * The only allowed HTTP method must be `DELETE`.
   * A custom header named `X-CSRF-Token` must be allowed.
-  * The application must correctly handle preflight requests for the `DELETE /api/products/:id` endpoint by allowing HTTP `OPTIONS` requests to **only that exact same route**.
+  * The application must correctly handle preflight requests for the `DELETE /api/products/:id` endpoint by allowing HTTP `OPTIONS`.
 * After implementing the changes and redeploying the app, use `curl` to send requests and review the HTTP response headers for manual validation:
 
   ```bash
