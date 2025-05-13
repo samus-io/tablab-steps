@@ -1,9 +1,11 @@
 # Enforcing CORS in Nginx
 
-## Implementing CORS headers
+* Nginx enforces CORS by adding precise HTTP headers that define which origins, methods, and headers are allowed in cross-origin requests.
 
-* Setting headers in Nginx is quite simple, as Nginx allows to add headers without any additional module.
-* In the following example, to add the `Access-Control-Allow-Origin` response header, include the following directive in the configuration file inside the `server` block:
+## Adding CORS headers to Nginx web server
+
+* Adding headers in Nginx is straightforward, as it doesn't need additional modules.
+* As example, to include the `Access-Control-Allow-Origin` header, the following directive should be added inside the `server` block of the configuration file:
 
   ```nginx
   server {
@@ -11,8 +13,8 @@
   }
   ```
 
-* This configuration instructs the server to send the `Access-Control-Allow-Origin` header with the value `https://example.tbl`.
-* After applying the changes, restart or reload Nginx to apply the updated configuration
+  * This configuration instructs the server to send the `Access-Control-Allow-Origin` header with the value `https://example.tbl`.
+* Once the changes are made, Nginx must be reloaded to apply the new configuration:
 
   ```bash
   sudo service nginx reload
@@ -33,7 +35,7 @@
 
     * Notice that `$APP_URL` is an environment variable that points to the base path of the application.
 
-* The goal here is to to update the source code via the `Open Code Editor` button and apply the CORS mechanism, while fulfilling the outlined requirements:
+* The goal here is to to update the source code via the `Open Code Editor` button and apply the CORS mechanism while fulfilling the outlined requirements:
   * The only allowed origin must be `https://example.tbl`.
   * The only allowed HTTP method must be `DELETE`.
   * A custom header named `X-CSRF-Token` must be allowed.
