@@ -88,7 +88,8 @@
 
 * The following web application contains an unlinked and exposed backup file that it is publicy accessible. The objective is to find it using the `wfuzz` tool by brute-forcing the application.
   * There is an environment variable named `$APP_URL` that contains the base URL of the application to facilitate request sending.
-  * A wordlist is also available within the `tbl` user's home directory for use with the `wfuzz` tool.
+  * A wordlist located in the `tbl` user's home directory can also be used with the `wfuzz` tool.
+  * A helpful clue is to investigate typical directories where backup files might be stored.
 * Once the backup file has been found, no further action is required to complete the exercise.
 
   @@ExerciseBox@@
