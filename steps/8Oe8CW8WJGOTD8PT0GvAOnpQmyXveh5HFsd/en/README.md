@@ -1,4 +1,4 @@
-# Information disclosure via sensitive query strings in URL in Java Jakarta and React Router
+# Addressing information disclosure via sensitive query strings in URL in Java Jakarta and React Router
 
 * This vulnerability is present when sensitive data such as usernames, passwords, session identifiers, tokens, or other potentially critical information is passed through the URL.
 

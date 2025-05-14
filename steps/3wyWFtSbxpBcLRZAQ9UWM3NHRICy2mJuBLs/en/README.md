@@ -21,19 +21,19 @@
 
 ## Recommended security approaches
 
+* **All sensitive data should be sent to the web application in the HTTP message body or headers**.
 * Notice that simply using HTTPS does not resolve this vulnerability, as it only encrypts data in transit and does not govern how the data is handled before or after transmission.
-* All sensitive data should be sent to the web application in the HTTP message body or headers.
 * Applying some form of encryption to the sensitive data before it's transmitted in the URL could be an alternative in certain contexts. However, it can add unnecessary latency and complexity to the application.
   * Expressing some data in the target URI is inefficient, since it needs to be encoded to be a valid URI.
   * Furthermore, this practice is subject to max-length restrictions on URIs.
 
-### Use of headers
+### Use of headers to transmit sensitive data
 
 * When passing information through headers, employing customized headers that are not defined by the [HTTP specifications][1] should be avoided as much as possible.
   * Instead, whenever possible, use the predefined headers (i.e., use the `Authorization` header to send credential tokens to authenticate users against a server).
 * Be aware that `Web Application Firewalls (WAFs)` can remove header fields. Some may be configured to remove anything not explicitly listed in the HTTP specifications.
 
-### Use of body
+### Use of body to transmit sensitive data
 
 #### Within an HTTP GET request
 

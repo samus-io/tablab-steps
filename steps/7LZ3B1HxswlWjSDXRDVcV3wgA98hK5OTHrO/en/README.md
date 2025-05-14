@@ -31,7 +31,7 @@
     Get-ChildItem -Recurse -File | Where-Object { $_.Name -match "\.(bak|txt|src|dev|old|inc|orig|copy|tmp)$" }
     ```
 
-* Publicly accessible backup files may also be indexed by search engines, making them easy targets for malicious users. Google Dorking, a technique that leverages advanced search operators to find publicly accessible information, can be used to identify exposed backup files:
+* Publicly accessible backup files may also be indexed by search engines, making them easy targets for malicious users. `Google Dorking`, a technique that leverages advanced search operators to find publicly accessible information, can be used to identify exposed backup files:
   * Searching for common backup file extensions within a specific domain:
 
     ```plaintext
@@ -86,9 +86,10 @@
 
 ## Exercise to practice :writing_hand:
 
-* The following web application contains an unlinked and exposed backup file that it is publicy accessible. The objective is to find it using the `wfuzz` tool by brute-forcing the application.
+* The following web application contains an unlinked and exposed backup file that it is publicy accessible. The objective is to find it using the `wfuzz` tool by brute-forcing the application through the command line provided.
   * There is an environment variable named `$APP_URL` that contains the base URL of the application to facilitate request sending.
-  * A wordlist is also available within the `tbl` user's home directory for use with the `wfuzz` tool.
+  * A wordlist located in the `tbl` user's home directory can also be used with the `wfuzz` tool.
+  * A helpful clue is to investigate typical directories where backup files might be stored.
 * Once the backup file has been found, no further action is required to complete the exercise.
 
   @@ExerciseBox@@

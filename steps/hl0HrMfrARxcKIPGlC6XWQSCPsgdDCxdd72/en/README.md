@@ -20,12 +20,15 @@
           response.getWriter().println("User profile:");
           response.getWriter().println("ID: " + user.getId());
           response.getWriter().println("Name: " + user.getName());
+          
       } catch (ValidationException e) {
           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
           response.getWriter().println("Invalid request data");
+
       } catch (NotFoundException e) {
           response.setStatus(HttpServletResponse.SC_NOT_FOUND);
           response.getWriter().println("Profile not found");
+
       } catch (Exception e) {
           response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
           response.getWriter().println("An unexpected error occurred");

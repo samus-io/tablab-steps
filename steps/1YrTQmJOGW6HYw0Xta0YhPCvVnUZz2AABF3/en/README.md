@@ -18,10 +18,11 @@
   HTTP/1.1 200 OK
   Date: Tue, 01 Apr 2025 11:15:23 GMT
   Server: Apache/2.4.62 (Debian)
-  Vary: Accept-Encoding
+  X-Powered-By: PHP/8.2.5
   Content-Length: 1039
   Content-Type: text/html;charset=UTF-8
+  Vary: Accept-Encoding
   ```
 
-  * In this example, the `Server` header reveals that the application is running on Apache version `2.4.62` being used on Debian.
+  * In this example, this response reveals that Apache `2.4.62` is running on Debian and using PHP version `8.2.5`, which could assist attackers in identifying known vulnerabilities.
 * Reducing this kind of technical detail in responses limits opportunities for attackers to perform server fingerprinting.

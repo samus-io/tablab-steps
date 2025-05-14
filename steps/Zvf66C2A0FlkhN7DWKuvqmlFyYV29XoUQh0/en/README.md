@@ -31,13 +31,13 @@
   ```
 
   * Even though the link is not displayed in the web application, the commented link discloses a sensitive route to anyone checking the source code.
-* To prevent this type of information disclosure, avoid including sensitive paths, internal notes, or debug references in frontend comments, especially in production environments.
+* To prevent this type of information disclosure, avoid including sensitive paths, internal notes, or debug references in frontend comments, especially in production environments, and also ensure comments are stripped during the build process.
 
 ## Exposure authentication tokens or sensitive credentials
 
 * Web applications often require API keys to interact with third-party services such as Google Maps, Firebase, or payment platforms. These API calls can sometimes originate from JavaScript in the browser, resulting in key exposure through the page source or network requests.
 * If the exposed API key grants privileged access, it can be abused by an attacker for unauthorized actions or privilege escalation.
-* The JavaScript snippet below illustrates an insecure approach by embedding a sensitive key directly in the frontend code:
+* The JavaScript snippet below illustrates an insecure approach by embedding a sensitive key directly in the frontend source code:
 
   ```javascript
   const API_KEY = "sk_live_9a8d7f6g5h4j3k2l1m0n";
