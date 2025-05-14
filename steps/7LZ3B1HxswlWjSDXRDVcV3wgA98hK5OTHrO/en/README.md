@@ -31,7 +31,7 @@
     Get-ChildItem -Recurse -File | Where-Object { $_.Name -match "\.(bak|txt|src|dev|old|inc|orig|copy|tmp)$" }
     ```
 
-* Publicly accessible backup files may also be indexed by search engines, making them easy targets for malicious users. Google Dorking, a technique that leverages advanced search operators to find publicly accessible information, can be used to identify exposed backup files:
+* Publicly accessible backup files may also be indexed by search engines, making them easy targets for malicious users. `Google Dorking`, a technique that leverages advanced search operators to find publicly accessible information, can be used to identify exposed backup files:
   * Searching for common backup file extensions within a specific domain:
 
     ```plaintext

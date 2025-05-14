@@ -8,7 +8,7 @@
   * In Linux systems, these files are usually located in `/etc/apache2` or `/etc/httpd`, and in Windows usually in `C:\Program Files (x86)\Apache Group\Apache2`.
   * The file `/etc/apache2/apache2.conf` usually serves as the default global configuration on many Linux systems.
 * When virtual hosts are used to run multiple applications on a single web server, changes to global configuration files will impact all of them. Therefore, to target a specific web application, it's preferable to modify the relevant file in the `sites-available` directory, which contains individual application configurations.
-* Apache can also be configured using `.htaccess` files, which follow the same format as other config files but apply only to they are located.
+* Apache can also be configured using `.htaccess` files, which follow the same format as other config files but apply only to the directories in which they are located.
 
 ## How to remove response headers
 
@@ -24,7 +24,7 @@
   Vary: Accept-Encoding
   ```
 
-  * This response reveals that Apache is running on Debian and using PHP version `8.2.5`, which could assist attackers in identifying known vulnerabilities.
+  * This response reveals that Apache `2.4.62` is running on Debian and using PHP version `8.2.5`, which could assist attackers in identifying known vulnerabilities.
 
 * Apache allows the removal of headers through the `mod_headers` module. This module can be enabled by running the listed command on the server followed by an Apache restart:
 
@@ -36,7 +36,7 @@
   sudo service apache2 restart
   ```
 
-* Once the module is activated, the `X-Powered-By` header can be removed by adding the following directive to the relevant Apache configuration file:
+* Once the module is activated, the `X-Powered-By` header can be removed by adding the directive below to the relevant Apache configuration file:
 
   ```apache
   Header unset X-Powered-By
@@ -48,7 +48,7 @@
 
 * The application below includes the `X-Powered-By` header in HTTP responses, disclosing the PHP version.
 * The goal here is to modify the `apache.conf` file using the code editor accessed via the `Open Code Editor` button, and remove the `X-Powered-By` header.
-* **It is important to note that, in this case, there is no need to install or enable the `mod_headers` module, as it is already installed and enabled.**
+* **It is important to note that, in this case, there is no need to install or enable the `mod_headers` module, as it is already installed and enabled**.
 * After implementing the changes and redeploying the app, use `curl` to send requests and review the HTTP response headers for manual validation:
 
   ```bash

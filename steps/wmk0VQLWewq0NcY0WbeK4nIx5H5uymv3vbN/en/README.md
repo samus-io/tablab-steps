@@ -1,6 +1,6 @@
 # Enforcing CORS in Apache
 
-* CORS enforcement in Apache involves explicitly configuring allowed origins, methods, and headers using the `mod_headers` module to control cross-origin access to specific endpoints.
+* `Cross-Origin Resource Sharing (CORS)` enforcement in Apache involves explicitly configuring allowed origins, methods, and headers using the `mod_headers` module to control cross-origin access to specific endpoints.
 
 ## Apache configuration files overview
 
@@ -8,7 +8,7 @@
   * In Linux systems, these files are usually located in `/etc/apache2` or `/etc/httpd`, and in Windows in `C:\Program Files (x86)\Apache Group\Apache2`.
   * The file `/etc/apache2/apache2.conf` usually serves as the default global configuration on many Linux systems.
 * When virtual hosts are used to run multiple applications on a single web server, changes to global configuration files will impact all of them. Therefore, to target a specific web application, it's preferable to modify the relevant file in the `sites-available` directory, which contains individual application configurations.
-* Apache can also be configured using `.htaccess` files, which follow the same format as other config files but apply only to they are located.
+* Apache can also be configured using `.htaccess` files, which follow the same format as other config files but apply only to the directories in which they are located.
 
 ## Adding CORS headers to Apache web server
 
