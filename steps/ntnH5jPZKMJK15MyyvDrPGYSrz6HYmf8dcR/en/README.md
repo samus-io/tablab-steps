@@ -1,8 +1,6 @@
-# Advanced aspects of Cross-Origin Resource Sharing (CORS)
+# Cross-origin request types
 
-## Cross-Origin request types
-
-### Simple request
+## Simple request
 
 * Simple requests are those that are sent to the same origin from which they are made. In other words, as long as the request is not cross origin, it will be simple.
 * In the case that it is made to another origin, the request will be considered simple in the following cases:
@@ -25,7 +23,7 @@
 
 * In this code JavaScript sends a request to the `info.html` file and then accesses its contents. This is possible because the file is in the same origin but if it were in another origin and did not have the `CORS` configured, it would not be possible because of the `SOP`.
 
-### Preflight request
+## Preflight request
 
 * The `Preflight` requests are used to make up for the shortcomings of simple requests when making requests against another origin. Some of its advantages are:
   * Make a request with other methods, such as `PUT`.
@@ -52,7 +50,7 @@
 * This JavaScript code sends a `POST` request with JSON content to the origin `https://domain.tbl` and then gets the response from the `info` endpoint. Since this is not a simple request, a request with the `OPTIONS` method will be sent first and then the `POST` request will be processed. A header that is not in the standard `HTTP` header is also sent.
 * If the JavaScript code were executed at the origin `https://example.tbl`, the first request with the `OPTIONS` method would be as follows:
 
-  ```
+  ```http
   OPTIONS /info HTTP/1.1
   Host: domain.tbl
   User-Agent: Mozilla/5.0
@@ -63,7 +61,7 @@
 
 * And this would be the server's response:
 
-  ```
+  ```http
   HTTP/1.1 200 OK
   Content-Type: application/json; charset=UTF-8
   Access-Control-Allow-Origin: https://example.tbl
@@ -75,7 +73,7 @@
 * This response informs the browser that the origin `https://example.tbl` can make requests using the `POST`, `GET`, `OPTIONS`, and `DELETE` methods. In addition, the `Front-End-Https` header can be sent.
 * Once the browser has determined that the `CORS` policy allows the request to be made to `https://domain.tbl`, it sends the `POST` request:
 
-  ```
+  ```http
   POST /info HTTP/1.1
   Host: domain.tbl
   User-Agent: Mozilla/5.0
@@ -90,7 +88,17 @@
   }
   ```
 
-### Request with credentials
+## Preflighted requests and redirects
+
+* Some browsers do not support following redirects after a preflighted request. In such cases, an error may be returned if a redirect occurs.
+* To work around this limitation, consider one of the following approaches:
+  * Modify the server configuration to prevent preflight requests and/or eliminate redirects.
+  * Adjust the request to qualify as a simple request, thereby avoiding a preflight.
+* If the above options are not applicable, the following two-step process may be used:
+  * Issue an initial simple request to identify the final URL after the redirect.
+  * Use the resolved URL to send the actual preflighted request directly.
+
+## Request with credentials
 
 * In some cases it will be necessary to attach the credentials to the requests in order to authenticate against the origin, in this case there is the option to specify that the credentials are added along with the request.
 * Cookies and authentication `HTTP` headers are considered credentials. By default, the browser prevents credentials from being sent in cross-origin requests, unless this is allowed through `CORS`.
@@ -112,4 +120,14 @@
   xhttp.send(jsonData);
   ```
 
-* In this example, Cookies from the origin of `domain.tbl` will be added when making the request against `https://domain.tbl/info` in order to authenticate against the `info` endpoint.
+* In this example, cookies from the origin of `domain.tbl` will be added when making the request against `https://domain.tbl/info` in order to authenticate against the `info` endpoint.
+
+## Preflight requests and credentials
+
+* CORS preflight requests, the initial `OPTIONS` requests sent by the browser to determine if the actual request is safe to send, must not include credentials.
+* Although the preflight request itself is sent without credentials, the server must still indicate whether the actual request is permitted to include them.
+* To allow the actual request to be made with credentials, the server's response to the preflight request must include the header:
+
+  ```http
+  Access-Control-Allow-Credentials: true
+  ```
