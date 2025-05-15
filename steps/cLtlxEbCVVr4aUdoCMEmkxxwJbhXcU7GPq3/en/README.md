@@ -1,7 +1,6 @@
 # Enforcing CORS in Java Jakarta
 
-* In Java Jakarta, `Cross-Origin Resource Sharing (CORS)` can be enabled by adding specific headers to the HTTP response. This allows a web application running on one origin to access resources from a different origin.
-* `CORS` headers can be added using the `setHeader` method of the `HttpServletResponse` object within a servlet:
+* In Jakarta EE, `Cross-Origin Resource Sharing (CORS)` can be enabled by setting specific HTTP response headers using the `setHeader` method on the `HttpServletResponse` object within a `servlet`, allowing cross-origin access:
 
   ```java
   protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -9,15 +8,15 @@
   }
   ```
 
-* In the example above, the server response includes the `Access-Control-Allow-Origin` header with the value `https://domain.tbl`. This configuration permits cross-origin requests originating from that specific domain.
+  * In this example, the server sends the `Access-Control-Allow-Origin` header with the value `https://domain.tbl`, authorizing cross-origin access from that particular origin.
 
-## Enabling CORS using Filter
+## Enabling CORS via filter-based configuration
 
-* To enable `CORS` support, a `Filter` can be implemented to intercept requests before they reach the endpoint and apply the required HTTP headers. This approach ensures that cross-origin requests are properly handled in accordance with the `CORS` specification.
-* The following example defines a `Filter` that implements CORS handling for HTTP requests. This `CorsFilter` intercepts incoming requests and adds the appropriate CORS headers when the origin matches a predefined value:
+* To enable CORS support, a filter can be implemented to intercept requests before they reach the endpoint and apply the required HTTP headers. This approach ensures that cross-origin requests are properly handled in accordance with the CORS specification.
+* The example below shows a filter named `CORSFilter` that processes HTTP requests and adds CORS headers when the origin matches a specified value.
 
   ```java
-  public class CorsFilter implements Filter {
+  public class CORSFilter implements Filter {
 
       private static final String ALLOWED_ORIGIN = "https://domain.tbl";
       private static final String ALLOWED_METHODS = "GET, POST, DELETE";
@@ -40,7 +39,7 @@
                   httpResponse.setHeader("Access-Control-Allow-Methods", ALLOWED_METHODS);
                   httpResponse.setHeader("Access-Control-Allow-Headers", ALLOWED_HEADERS);
                   httpResponse.setStatus(HttpServletResponse.SC_OK);
-                  return; // Skip further processing for preflight
+                  return; // Skip further processing for preflights
               }
           }
 
@@ -49,11 +48,11 @@
   }
   ```
 
-* The filter is configured to:
-  * Allow cross-origin requests from a specific origin (`https://domain.tbl`).
-  * Support the HTTP methods `GET`, `POST`, and `DELETE`.
-  * Accept the request headers `Authorization` and `Content-Type`.
-  * Handle CORS preflight requests (those using the `OPTIONS` method) by returning an immediate `200 OK` response with the necessary headers, preventing the request from reaching the application logic.
+  * This filter is set up to:
+    * Allow cross-origin requests from a specific origin (i.e., `https://domain.tbl`).
+    * Accept the HTTP methods `GET`, `POST`, and `DELETE`.
+    * Accept the request headers `Authorization` and `Content-Type`.
+    * Handle CORS preflight requests (those using the `OPTIONS` method) by returning an immediate `200 OK` response with the necessary headers, preventing the request from reaching the application logic.
 
 ## Exercise to practice :writing_hand:
 
@@ -70,11 +69,11 @@
 
     * Notice that `$APP_URL` is an environment variable that points to the base path of the application.
 
-* The goal here is to to update the source code via the `Open Code Editor` button and apply the CORS mechanism **only to the `DELETE` method at `/api/products/:id`**, while fulfilling the outlined requirements and keeping other routes unaffected:
+* The goal here is to to update the source code via the `Open Code Editor` button and apply the CORS mechanism while fulfilling the outlined requirements:
   * The only allowed origin must be `https://example.tbl`.
   * The only allowed HTTP method must be `DELETE`.
   * A custom header named `X-CSRF-Token` must be allowed.
-  * The application must correctly handle preflight requests for the `DELETE /api/products/:id` endpoint by allowing HTTP `OPTIONS` requests to **only that exact same route**.
+  * The application must correctly handle preflight requests for the `DELETE /api/products/:id` endpoint by allowing HTTP `OPTIONS`.
 * After implementing the changes and redeploying the app, use `curl` to send requests and review the HTTP response headers for manual validation:
 
   ```bash

@@ -12,15 +12,18 @@
 
 ## Adding CORS headers to Apache web server
 
-* Headers can be set easily in Apache using the `mod_headers` module. To activate it, execute the commands below on the server and restart Apache.
+* Headers can be set easily in Apache using the `mod_headers` module. To activate it, execute the command below on the server and restart Apache.
 
   ```bash
   sudo a2enmod headers
+  ```
+
+  ```bash
   sudo service apache2 restart
   ```
 
-  * Once the module is enabled, headers can be configured by editing the appropriate Apache configuration file.
-* As example, to include the `Access-Control-Allow-Origin` response header, the following directive should be placed in the correct configuration file:
+  * Once the module is enabled, headers can be configured by editing the Apache configuration file.
+* As example, to include the `Access-Control-Allow-Origin` response header, the following directive should be placed in the appropriate configuration file:
 
   ```apacheconf
   Header always set Access-Control-Allow-Origin "https://example.tbl"

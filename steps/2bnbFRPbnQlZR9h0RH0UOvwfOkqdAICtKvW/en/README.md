@@ -1,6 +1,6 @@
 # Enforcing CORS in Nginx
 
-* Nginx enforces CORS by adding precise HTTP headers that define which origins, methods, and headers are allowed in cross-origin requests.
+* Nginx enforces `Cross-Origin Resource Sharing (CORS)` by adding precise HTTP headers that define which origins, methods, and headers are allowed in cross-origin requests.
 
 ## Adding CORS headers to Nginx web server
 
