@@ -3,7 +3,9 @@
 * `CORS (Cross-Origin Resource Sharing)` is a browser-enforced security feature that controls how web applications interact with resources from different origins.
 * It allows safe cross-origin communication while protecting users and servers from unauthorized or malicious access.
 * Misconfigured CORS policies can expose sensitive data, open doors to cross-site attacks, and undermine the integrity of authentication and authorization mechanisms.
+* Therefore, it is important to configure CORS only when it is necessary for the operation of the web application.
 * Properly securing CORS is critical in preventing issues such as data leakage, unauthorized access, or privilege escalation.
+* Note that implementing the CORS policy correctly is not a replacement for server-side protection. Even if it is set correctly, the server must implement other security protections, such as authentication and preventing the leakage of sensitive data.
 
 ## Avoid using wildcards
 
@@ -11,11 +13,15 @@
 * Using wildcards becomes especially dangerous if the server also allows credentials, which is disallowed by the CORS specification and ignored by most browsers but can still signal poor configuration.
 * Always specify a known and trusted origin instead of using a wildcard.
 
-## Restrict allowed origins
+## Use specific `Access-Control-Allow-Origin` values
 
 * Only explicitly trusted domains should be allowed to access cross-origin resources. Avoid overly broad access that includes multiple unrelated or third-party origins.
 * Maintain a fixed allowlist of origins and check the request's origin against this list before including `Access-Control-Allow-Origin` header in the response.
 * Dynamic validation must always include strict checks to ensure only intended origins are allowed.
+
+### Avoid using null as a value
+
+* Never use the `Access-Control-Allow-Origin` header with `null` value. This can unintentionally allow access from untrusted sources and creates security risks similar to using a wildcard (`*`).
 
 ## Only send credentials when necessary
 

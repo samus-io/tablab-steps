@@ -7,7 +7,7 @@
 * A common example of CORS is in an API hosted in a different origin than the web application, where it returns information necessary for the correct functioning of the application, and the API responses need to be accessed by JavaScript.
 * Then, by using these headers, it is possible to allow access to the response bypassing the `SOP`.
 
-## Cross-Origin Resource Sharing (CORS) Headers
+## Cross-Origin Resource Sharing (CORS) headers
 
 ### Server-side headers
 

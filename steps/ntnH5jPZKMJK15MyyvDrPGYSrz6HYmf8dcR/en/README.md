@@ -124,7 +124,7 @@
 
 ## Preflight requests and credentials
 
-* CORS preflight requests, the initial `OPTIONS` requests sent by the browser to determine if the actual request is safe to send, must not include credentials.
+* The CORS preflight requests, the initial `OPTIONS` requests sent by the browser to determine if the actual request is safe to send, must not include credentials.
 * Although the preflight request itself is sent without credentials, the server must still indicate whether the actual request is permitted to include them.
 * To allow the actual request to be made with credentials, the server's response to the preflight request must include the header:
 
