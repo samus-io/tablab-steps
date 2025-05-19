@@ -13,7 +13,7 @@
 * [ ] Validar el tipo de archivo basándose en sus datos reales, sin depender de la cabecera `Content-Type` ni del número mágico, ya que ambos pueden ser fácilmente manipulados.
 * [ ] Examinar el archivo en busca de contenido malicioso ejecutándolo a través de un antivirus o sandbox para garantizar que no contiene elementos dañinos.
 * [ ] Garantizar que la carga de archivos esté restringida a usuarios autorizados siempre que sea posible.
-* [ ] Almacenar los archivos en un servidor o servicio diferente, si no es una opción, almacenarlos fuera de *webroot*.
+* [ ] Utilizar un servicio dedicado u otro servidor para el almacenamiento de archivos, si no es una opción, almacenarlos fuera de *webroot*.
 * [ ] En caso de acceso público a los archivos, impedir que se pueda adivinar la ruta/URL (e.g., utilizando nombres de archivo aleatorios o un sistema de mapeo interno).
 * [ ] Proteger la carga de archivos frente a ataques de `Cross-Site Request Forgery (CSRF)`.
 * [ ] Comprobar que las librerías utilizadas están configuradas de forma segura y se actualizan periódicamente.
@@ -47,7 +47,7 @@
 ### Almacenamiento de archivos y permisos del sistema de ficheros
 
 * Los archivos deben permanecer en memoria o en un área de almacenamiento temporal durante el procesamiento y trasladarse a una ubicación permanente únicamente cuando hayan completado y superado las comprobaciones de validación.
-* Siempre que sea posible, los archivos deben almacenarse en un servicio separado o en un servidor dedicado a gestionar el almacenamiento de archivos para minimizar el impacto de posibles vulnerabilidades.
+* Siempre que sea posible, los archivos deben almacenarse en un servicio dedicado o en un servidor separado para gestionar el almacenamiento de archivos con el fin de minimizar el impacto de posibles vulnerabilidades.
   * Si esto no es posible, se deben almacenar los archivos fuera de la raíz web para evitar el acceso directo a través de URL.
   * En los casos en los que los archivos deban ser accesibles públicamente, se puede utilizar un sistema de mapeo interno para asignar nombres de archivo identificativos en la aplicación.
 * Los permisos en el almacenamiento de archivos deben ser limitados para controlar qué pueden hacer los usuarios con los archivos subidos, normalmente permitiendo solo acceso de lectura y escritura para archivos como imágenes o documentos, y bloqueando los permisos de ejecución.

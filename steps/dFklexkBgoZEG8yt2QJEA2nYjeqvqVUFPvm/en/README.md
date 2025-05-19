@@ -18,10 +18,10 @@
 ### Remote code execution
 
 * Improperly validated uploaded files can be executed by the server, allowing attackers to run arbitrary code and potentially gain full control over the system.
-* Another method of achieving code execution is through a `Local File Inclusion (LFI)` vulnerability. If the web application permits users to upload files to a public directory, an attacker can upload a seemingly harmless file (such as an image) containing embedded code. The attacker can then exploit the LFI to execute the code within the uploaded file.
+* Another method of achieving code execution is through a `Local File Inclusion (LFI)` vulnerability. If the web application permits users to upload files, an attacker can upload a seemingly harmless file (such as an image) containing embedded code. The attacker can then exploit the LFI to execute the code within the uploaded file.
   > :older_man: `Local File Inclusion (LFI)` is a web vulnerability that occurs when a web application allows users to load files from the server's filesystem. When such a file is included on a webpage, its contents are not only read but also interpreted as code.
   * For example, the steps might be:
-    1. The attacker uploads a file named `image.png` with embedded code to the public upload directory (e.g., `/uploads`).
+    1. The attacker uploads a file named `image.png` with embedded code to the upload directory (e.g., `/uploads`).
     1. Then the attacker exploits the LFI vulnerability by navigating to a URL like `https://example.tbl/index?page=uploads/image.png`.
     1. The server includes and executes the `image.png` file, processing the embedded code.
 
@@ -67,7 +67,7 @@
 * Uploaded files can be used for **phishing**, disguised as legitimate documents but designed to trick users into revealing sensitive information, such as login credentials, through deceptive content.
 * **Media files** (e.g., images, videos) can be crafted to exploit vulnerabilities in media processing libraries, allowing attackers to execute code or cause Denial of Service (DoS) when these files are viewed or processed.
 
-### File size
+### File size and limitations
 
 * Large files can lead to **resource exhaustion**, such as RAM and CPU, degrading performance and availability, which attackers can exploit by repeatedly uploading oversized files.
 * Large uploads can use up significant **bandwidth**, affecting network performance for other users.
@@ -86,8 +86,8 @@
 
 * Proper management of uploaded file storage can significantly reduce the risk of information disclosure and the exploitation of vulnerabilities in a web application.
 * To enhance security, consider the following best practices when deciding where and how to store files uploaded by users:
-  * Whenever possible, store uploaded files on a server separate from the main web application. This reduces the risk of an attacker gaining access to sensitive data or exploiting other vulnerabilities in the application server.
-  * If storing files on a separate server is not feasible, ensure that uploaded files are stored outside of the webroot directory. This prevents direct access to the files via the web server.
+  * Whenever possible, store uploaded files on a dedicated service or server separate from the main web application. This reduces the risk of an attacker gaining access to sensitive data or exploiting other vulnerabilities in the application server.
+  * If storing files on a dedicated service or on a separate server is not feasible, ensure that uploaded files are stored outside of the webroot directory. This prevents direct access to the files via the web server.
   * If the application needs to display uploaded files to users, avoid allowing direct access to these files via the web server. Instead, implement a server-side handler that serves the files. This handler can map files internally to a unique ID, which is then used to access the file. This approach provides an additional layer of security by preventing attackers from directly accessing the file paths.
   
 ### Upload and download limits

@@ -58,7 +58,7 @@
   * `png` files start with `89 50 4E 47 0D 0A 1A 0A` (corresponding to `‰PNG␍␊␚␊`).
   * `pdf` files start with `25 50 44 46 2D` (corresponding to `%PDF-`).
   * `zip` files start with `50 4B 03 04` (corresponding to `PK␃␄`).
-* Malicious users can easily prepend a valid magic number to malicious files, making them seem legitimate. For instance, adding the `%PDF-2.0` signature at the start of a webshell file can trick the system into thinking it's a PDF file.
+* Malicious users can easily prepend a valid magic number to malicious files, making them seem legitimate. For instance, adding the `%PDF-2.0` signature at the start of a `webshell` file can trick the system into thinking it's a PDF file.
 
   > :older_man: The term `webshell` is the common name given to a script used by attackers that, when uploaded to a web server, allows them to execute system commands and take control of the server as if they had direct shell access, but all remotely via the web.
 

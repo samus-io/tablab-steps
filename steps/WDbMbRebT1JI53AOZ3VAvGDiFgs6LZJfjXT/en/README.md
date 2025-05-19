@@ -119,6 +119,8 @@
   * Each IP address should be limited to 10 file uploads within a 30-second window. Exceeding this limit should result in an HTTP response with status code `429 Too Many Requests`, and the IP should remain blocked for 30 seconds.
     * Note that the application is placed under multiple reverse proxy layers, as it runs within a Cloud Run container on GCP.
 * In order to complete the exercise, the class located in `src/main/java/io/ontablab/FileUploadServlet.java` is where code modifications should be added to support these features.
+* After making the changes, press the `Verify Completion` button to confirm that the exercise has been completed.
+
   @@ExerciseBox@@
 
 [1]: https://github.com/bucket4j/bucket4j

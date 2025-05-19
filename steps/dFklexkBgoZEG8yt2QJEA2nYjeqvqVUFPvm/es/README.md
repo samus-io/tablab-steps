@@ -18,10 +18,10 @@
 ### Ejecución remota de código
 
 * Los archivos cargados incorrectamente validados pueden ser ejecutados directamente por el servidor, permitiendo a los atacantes ejecutar código arbitrario y potencialmente obtener el control total del sistema.
-* Otro método para lograr la ejecución de código es a través de una vulnerabilidad de `Local File Inclusion (LFI)`. Si la aplicación web permite a los usuarios subir archivos a un directorio público, un usuario malicioso puede subir un archivo aparentemente inofensivo (como una imagen) que contenga código incrustado. El atacante puede entonces explotar la LFI para ejecutar el código dentro del archivo subido.
+* Otro método para lograr la ejecución de código es a través de una vulnerabilidad de `Local File Inclusion (LFI)`. Si la aplicación web permite a los usuarios subir archivos, un usuario malicioso puede subir un archivo aparentemente inofensivo (como una imagen) que contenga código incrustado. El atacante puede entonces explotar la LFI para ejecutar el código dentro del archivo subido.
   > :older_man: `Local File Inclusion (LFI)` es una vulnerabilidad web que se produce cuando una aplicación web permite a los usuarios incluir archivos del sistema de ficheros del servidor. Cuando un archivo de este tipo se incluye en una página web, su contenido no sólo se lee, sino que también se interpreta como código.
   * Por ejemplo, los pasos podrían ser:
-    1. El atacante carga un archivo llamado `image.png` con código incrustado en el directorio público de subidas (e.g., `/uploads`).
+    1. El atacante carga un archivo llamado `image.png` con código incrustado en el directorio de subidas (e.g., `/uploads`).
     1. Seguidamente, el atacante explota la vulnerabilidad LFI navegando a una URL como `https://domain.tbl/index?page=uploads/image.png`.
     1. El servidor incluye y ejecuta el archivo `image.png`, procesando el código incrustado.
 
@@ -67,12 +67,12 @@
 * Los archivos cargados pueden utilizarse para **phishing**, camuflados como documentos legítimos pero diseñados para engañar a los usuarios para que revelen información sensible, como credenciales de inicio de sesión, a través de contenidos engañosos.
 * **Los archivos multimedia** (e.g., imágenes, vídeos) pueden ser manipulados para explotar vulnerabilidades en las bibliotecas de procesamiento multimedia, permitiendo a los atacantes ejecutar código o causar una denegación de servicio (DoS) cuando estos archivos son visualizados o procesados.
 
-### Tamaño del archivo
+### Tamaño del archivo y limitaciones
 
 * Los archivos de gran tamaño pueden provocar el **agotamiento de recursos**, como la RAM y la CPU, degradando el rendimiento y la disponibilidad, lo que los atacantes pueden aprovechar subiendo repetidamente archivos de gran tamaño.
 * Las cargas de archivos de gran tamaño pueden consumir un considerable **ancho de banda**, afectando al rendimiento de la red para otros usuarios.
 * La gestión de cargas grandes o numerosas complica la **gestión del almacenamiento**, lo que requiere una supervisión y un mantenimiento diligentes.
-Los archivos de gran tamaño también pueden hacer que las **copias de seguridad** sean más complejas y aumentar los tiempos de recuperación en situaciones de catástrofe.
+* Los archivos de gran tamaño también pueden hacer que las **copias de seguridad** sean más complejas y aumentar los tiempos de recuperación en situaciones de catástrofe.
 
 ## Consideraciones de seguridad
 
@@ -87,7 +87,7 @@ Los archivos de gran tamaño también pueden hacer que las **copias de seguridad
 * Una gestión adecuada del almacenamiento de los archivos cargados puede reducir significativamente el riesgo de divulgación de información y la explotación de vulnerabilidades en una aplicación web.
 * Para mejorar la seguridad, se deben tener en cuenta las siguientes buenas prácticas a la hora de decidir dónde y cómo almacenar los archivos subidos por los usuarios:
   * Siempre que sea posible, se deben almacenar los archivos cargados en un servicio exclusivo o servidor separado de la aplicación web principal. De esta forma se reduce el riesgo de que un atacante acceda a datos confidenciales o aproveche otras vulnerabilidades del servidor de aplicaciones.
-  * Si no es posible almacenar los archivos en un servicio o servidor independiente, es necesario asegurarse de que los archivos cargados se almacenan fuera del directorio *webroot*. Esto impide el acceso directo a los archivos a través del servidor web.
+  * Si no es posible almacenar los archivos en un servicio dedicado o servidor independiente, es necesario asegurarse de que los archivos cargados se almacenan fuera del directorio *webroot*. Esto impide el acceso directo a los archivos a través del servidor web.
   * Si la aplicación necesita mostrar archivos subidos a los usuarios, hay que evitar permitir el acceso directo a estos archivos a través del servidor web. En su lugar, se debe implementar un gestor del lado del servidor que sirva los archivos. Este gestor puede asignar internamente los archivos a un ID único, que luego se utiliza para acceder al archivo. Este enfoque proporciona una capa adicional de seguridad al evitar que los atacantes accedan directamente a las rutas de los archivos.
 
 ### Límites de carga y descarga

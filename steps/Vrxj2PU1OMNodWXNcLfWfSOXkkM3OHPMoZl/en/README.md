@@ -13,7 +13,7 @@
 * [ ] Validate the file type based on its actual data, not trusting the `Content-Type` header or the magic number, as both can be easily spoofed.
 * [ ] Test the file for malicious content by running it through an antivirus or sandbox to ensure it doesn't contain harmful data.
 * [ ] Ensure that file uploads are restricted to authorized users whenever possible.
-* [ ] Store the files on a different server or service, but if that isn't an option, store them outside the webroot.
+* [ ] Use a dedicated service or another server for file storage, but if that isn't an option, store them outside the webroot.
 * [ ] In the case of public access to the files, prevent path/URL guessing (e.g., using random file names or an internal mapping system).
 * [ ] Protect the file upload from `Cross-Site Request Forgery (CSRF)` attacks.
 * [ ] Verify that the libraries used are securely configured and regularly updated.
@@ -47,7 +47,7 @@
 ### File storage location and filesystem permissions
 
 * Files should remain in memory or a temporary storage area during processing and be moved to a permanent location only once they've completed and passed the validation checks.
-* Whenever possible, files should be stored on a separate service or dedicated server to handling file storage to minimize the impact of potential vulnerabilities.
+* Whenever possible, files should be stored on a dedicated service or separate server to handling file storage to minimize the impact of potential vulnerabilities.
   * If this isn't feasible, then store the files outside the webroot to prevent direct access via URL.
   * In cases where files need to be publicly accessible, use a handler to map file names inside the application.
 * Permissions on the file storage should be limited to control what users can do with uploaded files, typically allowing only read and write access for files such as images or documents, and blocking execute permissions.

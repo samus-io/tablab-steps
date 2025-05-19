@@ -2,10 +2,6 @@
 
 * Las expresiones regulares, en Inglés `Regular Expressions (RegEx)`, son esenciales en el desarrollo de software para la comparación y validación de patrones, lo que hace que se utilicen ampliamente para garantizar que los datos proporcionados por el usuario se ajustan a criterios específicos.
 
-## Perspectiva de vulnerabilidad de ReDos
-
-* El uso de RegEx complejas debe ser abordado con precaución debido al riesgo potencial de una vulnerabilidad de `Regular expression Denial of Service (ReDoS)`, la cual puede ocurrir cuando la entrada maliciosa hace que el motor RegEx se ejecute de manera ineficiente, derivando a una denegación de servicio.
-
 ## Validaciones RegEx comunes
 
 * El sitio web [ihateregex.io][1] proporciona varios patrones de expresiones regulares que son frecuentemente utilizados en el desarrollo web. Algunos de ellos se muestran a continuación.
@@ -152,6 +148,10 @@
   ```
 
 @@TagEnd@@
+
+## Perspectiva de vulnerabilidad de ReDos
+
+* El uso de RegEx complejas debe ser abordado con precaución debido al riesgo potencial de una vulnerabilidad de `Regular expression Denial of Service (ReDoS)`, la cual puede ocurrir cuando la entrada maliciosa hace que el motor RegEx se ejecute de manera ineficiente, derivando a una denegación de servicio.
 
 [1]: https://ihateregex.io/
 [2]: https://emailregex.com/

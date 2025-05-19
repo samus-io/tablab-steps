@@ -2,10 +2,6 @@
 
 * `Regular Expressions (RegEx)` are fundamental in software development for conducting pattern matching and validation, making them widely used in ensuring that user-provided data conforms to specific criteria.
 
-## ReDos vulnerability perspective
-
-* The use of complex RegEx should be approached with caution due to the potential risk of a `Regular expression Denial of Service (ReDoS)` vulnerability, which can occur when malicious input causes the RegEx engine to execute inefficiently, leading to a denial of service.
-
 ## Common RegEx validations
 
 * The website [ihateregex.io][1] provides several common RegEx used in web development. Some of these are shown below.
@@ -152,6 +148,10 @@
   ```
 
 @@TagEnd@@
+
+## ReDos vulnerability perspective
+
+* The use of complex RegEx should be approached with caution due to the potential risk of a `Regular expression Denial of Service (ReDoS)` vulnerability, which can occur when malicious input causes the RegEx engine to execute inefficiently, leading to a denial of service.
 
 [1]: https://ihateregex.io/
 [2]: https://emailregex.com/
