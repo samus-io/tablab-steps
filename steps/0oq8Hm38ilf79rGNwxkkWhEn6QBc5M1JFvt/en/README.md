@@ -1,35 +1,39 @@
 # What is Cross-Origin Resource Sharing (CORS)?
 
-* The `Same-Origin Policy (SOP)` is a web security feature that restricts how content from one origin can interact with content from another origin.
-* While SOP is necessary and an important element of web security, it is also very restrictive when two different origins need to communicate with each other.
-* `Cross-Origin Resource Sharing (CORS)` is a mechanism to bypass SOP restrictions and enable secure data sharing between different origins.
-* CORS works by using special HTTP headers that let a server indicate which origins are allowed to access its resources.
-* A common example of CORS is in an API hosted in a different origin than the web application, where it returns information necessary for the correct functioning of the application, and the API responses need to be accessed by JavaScript.
-* Then, by using these headers, it is possible to allow access to the response bypassing the `SOP`.
+* `Cross-Origin Resource Sharing (CORS)` is a mechanism to bypass the `Same-Origin Policy (SOP)` restrictions and enable secure data sharing between different origins.
 
-## Cross-Origin Resource Sharing (CORS) headers
+	> :older_man: The `Same-Origin Policy (SOP)` is a fundamental security feature in web browsers designed to prevent malicious websites from accessing or modifying content belonging to a different origin. Although SOP plays a crucial role in web security, it can be very restrictive when different origins need to interact.
 
-### Server-side headers
+* CORS is an HTTP-header based mechanism that enables servers to declare which external origins may access their resources.
+	* Browsers implementing CORS usually also dispatch a "preflight" request to the relevant server, confirming whether it allows the forthcoming cross-origin request. This request transmits headers specifying the HTTP method and other headers to be used later in the actual intended request.
+	
+	> :older_man: A preflight request is an HTTP OPTIONS request that a browser automatically sends before making a cross-origin request in certain conditions. It is part of the CORS mechanism and is used to determine whether the actual request is allowed by the target server.
 
-* Servers use specific HTTP response headers to control how their resources can be accessed by other origins.
-* These headers are part of the CORS mechanism and are often involved in preflight requests, which are checks made by the browser before the actual request.
+* In web development, CORS is commonly applied when an API resides on a different origin than the web UI application, supplying crucial data for its functionality. This setup requires JavaScript to access API responses, and proper CORS headers enable the browser to grant that access, bypassing the SOP.
 
-|Header|Description|Example|
-|:--:|:--:|:--:|
-|`Access-Control-Allow-Origin`|It is used by the web application to determine which origins can access its response and interact with it.|Access-Control-Allow-Origin: `https://domain.tbl`|
-|`Access-Control-Allow-Credentials`|Indicates whether the request can include the requesting user's credentials (cookies). If this header is omitted, the default value is `false`.|Access-Control-Allow-Credentials: true|
-|`Access-Control-Allow-Methods`|Lists the HTTP methods allowed for cross-origin requests.|Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE|
-|`Access-Control-Allow-Headers`|Determines which non-standard HTTP headers are accepted by the web application when a request is made from another origin.|Access-Control-Allow-Headers: Front-End-Https|
-|`Access-Control-Max-Age`|Specifies how long in seconds the value of the `Access-Control-Allow-Methods` and `Access-Control-Allow-Headers` headers can be cached in the browser cache.|Access-Control-Max-Age: 3600|
-|`Access-Control-Expose-Headers`|This header allows you to specify which response headers can be accessed from another origin. By default, only the `Cache-Control`, `Content-Language`, `Content-Length`, `Content-Type`, `Expires`, `Last-Modified` and `Pragma` headers can be accessed. This allows the headers specified in `Access-Control-Expose-Headers` to be accessed by JavaScript in requests to a different origin.|Access-Control-Expose-Headers: Content-Encoding|
+## Defined CORS headers
 
-### Client-side headers
+* CORS defines a series of headers that regulate cross-origin requests, ensuring that resources can be shared securely between different origins while maintaining security constraints.
 
-* The following `HTTP` headers are sent by the client (the user) to send information about the request being made.
-* These headers are usually part of a preflight request, which is sent using the `OPTIONS` method before the actual request.
+### HTTP response headers
 
-|Header|Description|Example|
-|:--:|:--:|:--:|
-|`Origin`|Determines from which origin the request has been made.|Origin: `https://domain.tbl`|
-|`Access-Control-Request-Method`|This header is sent in requests with the `OPTIONS` method to specify which method is used in the request.|Access-Control-Request-Method: POST|
-|`Access-Control-Request-Header`|Sent during a preflight request to list the custom headers the actual request will include.|Access-Control-Request-Headers: Front-End-Https|
+* Servers use specific HTTP response headers to indicate how their resources can be accessed by other origins. These headers are part of the CORS mechanism and are often involved in preflight requests.
+
+	|Header|Description|Example|
+	|:--:|:--:|:--:|
+	|`Access-Control-Allow-Origin`|Specifies which origins are permitted to access the server's resources. If set to `*`, any origin is allowed, while a specific domain restricts access to that domain.|`Access-Control-Allow-Origin: https://domain.tbl`|
+	|`Access-Control-Allow-Credentials`|Indicates whether the final request can include user credentials (such as cookies, HTTP authentication, or client-side SSL certificates). If omitted, the default value is `false`, meaning credentials are not allowed.|`Access-Control-Allow-Credentials: true`|
+	|`Access-Control-Allow-Methods`|Defines the HTTP methods allowed for cross-origin requests. If not specified, only `GET` and `HEAD` methods are allowed by default.|`Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE`|
+	|`Access-Control-Allow-Headers`|Lists the additional HTTP headers that can be sent in a request from another origin. This is useful for allowing non-standard headers required by the client.|`Access-Control-Allow-Headers: Front-End-Https`|
+	|`Access-Control-Max-Age`|Sets the duration (in seconds) for which the results of a preflight request can be cached by the browser, reducing unnecessary repeated requests.|`Access-Control-Max-Age: 3600`|
+	|`Access-Control-Expose-Headers`|Specifies which response headers can be made accessible to the client from a different origin. By default, only a limited set of headers are exposed, but additional headers can be included using this directive, adding them to the allowlist that JavaScript in browsers is permitted to access.|`Access-Control-Expose-Headers: Content-Encoding`|
+
+### HTTP request headers
+
+* These HTTP headers are utilized by clients when making HTTP requests for cross-origin sharing. They are automatically set by the browser during server interactions, meaning developers don't need to specify them programmatically.
+
+	|Header|Description|Example|
+	|:--:|:--:|:--:|
+	|`Origin`|Determines from which origin the request has been made. This allows the server to determine whether it should permit access based on cross-origin rules.|`Origin: https://domain.tbl`|
+	|`Access-Control-Request-Method`|Used in preflight requests  to inform the server of the HTTP method the actual request intends to use.|`Access-Control-Request-Method: POST`|
+	|`Access-Control-Request-Header`|Sent during a preflight request to notify the server of any custom headers that the actual request will include. This ensures the server is aware of all headers before permitting the request.|`Access-Control-Request-Headers: Front-End-Https`|
